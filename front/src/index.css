@@ -1,0 +1,30 @@
+:root {
+    /*
+        Custom application constant colors
+    */
+    --light-gray: #f1f1f5;
+    --medium-gray: #d0d0d4;
+    --light-blue: #4b92ef;
+    --medium-blue: #0f49c6;
+    --border-color: #2e2e7d;
+    --error-color: #f60e0e;
+
+    /*
+        Custom application font settings & properties
+    */
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

@@ -1,0 +1,45 @@
+.loginForm {
+    max-width: 300px;
+    margin: 10rem auto;
+}
+
+.loginForm label {
+    margin-bottom: 5px;
+}
+
+.loginForm input[type="text"],
+.loginForm input[type="password"] {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.loginForm input[type="text"]:focus,
+.loginForm input[type="password"]:focus {
+    outline: none;
+    border-color: var(--light-blue);
+}
+
+.loginForm .error {
+    text-align: center;
+    color: var(--error-color);
+    margin: 0.5rem auto 1rem auto;
+}
+
+.loginForm button {
+    background-color: var(--light-blue);
+    border: var(--border-color) 0.1rem solid;
+    border-radius: 0.5rem;
+    display: flex;
+    width: 5rem;
+    height: 3rem;
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.loginForm button:hover {
+    background-color: var(--medium-blue);
+}

@@ -1,0 +1,1 @@
+export const BACKEND_JAVA_URL = "http://localhost:8080/api";
