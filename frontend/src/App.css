@@ -36,3 +36,20 @@
         transform: rotate(360deg);
     }
 }
+
+.borderedBox {
+    border: var(--border-color) solid 0.2rem;
+    border-radius: 0.7rem;
+    width: 40%;
+}
+
+.companies {
+    margin-left: 4rem;
+    left: 0;
+}
+
+.users {
+    margin-right: 4rem;
+    position: absolute;
+    right: 0;
+}

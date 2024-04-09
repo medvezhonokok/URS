@@ -1,11 +1,12 @@
 .topNavBar {
-    width: 100%;
-    top: 0;
+    position: fixed;
+    margin: 0 auto;
+    width: 90%;
+    border: var(--border-color) 0.2rem solid;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
 }
 
-.smallAvatar {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    overflow: hidden;
+.buttonNavBar {
+    margin: 0 4rem;
 }

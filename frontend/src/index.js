@@ -5,6 +5,7 @@ import App from './App';
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import Users from "./components/Users/Users";
 
 export function logout() {
     localStorage.removeItem('user');
@@ -50,11 +51,11 @@ const router = createBrowserRouter([
     //     name: 'Chat',
     //     element: <div><Chat user={getUserFromLocalStorage()}/></div>,
     // },
-    // {
-    //     path: '/users',
-    //     name: 'Users',
-    //     element: <div><Users user={getUserFromLocalStorage()}/></div>,
-    // },
+    {
+        path: '/users',
+        name: 'Users',
+        element: <div><Users user={getUser()}/></div>,
+    },
     // {
     //     path: "/news",
     //     name: "News",
