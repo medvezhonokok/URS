@@ -25,4 +25,8 @@ public class CompanyService {
     public List<Company> findAllNotInProcess() {
         return companyRepository.findAllNotInProcess();
     }
+
+    public void save(Company company) {
+        companyRepository.save(company);
+    }
 }

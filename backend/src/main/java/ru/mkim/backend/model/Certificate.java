@@ -17,6 +17,8 @@ public class Certificate {
     private long id;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 20)
     private CertificateType certificateType;
 
     @Nullable
