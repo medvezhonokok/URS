@@ -10,7 +10,7 @@ import Schedule from "./components/Schedule/Schedule";
 
 export function logout() {
     localStorage.removeItem('user');
-    window.location.reload();
+    window.location.href = "/";
 }
 
 export function getUser() {

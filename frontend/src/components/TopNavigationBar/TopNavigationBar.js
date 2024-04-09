@@ -10,7 +10,6 @@ const TopNavigationBar = ({user}) => {
             <Button onClick={() => index.logout()}>Log out</Button>
             <Button className="buttonNavBar" href={"/"}>Home</Button>
             <Button className="buttonNavBar" href={"users"}>All users</Button>
-            <Button className="buttonNavBar" href={"#"}>Companies</Button>
             <Button className="buttonNavBar" href={"schedule"}>Schedule</Button>
             <Button className="buttonNavBar" href={"#"}><b>{user.name}</b></Button>
         </div>

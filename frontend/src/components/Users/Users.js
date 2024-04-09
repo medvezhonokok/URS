@@ -20,6 +20,10 @@ const Users = ({user}) => {
                 ФИО: <p>{user.name}</p>
                 Номер телефона: <p>{user.phoneNumber}</p>
                 ROLE: <p>{user.role}</p>
+                Busy in companies:
+                {user.companyNames ? user.companyNames.map(
+                    name => <div>- {name}</div>
+                ) : null}
             </div>
         ));
 

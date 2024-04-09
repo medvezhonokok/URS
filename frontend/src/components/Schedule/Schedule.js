@@ -3,6 +3,7 @@ import axios from "axios";
 import * as constants from "../../constants/constants";
 import * as storage from "../../data/storage";
 import './Schedule.css';
+import TopNavigationBar from "../TopNavigationBar/TopNavigationBar";
 
 const Schedule = ({user}) => {
     const [users, setUsers] = useState([]);
@@ -11,6 +12,11 @@ const Schedule = ({user}) => {
     const [taskDeadline, setTaskDeadline] = useState('');
 
     const assignTaskToUser = () => {
+        if (!taskContent || !selectedUserId || !taskDeadline) {
+            alert("Заполните все поля");
+            return;
+        }
+
         const jwtToken = localStorage.getItem('jwtToken');
 
         axios.post(constants.BACKEND_JAVA_URL + '/task/add', {
@@ -18,15 +24,13 @@ const Schedule = ({user}) => {
             content: taskContent,
             userId: selectedUserId,
             deadline: taskDeadline.concat(":00")
-        })
-            .then((response) => {
-                alert(response.data);
-                window.location.reload();
-            })
-            .catch((err) => {
-                console.error("Failed to get users: " + err);
-                setUsers([]);
-            });
+        }).then((response) => {
+            alert(response.data);
+            window.location.reload();
+        }).catch((err) => {
+            console.error("Failed to get users: " + err);
+            setUsers([]);
+        });
     }
 
     useEffect(() => {
@@ -37,8 +41,9 @@ const Schedule = ({user}) => {
         );
     }, []);
 
-    return (user ? <>
-        {user.userRole === "CEO" && (<div>
+    const userCeoContent =
+        (<>
+            <TopNavigationBar user={user}/>
             <form>
                 <div>
                     <label htmlFor="userSelect">Выберите пользователя:</label>
@@ -52,7 +57,7 @@ const Schedule = ({user}) => {
                 <div>
                     <label htmlFor="taskContent">Что надо сделать:</label>
                     <textarea id="taskContent" value={taskContent}
-                              onChange={(e) => setTaskContent(e.target.value)}></textarea>
+                              onChange={(e) => setTaskContent(e.target.value)}/>
                 </div>
                 <div>
                     <label htmlFor="taskDeadline">Дата выполнения:</label>
@@ -61,7 +66,14 @@ const Schedule = ({user}) => {
                 </div>
                 <button type="button" onClick={assignTaskToUser}>Добавить задачу</button>
             </form>
-        </div>)}
-    </> : null);
+        </>);
+
+    const userDefaultWorkerContent =
+        (<>
+            <TopNavigationBar user={user}/>
+            sorry you are default worker
+        </>)
+
+    return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : null;
 };
 export default Schedule;

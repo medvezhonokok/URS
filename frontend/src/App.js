@@ -5,9 +5,11 @@ import * as index from "./index";
 import TopNavigationBar from "./components/TopNavigationBar/TopNavigationBar";
 import axios from "axios";
 import * as constants from "./constants/constants";
+import * as storage from "./data/storage";
 
 const App = () => {
     const [companies, setCompanies] = useState([]);
+    const [selectedCompanyId, setSelectedCompany] = useState(null);
     const user = index.getUser();
 
     const getAllCompanies = () => {
@@ -31,35 +33,81 @@ const App = () => {
             });
     };
 
+    const showCompanyInfoByCompanyId = (companyId) => {
+        setSelectedCompany(selectedCompanyId === companyId ? null : companyId);
+    };
+
     const getInProcessCompanies = companies
         .filter(company => company.inProcess)
         .map(company => (
-            <div key={company.id}>
-                Название: <p>{company.companyName}</p>
-                {company.certificate ?
-                    <>
-                        <p>Certificate type: {company.certificate.certificateType}</p>
-                        <p>Certificate number: {company.certificate.certificateNumber}</p>
-                    </>
-                    : <p>У компании нет сертификата</p>
-                }
-                About: <p>{company.about}</p>
+            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
+                <div>
+                    <h3>{company.companyName}</h3>
+                    {company.certificate ? (
+                        <>
+                            <p>Certificate type: {company.certificate.certificateType}</p>
+                            <p>Certificate number: {company.certificate.certificateNumber}</p>
+                        </>
+                    ) : (
+                        <p>У компании нет сертификата</p>
+                    )}
+                    {selectedCompanyId === company.id && (
+                        <div>
+                            <p>About: {company.about}</p>
+                        </div>
+                    )}
+                </div>
             </div>
         ));
 
     const getNotInProcessCompanies = companies
         .filter(company => !company.inProcess)
         .map(company => (
-            <div key={company.id}>
-                Название: <p>{company.companyName}</p>
-                {company.certificate ?
-                    <>
-                        <p>Certificate type: {company.certificate.certificateType}</p>
-                        <p>Certificate number: {company.certificate.certificateNumber}</p>
-                    </>
-                    : <p>У компании нет сертификата</p>
+            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
+                <div>
+                    <h3>{company.companyName}</h3>
+                    {company.certificate ? (
+                        <>
+                            <p>Certificate type: {company.certificate.certificateType}</p>
+                            <p>Certificate number: {company.certificate.certificateNumber}</p>
+                        </>
+                    ) : (
+                        <p>У компании нет сертификата</p>
+                    )}
+                    {selectedCompanyId === company.id && (
+                        <div>
+                            <p>About: {company.about}</p>
+                        </div>
+                    )}
+                </div>
+            </div>
+        ));
+
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        storage.getUsers().then(
+            usersJson => {
+                setUsers(usersJson)
+            }
+        );
+    }, []);
+
+    const mappedUsers = users
+        .map(user => (
+            <div className="userCard" key={user.id}>
+                ФИО: <p>{user.name}</p>
+                Номер телефона: <p>{user.phoneNumber}</p>
+                ROLE: <p>{user.role}</p>
+                {user.companyNames && user.companyNames.length?
+                    (<div>
+                        Busy in companies: {user.companyNames.map(name => <div>- {name}</div>)}
+                    </div>)
+                    :
+                    (<>
+                        nothing there
+                    </>)
                 }
-                About: <p>{company.about}</p>
             </div>
         ));
 
@@ -76,20 +124,12 @@ const App = () => {
                         <h3>COMPANIES</h3>
                         <h2>IN PROCESS</h2>
                         {getInProcessCompanies}
-                        =-=-=-=-=-=-=-=-=-=-=-=-=-=-=-==-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=
                         <h2>NOT IN PROCESS</h2>
                         {getNotInProcessCompanies}
                     </div>
                     <div className="borderedBox users">
                         <h3>USERS</h3>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci alias at atque blanditiis
-                        ducimus
-                        earum illo in laudantium minima, neque non, odio, odit pariatur possimus recusandae rerum
-                        saepe
-                        sed
-                        sint velit veniam? Error impedit minus quam. Ab, fugiat in laudantium pariatur rem
-                        repudiandae
-                        soluta! Error nihil odit possimus quibusdam voluptates!
+                        {mappedUsers}
                     </div>
                 </div>
             </div>
@@ -115,6 +155,6 @@ const App = () => {
         </div>;
 
     return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : <LoginForm/>;
-}
+};
 
 export default App;
