@@ -30,8 +30,5 @@ public class Company {
     @Nullable
     private String pathToReceiptOfPayment;
 
-    @Nullable
-    private File ReceiptOfPayment;
-
     private boolean inProcess;
 }

@@ -27,7 +27,7 @@ public class CompanyController {
     }
 
     @PostMapping("/all")
-    public ResponseEntity<List<Company>> getAllInProcess(@RequestParam(name = "jwt") String jwtToken) {
+    public ResponseEntity<List<Company>> getAllInProcess(@RequestParam String jwtToken) {
         if (StringUtil.isNotNullOrEmpty(jwtToken)) {
             User user = jwtService.findUserByJWT(jwtToken);
 
