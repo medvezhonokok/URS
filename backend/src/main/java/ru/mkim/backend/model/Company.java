@@ -1,5 +1,6 @@
 package ru.mkim.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
@@ -30,8 +31,8 @@ public class Company {
     @Nullable
     private String pathToReceiptOfPayment;
 
-    @OneToMany
-    @JoinColumn(name = "task_id")
+    @JsonManagedReference
+    @OneToMany(mappedBy = "company")
     private List<Task> tasks;
 
     private boolean inProcess;
