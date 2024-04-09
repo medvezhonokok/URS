@@ -36,8 +36,13 @@ const App = () => {
         .map(company => (
             <div key={company.id}>
                 Название: <p>{company.companyName}</p>
-                <p>Certificate type: {company.certificate.certificateType}</p>
-                <p>Certificate number: {company.certificate.certificateNumber}</p>
+                {company.certificate ?
+                    <>
+                        <p>Certificate type: {company.certificate.certificateType}</p>
+                        <p>Certificate number: {company.certificate.certificateNumber}</p>
+                    </>
+                    : <p>У компании нет сертификата</p>
+                }
                 About: <p>{company.about}</p>
             </div>
         ));
@@ -47,8 +52,13 @@ const App = () => {
         .map(company => (
             <div key={company.id}>
                 Название: <p>{company.companyName}</p>
-                <p>Certificate type: {company.certificate.certificateType}</p>
-                <p>Certificate number: {company.certificate.certificateNumber}</p>
+                {company.certificate ?
+                    <>
+                        <p>Certificate type: {company.certificate.certificateType}</p>
+                        <p>Certificate number: {company.certificate.certificateNumber}</p>
+                    </>
+                    : <p>У компании нет сертификата</p>
+                }
                 About: <p>{company.about}</p>
             </div>
         ));

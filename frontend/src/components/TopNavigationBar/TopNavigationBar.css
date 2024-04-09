@@ -1,5 +1,5 @@
 .topNavBar {
-    position: fixed;
+    text-align: center;
     margin: 0 auto;
     width: 90%;
     border: var(--border-color) 0.2rem solid;

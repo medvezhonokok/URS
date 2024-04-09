@@ -6,7 +6,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.annotation.Nullable;
-import java.io.File;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -29,6 +29,10 @@ public class Company {
 
     @Nullable
     private String pathToReceiptOfPayment;
+
+    @OneToMany
+    @JoinColumn(name = "task_id")
+    private List<Task> tasks;
 
     private boolean inProcess;
 }

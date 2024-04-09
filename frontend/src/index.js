@@ -6,6 +6,7 @@ import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import Users from "./components/Users/Users";
+import Schedule from "./components/Schedule/Schedule";
 
 export function logout() {
     localStorage.removeItem('user');
@@ -26,41 +27,16 @@ const router = createBrowserRouter([
         name: 'Home',
         element: <App/>,
     },
-    // {
-    //     path: '/orders',
-    //     name: 'Orders',
-    //     element: <div><Orders/></div>,
-    // },
-    // {
-    //     path: '/tasks',
-    //     name: 'Tasks',
-    //     element: <div><Tasks user={getUserFromLocalStorage()}/></div>,
-    // },
-    // {
-    //     path: '/schedule',
-    //     name: 'Schedule',
-    //     element: <div><Schedule user={getUserFromLocalStorage()}/></div>,
-    // },
-    // {
-    //     path: '/profile',
-    //     name: 'Profile',
-    //     element: <div><UserProfile user={getUserFromLocalStorage()}/></div>,
-    // },
-    // {
-    //     path: '/chat',
-    //     name: 'Chat',
-    //     element: <div><Chat user={getUserFromLocalStorage()}/></div>,
-    // },
     {
         path: '/users',
         name: 'Users',
         element: <div><Users user={getUser()}/></div>,
     },
-    // {
-    //     path: "/news",
-    //     name: "News",
-    //     element: <div><News user={getUserFromLocalStorage()}/></div>
-    // }
+    {
+        path: '/schedule',
+        name: 'Schedule',
+        element: <div><Schedule user={getUser()}/></div>,
+    },
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));

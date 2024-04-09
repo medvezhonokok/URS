@@ -1,5 +1,7 @@
 package ru.mkim.backend.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,7 @@ import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;
+import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -49,7 +52,11 @@ public class UserController {
     }
 
     @GetMapping("/all")
-    public List<User> findAll() {
-        return userService.findAll();
+    public ResponseEntity<List<User>> findAll(@RequestParam String jwt) {
+        if (StringUtil.isNotNullOrEmpty(jwt)) {
+            return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
