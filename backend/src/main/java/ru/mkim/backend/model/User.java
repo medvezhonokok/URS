@@ -35,5 +35,8 @@ public class User {
     @Size(max = 250)
     private String about;
 
-//    private Role role;
+    @Enumerated(EnumType.STRING)
+    private UserRole userRole;
+
+    private boolean inProcess;
 }

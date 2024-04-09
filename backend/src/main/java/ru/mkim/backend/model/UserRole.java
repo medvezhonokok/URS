@@ -1,5 +1,5 @@
 package ru.mkim.backend.model;
 
-public enum Role {
+public enum UserRole {
     CEO, WORKER
 }
