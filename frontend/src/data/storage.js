@@ -14,7 +14,7 @@ export const getCompanies = async () => {
             companyName: company.companyName,
         }));
     } catch (err) {
-        console.error("Failed to get users: " + err);
+        console.error("Failed to get companies: " + err);
         return [];
     }
 }
