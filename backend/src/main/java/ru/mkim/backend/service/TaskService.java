@@ -4,6 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.mkim.backend.model.Task;
 import ru.mkim.backend.repository.TaskRepository;
 
+import java.util.List;
+
 @Service
 public class TaskService {
     private final TaskRepository taskRepository;
@@ -20,7 +22,15 @@ public class TaskService {
         return taskRepository.findById(taskId).orElse(null);
     }
 
-    public void update(Task task) {
-        taskRepository.update(task.getId(), task.getUser().getId(), task.getStatus());
+    public void updateUserAndStatusById(Long taskId, long userId, String taskStatus) {
+        taskRepository.updateUserAndStatusById(taskId, userId, taskStatus);
+    }
+
+    public List<Task> findAllByUserId(Long userId) {
+        return taskRepository.findAllByUserId(userId);
+    }
+
+    public void updateTaskStatusByTaskId(Long taskId, String status) {
+        taskRepository.updateStatusById(taskId, status);
     }
 }

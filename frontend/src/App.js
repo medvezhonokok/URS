@@ -3,35 +3,12 @@ import './App.css';
 import LoginForm from "./components/LoginForm/LoginForm";
 import * as index from "./index";
 import TopNavigationBar from "./components/TopNavigationBar/TopNavigationBar";
-import axios from "axios";
-import * as constants from "./constants/constants";
 import * as storage from "./data/storage";
 
 const App = () => {
     const [companies, setCompanies] = useState([]);
     const [selectedCompanyId, setSelectedCompany] = useState(null);
     const user = index.getUser();
-
-    const getAllCompanies = () => {
-        const jwtToken = localStorage.getItem('jwtToken');
-        axios.post(constants.BACKEND_JAVA_URL + '/company/all?jwtToken=' + jwtToken)
-            .then((response) => {
-                const mappedCompanies = response.data.map(company => ({
-                    id: company.id,
-                    certificate: company.certificate,
-                    about: company.about,
-                    companyName: company.companyName,
-                    pathToReceiptOfPayment: company.pathToReceiptOfPayment,
-                    inProcess: company.inProcess
-                }));
-
-                setCompanies(mappedCompanies);
-            })
-            .catch((err) => {
-                console.error("Failed to get companies: " + err);
-                setCompanies([]);
-            });
-    };
 
     const showCompanyInfoByCompanyId = (companyId) => {
         setSelectedCompany(selectedCompanyId === companyId ? null : companyId);
@@ -85,21 +62,13 @@ const App = () => {
 
     const [users, setUsers] = useState([]);
 
-    useEffect(() => {
-        storage.getUsers().then(
-            usersJson => {
-                setUsers(usersJson)
-            }
-        );
-    }, []);
-
     const mappedUsers = users
         .map(user => (
             <div className="userCard" key={user.id}>
                 ФИО: <p>{user.name}</p>
                 Номер телефона: <p>{user.phoneNumber}</p>
                 ROLE: <p>{user.role}</p>
-                {user.companyNames && user.companyNames.length?
+                {user.companyNames && user.companyNames.length ?
                     (<div>
                         Busy in companies: {user.companyNames.map(name => <div>- {name}</div>)}
                     </div>)
@@ -110,10 +79,6 @@ const App = () => {
                 }
             </div>
         ));
-
-    useEffect(() => {
-        getAllCompanies();
-    }, []);
 
     const userCeoContent =
         <div className="App">
@@ -153,6 +118,22 @@ const App = () => {
                 </div>
             </div>
         </div>;
+
+    useEffect(() => {
+        storage.getCompanies().then(
+            companiesJson => {
+                setCompanies(companiesJson)
+            }
+        );
+    }, []);
+
+    useEffect(() => {
+        storage.getUsers().then(
+            usersJson => {
+                setUsers(usersJson)
+            }
+        );
+    }, []);
 
     return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : <LoginForm/>;
 };

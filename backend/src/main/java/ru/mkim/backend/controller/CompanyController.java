@@ -3,10 +3,7 @@ package ru.mkim.backend.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.model.Company;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.CompanyService;
@@ -27,13 +24,31 @@ public class CompanyController {
     }
 
     @PostMapping("/all")
-    public ResponseEntity<List<Company>> getAllInProcess(@RequestParam String jwtToken) {
-        if (StringUtil.isNotNullOrEmpty(jwtToken)) {
-            User user = jwtService.findUserByJWT(jwtToken);
+    public ResponseEntity<List<Company>> getAllInProcess(@RequestParam String jwt) {
+        if (StringUtil.isNotNullOrEmpty(jwt)) {
+            User user = jwtService.findUserByJWT(jwt);
 
             if (user != null) {
                 return new ResponseEntity<>(companyService.findAll(), HttpStatusCode.valueOf(200));
             }
+        }
+
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+    }
+
+    @PostMapping("/get_by_id")
+    public ResponseEntity<Company> getCompanyByCompanyId(@RequestParam String companyIdString, @RequestParam String jwt) {
+        try {
+            Long companyId = Long.parseLong(companyIdString);
+            if (StringUtil.isNotNullOrEmpty(jwt)) {
+                User user = jwtService.findUserByJWT(jwt);
+
+                if (user != null) {
+                    return new ResponseEntity<>(companyService.findById(companyId), HttpStatusCode.valueOf(200));
+                }
+            }
+        } catch (Exception ignored) {
+            // No operations.
         }
 
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);

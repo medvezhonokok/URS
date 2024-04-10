@@ -23,16 +23,19 @@ public class Task {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    @JsonIgnore
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
+    @JsonIgnore
     private Company company;
 
     @CreationTimestamp
     private LocalDateTime deadline;
 
-    @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+    private String status;
+
+    private String inputUrl;
+
+    private String outputUrl;
 }

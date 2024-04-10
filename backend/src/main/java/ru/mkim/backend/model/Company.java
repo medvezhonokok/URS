@@ -33,7 +33,6 @@ public class Company {
     private String pathToReceiptOfPayment;
 
     @JsonManagedReference
-    @JsonIgnore
     @OneToMany(mappedBy = "company")
     private List<Task> tasks;
 

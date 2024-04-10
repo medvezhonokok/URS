@@ -1,77 +1,84 @@
 import React, {useEffect, useState} from 'react';
-import axios from "axios";
-import * as constants from "../../constants/constants";
 import * as storage from "../../data/storage";
 import './Schedule.css';
 import TopNavigationBar from "../TopNavigationBar/TopNavigationBar";
+import {Link} from "react-router-dom";
+import {Button} from "react-bootstrap";
+import axios from "axios";
+import * as constants from "../../constants/constants";
 
 const Schedule = ({user}) => {
-    const [users, setUsers] = useState([]);
-    const [selectedUserId, setSelectedUserId] = useState('');
-    const [taskContent, setTaskContent] = useState('');
-    const [taskDeadline, setTaskDeadline] = useState('');
-
-    const assignTaskToUser = () => {
-        if (!taskContent || !selectedUserId || !taskDeadline) {
-            alert("Заполните все поля");
-            return;
-        }
-
-        const jwtToken = localStorage.getItem('jwtToken');
-
-        axios.post(constants.BACKEND_JAVA_URL + '/task/add', {
-            jwt: jwtToken,
-            content: taskContent,
-            userId: selectedUserId,
-            deadline: taskDeadline.concat(":00")
-        }).then((response) => {
-            alert(response.data);
-            window.location.reload();
-        }).catch((err) => {
-            console.error("Failed to get users: " + err);
-            setUsers([]);
-        });
-    }
+    const [companies, setCompanies] = useState([]);
+    const [userTasks, setUserTasks] = useState([]);
 
     useEffect(() => {
-        storage.getUsers().then(
-            usersJson => {
-                setUsers(usersJson)
+        storage.getCompanies().then(
+            companiesJson => {
+                setCompanies(companiesJson)
             }
         );
     }, []);
 
+    useEffect(() => {
+        storage.getTasksByUserId().then(
+            userTasksJson => {
+                setUserTasks(userTasksJson)
+            }
+        );
+    }, []);
+
+    const mappedCompanies = companies.map(
+        company => (
+            <div className="companyCard" key={company.id}>
+                Название: <p>{company.companyName}</p>
+                О компании: <p>{company.about}</p>
+                <Link to={`/company/${company.id}`}>
+                    <button>Подробнее</button>
+                </Link>
+            </div>
+        ));
+
     const userCeoContent =
         (<>
             <TopNavigationBar user={user}/>
-            <form>
-                <div>
-                    <label htmlFor="userSelect">Выберите пользователя:</label>
-                    <select id="userSelect" onChange={(e) => setSelectedUserId(e.target.value)}>
-                        <option value="">Выберите пользователя</option>
-                        {users.map(user => (
-                            <option key={user.id} value={user.id}>{user.name}</option>
-                        ))}
-                    </select>
-                </div>
-                <div>
-                    <label htmlFor="taskContent">Что надо сделать:</label>
-                    <textarea id="taskContent" value={taskContent}
-                              onChange={(e) => setTaskContent(e.target.value)}/>
-                </div>
-                <div>
-                    <label htmlFor="taskDeadline">Дата выполнения:</label>
-                    <input type="datetime-local" id="taskDeadline" value={taskDeadline}
-                           onChange={(e) => setTaskDeadline(e.target.value)}/>
-                </div>
-                <button type="button" onClick={assignTaskToUser}>Добавить задачу</button>
-            </form>
+            {mappedCompanies}
         </>);
+
+    const markTaskAsDone = async (taskId) => {
+        try {
+            const jwtToken = localStorage.getItem('jwtToken');
+
+            await axios.post(constants.BACKEND_JAVA_URL + '/task/mark_as_done', {
+                jwt: jwtToken,
+                taskId: taskId
+            });
+
+            alert("Молодец! Выполнил");
+            window.location.reload();
+        } catch (err) {
+            alert("Error while completing task: " + err)
+        }
+    }
 
     const userDefaultWorkerContent =
         (<>
             <TopNavigationBar user={user}/>
-            sorry you are default worker
+            {userTasks.map(
+                task => (
+                    <div className="centeredContent borderedBox">
+                        <p>{task.content}</p>
+                        <p>{task.status}</p>
+                        <div>
+                            <a href={task.inputUrl}>сюда</a>
+                        </div>
+                        <div>
+                            <a href={task.outputUrl}>отсюда</a>
+                        </div>
+
+                        {task.status === "IN_PROCESS" &&
+                            <Button onClick={() => markTaskAsDone(task.id)}>Пометить как выполненное</Button>}
+                    </div>
+                ))}
         </>)
 
     return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : null;

@@ -33,4 +33,8 @@ public class CompanyService {
     public Company getById(long id) {
         return companyRepository.findById(id).orElse(null);
     }
+
+    public Company findById(Long companyId) {
+        return companyRepository.findById(companyId).orElse(null);
+    }
 }

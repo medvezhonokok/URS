@@ -7,6 +7,7 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import Users from "./components/Users/Users";
 import Schedule from "./components/Schedule/Schedule";
+import CompanyPage from "./components/CompanyPage/CompanyPage";
 
 export function logout() {
     localStorage.removeItem('user');
@@ -36,6 +37,11 @@ const router = createBrowserRouter([
         path: '/schedule',
         name: 'Schedule',
         element: <div><Schedule user={getUser()}/></div>,
+    },
+    {
+        path: '/company/:companyId',
+        name: 'Company',
+        element: <div><CompanyPage/></div>,
     },
 ]);
 
