@@ -4,6 +4,7 @@ import LoginForm from "./components/LoginForm/LoginForm";
 import * as index from "./index";
 import TopNavigationBar from "./components/TopNavigationBar/TopNavigationBar";
 import * as storage from "./data/storage";
+import AbstractBox from "./components/AbstractBox/AbstractBox";
 
 const App = () => {
     const [companies, setCompanies] = useState([]);
@@ -17,46 +18,46 @@ const App = () => {
     const getInProcessCompanies = companies
         .filter(company => company.inProcess)
         .map(company => (
-            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
-                <div>
-                    <h3>{company.companyName}</h3>
-                    {company.certificate ? (
+            <div key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
+                <AbstractBox
+                    header={<h3>{company.companyName}</h3>}
+                    body={
                         <>
-                            <p>Certificate type: {company.certificate.certificateType}</p>
-                            <p>Certificate number: {company.certificate.certificateNumber}</p>
+                            {company.certificate ? (
+                                <>
+                                    <p>Certificate type: {company.certificate.certificateType}</p>
+                                    <p>Certificate number: {company.certificate.certificateNumber}</p>
+                                </>
+                            ) : (
+                                <p>У компании нет сертификата</p>
+                            )}
                         </>
-                    ) : (
-                        <p>У компании нет сертификата</p>
-                    )}
-                    {selectedCompanyId === company.id && (
-                        <div>
-                            <p>About: {company.about}</p>
-                        </div>
-                    )}
-                </div>
+                    }
+                    footer={selectedCompanyId === company.id && <p>About: {company.about}</p>}
+                />
             </div>
         ));
 
     const getNotInProcessCompanies = companies
         .filter(company => !company.inProcess)
         .map(company => (
-            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
-                <div>
-                    <h3>{company.companyName}</h3>
-                    {company.certificate ? (
+            <div key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
+                <AbstractBox
+                    header={<h3>{company.companyName}</h3>}
+                    body={
                         <>
-                            <p>Certificate type: {company.certificate.certificateType}</p>
-                            <p>Certificate number: {company.certificate.certificateNumber}</p>
+                            {company.certificate ? (
+                                <>
+                                    <p>Certificate type: {company.certificate.certificateType}</p>
+                                    <p>Certificate number: {company.certificate.certificateNumber}</p>
+                                </>
+                            ) : (
+                                <p>У компании нет сертификата</p>
+                            )}
                         </>
-                    ) : (
-                        <p>У компании нет сертификата</p>
-                    )}
-                    {selectedCompanyId === company.id && (
-                        <div>
-                            <p>About: {company.about}</p>
-                        </div>
-                    )}
-                </div>
+                    }
+                    footer={selectedCompanyId === company.id && <p>About: {company.about}</p>}
+                />
             </div>
         ));
 
@@ -64,20 +65,25 @@ const App = () => {
 
     const mappedUsers = users
         .map(user => (
-            <div className="userCard" key={user.id}>
-                ФИО: <p>{user.name}</p>
-                Номер телефона: <p>{user.phoneNumber}</p>
-                ROLE: <p>{user.role}</p>
-                {user.companyNames && user.companyNames.length ?
-                    (<div>
-                        Busy in companies: {user.companyNames.map(name => <div>- {name}</div>)}
-                    </div>)
-                    :
-                    (<>
-                        nothing there
-                    </>)
+            <AbstractBox
+                key={user.id}
+                header={<p> ФИО: {user.name} </p>}
+                body={
+                    <>
+                        <p> Номер телефона: {user.phoneNumber}</p>
+                        <p> ROLE: {user.role}</p>
+                        {user.companyNames && user.companyNames.length ?
+                            (<div>
+                                Busy in companies: {user.companyNames.map(name => <div>- {name}</div>)}
+                            </div>)
+                            :
+                            (<>
+                                nothing there
+                            </>)
+                        }
+                    </>
                 }
-            </div>
+            />
         ));
 
     const userCeoContent =
