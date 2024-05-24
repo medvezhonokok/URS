@@ -6,6 +6,7 @@ import * as index from "../../index";
 
 const SideBarMenu = ({ user, children }) => {
     return (
+        <div>
         <div className="sidebar-container">
             <Sidebar>
                 <Menu>
@@ -20,9 +21,10 @@ const SideBarMenu = ({ user, children }) => {
                     </SubMenu>
                 </Menu>
             </Sidebar>
-            <div className="content-container">
-                {children}
-            </div>
+        </div>
+        <div className="content-container">
+        {children}
+        </div>
         </div>
     );
 };

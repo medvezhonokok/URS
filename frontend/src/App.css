@@ -43,8 +43,12 @@
     border-radius: 0.7rem;
     width: 40%;
 }
-.userCard {
-    position: relative;
+.userCard, .content-container{
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    bottom: 25px;
+    left: 275px
 }
 
 .companies {
@@ -75,6 +79,7 @@
 .companyBox {
     width: 50%;
     margin: 2rem auto;
+    text-align: center;
     background: var(--default-medium-background-color);
     border: var(--border-color) solid 0.2rem;
     border-radius: 0.7rem;

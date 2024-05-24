@@ -1,13 +1,14 @@
 .sidebar-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     text-align: center;
     position: fixed;
+    /* height: max-content; */
 }
 
 
 .content-container {
-    flex: 1;
-    /* margin: 2rem auto; */
+    
 }
 

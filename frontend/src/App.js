@@ -25,6 +25,7 @@ const App = () => {
     const getInProcessCompanies = companies
         .filter(company => company.inProcess)
         .map(company => (
+
             <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
                 <div>
                     <h3>{company.companyName}</h3>
