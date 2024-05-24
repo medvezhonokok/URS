@@ -1,0 +1,10 @@
+.sidebar-container {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
+
+
+.content-container {
+    flex: 1;
+}

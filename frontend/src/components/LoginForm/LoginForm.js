@@ -52,8 +52,7 @@ const LoginForm = () => {
                 authenticateUserByJIT(response.data);
             })
             .catch((err) => {
-                console.error('Authentication failed:', err);
-                setErrors({authentication: 'Invalid login or password'});
+                setErrors({authentication: err.response.data});
             });
     };
 

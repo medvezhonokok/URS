@@ -1,13 +1,13 @@
 import React, {useEffect, useState} from 'react';
-import * as storage from "../../data/storage";
-import './Schedule.css';
-import TopNavigationBar from "../TopNavigationBar/TopNavigationBar";
+import * as storage from "../../../data/storage";
+import './SchedulePage.css';
 import {Link} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import axios from "axios";
-import * as constants from "../../constants/constants";
+import * as constants from "../../../constants/constants";
+import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 
-const Schedule = ({user}) => {
+const SchedulePage = ({user}) => {
     const [companies, setCompanies] = useState([]);
     const [userTasks, setUserTasks] = useState([]);
 
@@ -29,7 +29,7 @@ const Schedule = ({user}) => {
 
     const mappedCompanies = companies.map(
         company => (
-            <div className="companyCard" key={company.id}>
+            <div className="companyBox" key={company.id}>
                 Название: <p>{company.companyName}</p>
                 О компании: <p>{company.about}</p>
                 <Link to={`/company/${company.id}`}>
@@ -40,8 +40,9 @@ const Schedule = ({user}) => {
 
     const userCeoContent =
         (<>
-            <TopNavigationBar user={user}/>
-            {mappedCompanies}
+            <SideBarMenu user={user} children={
+                mappedCompanies}/>
+
         </>);
 
     const markTaskAsDone = async (taskId) => {
@@ -62,25 +63,25 @@ const Schedule = ({user}) => {
 
     const userDefaultWorkerContent =
         (<>
-            <TopNavigationBar user={user}/>
-            {userTasks.map(
-                task => (
-                    <div className="centeredContent borderedBox">
-                        <p>{task.content}</p>
-                        <p>{task.status}</p>
-                        <div>
-                            <a href={task.inputUrl}>сюда</a>
-                        </div>
-                        <div>
-                            <a href={task.outputUrl}>отсюда</a>
-                        </div>
+            <SideBarMenu user={user} children={
+                userTasks.map(
+                    task => (
+                        <div className="centeredContent borderedBox">
+                            <p>{task.content}</p>
+                            <p>{task.status}</p>
+                            <div>
+                                <a href={task.inputUrl}>сюда</a>
+                            </div>
+                            <div>
+                                <a href={task.outputUrl}>отсюда</a>
+                            </div>
 
-                        {task.status === "IN_PROCESS" &&
-                            <Button onClick={() => markTaskAsDone(task.id)}>Пометить как выполненное</Button>}
-                    </div>
-                ))}
+                            {task.status === "IN_PROCESS" &&
+                                <Button onClick={() => markTaskAsDone(task.id)}>Пометить как выполненное</Button>}
+                        </div>
+                    ))}/>
         </>)
 
     return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : null;
 };
-export default Schedule;
+export default SchedulePage;

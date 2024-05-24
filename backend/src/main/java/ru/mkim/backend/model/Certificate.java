@@ -18,7 +18,7 @@ public class Certificate {
 
     @NonNull
     @Enumerated(EnumType.STRING)
-    @Column(length = 20)
+    @Column(length = 40)
     private CertificateType certificateType;
 
     @Nullable

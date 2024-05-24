@@ -5,9 +5,10 @@ import App from './App';
 import {createBrowserRouter, RouterProvider,} from "react-router-dom";
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import Users from "./components/Users/Users";
-import Schedule from "./components/Schedule/Schedule";
-import CompanyPage from "./components/CompanyPage/CompanyPage";
+import UsersPage from "./components/page/UsersPage/UsersPage";
+import SchedulePage from "./components/page/SchedulePage/SchedulePage";
+import CompanyPage from "./components/page/CompanyPage/CompanyPage";
+import CompaniesPage from "./components/page/CompaniesPage/CompaniesPage";
 
 export function logout() {
     localStorage.removeItem('user');
@@ -30,17 +31,22 @@ const router = createBrowserRouter([
     },
     {
         path: '/users',
-        name: 'Users',
-        element: <div><Users user={getUser()}/></div>,
+        name: 'UsersPage',
+        element: <div><UsersPage user={getUser()}/></div>,
     },
     {
         path: '/schedule',
-        name: 'Schedule',
-        element: <div><Schedule user={getUser()}/></div>,
+        name: 'SchedulePage',
+        element: <div><SchedulePage user={getUser()}/></div>,
+    },
+    {
+        path: '/companies',
+        name: 'CompaniesPage',
+        element: <div><CompaniesPage user={getUser()}/></div>,
     },
     {
         path: '/company/:companyId',
-        name: 'Company',
+        name: 'CompanyPage',
         element: <div><CompanyPage/></div>,
     },
 ]);

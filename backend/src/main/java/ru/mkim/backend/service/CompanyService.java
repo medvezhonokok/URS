@@ -18,14 +18,6 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public List<Company> findAllInProcess() {
-        return companyRepository.findAllInProcess();
-    }
-
-    public List<Company> findAllNotInProcess() {
-        return companyRepository.findAllNotInProcess();
-    }
-
     public void save(Company company) {
         companyRepository.save(company);
     }

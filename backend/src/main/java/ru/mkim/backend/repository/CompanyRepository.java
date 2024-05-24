@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = "SELECT * FROM company WHERE in_process=1", nativeQuery = true)
-    public List<Company> findAllInProcess();
+    List<Company> findAllInProcess();
 
     @Query(value = "SELECT * FROM company WHERE in_process=0", nativeQuery = true)
-    public List<Company> findAllNotInProcess();
+    List<Company> findAllNotInProcess();
 }

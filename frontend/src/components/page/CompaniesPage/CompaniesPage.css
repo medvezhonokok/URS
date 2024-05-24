@@ -1,0 +1,17 @@
+.companiesPageHeader {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.companiesHeader {
+    font-size: 3rem;
+    flex-grow: 1;
+    text-align: center;
+    text-decoration: underline;
+}
+
+.companiesAddNewCompanyButton {
+    margin-left: auto;
+    margin-right: 3rem;
+}

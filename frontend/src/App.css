@@ -71,7 +71,7 @@
 
 .companyBox {
     width: 50%;
-    margin: 0 auto 2rem auto;
+    margin: 2rem auto;
     background: var(--default-medium-background-color);
     border: var(--border-color) solid 0.2rem;
     border-radius: 0.7rem;
