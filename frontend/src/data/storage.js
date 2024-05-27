@@ -1,9 +1,32 @@
 import axios from "axios";
 import * as constants from "../constants/constants";
 
-export const getCompanies = async () => {
-    const jwtToken = localStorage.getItem('jwtToken');
+const jwtToken = localStorage.getItem('jwtToken');
 
+export const getCompanyById = async (companyId) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`)
+        .then(response => {
+            return response.data;
+        }).catch(err => {
+            console.log("Failed to get company: " + err)
+        });
+}
+
+export const addNewCompany = (newCompanyJson) => {
+    console.log("FROM storage: " + newCompanyJson);
+    axios.post(constants.BACKEND_JAVA_URL + '/company/add', {newCompanyJson}, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((response) => {
+        console.log(response);
+        return response.data;
+    }).catch((err) => {
+        console.log("Failed to add company: " + err);
+    })
+}
+
+export const getCompanies = async () => {
     try {
         const response = await axios.post(constants.BACKEND_JAVA_URL + '/company/all?jwt=' + jwtToken);
         return response.data.map(company => ({
@@ -20,8 +43,6 @@ export const getCompanies = async () => {
 }
 
 export const getTasksByUserId = async () => {
-    const jwtToken = localStorage.getItem('jwtToken');
-
     try {
         const response = await axios.post(constants.BACKEND_JAVA_URL + '/task/all_by_user_id', {
             jwt: jwtToken
@@ -40,8 +61,6 @@ export const getTasksByUserId = async () => {
 }
 
 export const getUsers = async () => {
-    const jwtToken = localStorage.getItem('jwtToken');
-
     function getUserCompanyNamesByTask(userTasks) {
         return userTasks.map(
             userTask => (

@@ -15,3 +15,13 @@
     margin-left: auto;
     margin-right: 3rem;
 }
+
+.modalFooter {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.companiesButton {
+    margin-right: 1rem;
+    height: 2rem;
+}

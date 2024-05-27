@@ -1,10 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import * as constants from "../../../constants/constants";
 import * as index from "../../../index";
-import axios from "axios";
 import './CompanyPage.css';
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
+import {getCompanyById} from "../../../data/storage";
 
 const CompanyPage = () => {
     const user = index.getUser();
@@ -15,12 +14,7 @@ const CompanyPage = () => {
 
     useEffect(() => {
         if (user && companyId && jwtToken) {
-            axios.post(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyIdString=${companyId}&jwt=${jwtToken}`)
-                .then(response => {
-                    setCompany(response.data)
-                }).catch(err => {
-                console.log("Failed to get company: " + err)
-            });
+            setCompany(getCompanyById(companyId));
         }
     }, [user, companyId, jwtToken]);
 

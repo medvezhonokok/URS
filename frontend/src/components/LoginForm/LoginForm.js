@@ -21,7 +21,7 @@ const LoginForm = () => {
         }
     };
 
-    const authenticateUserByJIT = (jwtToken) => {
+    const authenticateUserByJWT = (jwtToken) => {
         localStorage.setItem('jwtToken', jwtToken);
 
         try {
@@ -43,13 +43,12 @@ const LoginForm = () => {
     const submitLoginForm = (e) => {
         e.preventDefault();
 
-        axios
-            .post(constants.BACKEND_JAVA_URL + '/1/jwt', {
+        axios.post(constants.BACKEND_JAVA_URL + '/1/jwt', {
                 login,
                 password,
             })
             .then((response) => {
-                authenticateUserByJIT(response.data);
+                authenticateUserByJWT(response.data);
             })
             .catch((err) => {
                 setErrors({authentication: err.response.data});
