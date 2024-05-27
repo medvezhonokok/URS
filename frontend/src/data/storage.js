@@ -13,8 +13,7 @@ export const getCompanyById = async (companyId) => {
 }
 
 export const addNewCompany = (newCompanyJson) => {
-    console.log("FROM storage: " + newCompanyJson);
-    axios.post(constants.BACKEND_JAVA_URL + '/company/add', {newCompanyJson}, {
+    axios.post(constants.BACKEND_JAVA_URL + '/company/add', newCompanyJson, {
         headers: {
             'Content-Type': 'application/json'
         }

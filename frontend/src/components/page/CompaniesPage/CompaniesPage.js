@@ -29,33 +29,33 @@ const style = {
 };
 
 const formFields = [
-    {label: "Название организации"},
-    {label: "Фактический адрес организации"},
-    {label: "Postal/Zip Code"},
-    {label: "Country/State"},
-    {label: "ФИО руководителя (без сокращений)"},
-    {label: "Телефон"},
-    {label: "E-mail"},
-    {label: "Web site"},
-    {label: "Контактное лицо"},
-    {label: "E-mail"},
-    {label: "ИНН"},
-    {label: "ОКВЭД"},
-    {label: "Критерий аудита: (Например ISO9001:2015)"}, // TODO....
-    {label: "Запрашиваемая аккредитация (UKAS, NABCB, ANAB, Accredia)"},
-    {label: "Тип продукции"},
-    {label: "Общее количество сотрудников (включая временных сотрудников и совместителей)"},
-    {label: "Укажите количество смен"},
-    {label: "Сколько часов длится полный рабочий день?"},
-    {label: "Primary Language"},
-    {label: "Currency Used"}
+    {label: "Название организации", name: "companyName"},
+    {label: "Фактический адрес организации", name: "companyAddress"},
+    {label: "Postal/Zip Code", name: "postalOrZipCode"},
+    {label: "Country/State", name: "countryOrState"},
+    {label: "ФИО руководителя (без сокращений)", name: "companyCeoName"},
+    {label: "Телефон", name: "headPhoneNumber"},
+    {label: "E-mail", name: "headEmail"},
+    {label: "Web site", name: "webSite"},
+    {label: "Контактное лицо", name: "contactPersonName"},
+    {label: "E-mail", name: "contactPersonEmail"},
+    {label: "ИНН", name: "tin"},
+    {label: "ОКВЭД", name: "okved"},
+    {label: "Критерий аудита: (Например ISO9001:2015)", name: "requestedAccreditation"},
+    {label: "Запрашиваемая аккредитация (UKAS, NABCB, ANAB, Accredia)", name: "requestedAccreditation"},
+    {label: "Тип продукции", name: "productType"},
+    {label: "Общее количество сотрудников (включая временных сотрудников и совместителей)", name: "totalWorkerCount"},
+    {label: "Укажите количество смен", name: "organizationShiftNumber"},
+    {label: "Сколько часов длится полный рабочий день?", name: "workingDayDurationHours"},
+    {label: "Primary Language", name: "primaryLanguage"},
+    {label: "Currency Used", name: "currencyUsed"}
 ];
 
 const CompaniesPage = ({user}) => {
     const [companies, setCompanies] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [formData, setFormData] = useState({});
 
     const handleOpen = () => setOpen(true);
@@ -78,15 +78,16 @@ const CompaniesPage = ({user}) => {
         setPage(0);
     };
 
-    const handleChange = (event, label) => {
+    const handleChange = (event, name) => {
         setFormData({
             ...formData,
-            [label]: event.target.value,
+            [name]: event.target.value,
         });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(JSON.stringify(formData));
         addNewCompany(JSON.stringify(formData));
         handleClose();
     };
@@ -117,7 +118,7 @@ const CompaniesPage = ({user}) => {
                                                     label={field.label}
                                                     variant="outlined"
                                                     required={true}
-                                                    onChange={(e) => handleChange(e, field.label)}
+                                                    onChange={(e) => handleChange(e, field.name)}
                                                 />
                                             </Grid>
                                         ))}
@@ -157,8 +158,8 @@ const CompaniesPage = ({user}) => {
                                                 {company.companyName}
                                             </a>
                                         </TableCell>
-                                        <TableCell>{company.certificate.certificateNumber}</TableCell>
-                                        <TableCell>{company.certificate.certificateType}</TableCell>
+                                        <TableCell>{company.certificate && company.certificate.certificateNumber}</TableCell>
+                                        <TableCell>{company.certificate && company.certificate.certificateType}</TableCell>
                                         <TableCell>{company.about}</TableCell>
                                         <TableCell>{company.inProcess === true ? "in process" : "not in process"}</TableCell>
                                     </TableRow>

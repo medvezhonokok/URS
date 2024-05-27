@@ -3,7 +3,6 @@ package ru.mkim.backend.service;
 import org.springframework.stereotype.Service;
 import ru.mkim.backend.form.CompanyCredentials;
 import ru.mkim.backend.model.Company;
-import ru.mkim.backend.model.User;
 import ru.mkim.backend.repository.CompanyRepository;
 
 import java.util.List;
