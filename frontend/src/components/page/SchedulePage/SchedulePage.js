@@ -1,87 +1,112 @@
 import React, {useEffect, useState} from 'react';
-import * as storage from "../../../data/storage";
-import './SchedulePage.css';
-import {Link} from "react-router-dom";
-import {Button} from "react-bootstrap";
-import axios from "axios";
-import * as constants from "../../../constants/constants";
+import Paper from '@mui/material/Paper';
+import {EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
+import {
+    Appointments,
+    AppointmentTooltip,
+    DateNavigator,
+    DragDropProvider,
+    Scheduler,
+    TodayButton,
+    Toolbar,
+    WeekView,
+} from '@devexpress/dx-react-scheduler-material-ui';
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
+import {appointments} from '../../../data/appointments';
+import './SchedulePage.css';
 
 const SchedulePage = ({user}) => {
-    const [companies, setCompanies] = useState([]);
-    const [userTasks, setUserTasks] = useState([]);
+    const [data, setData] = useState(appointments);
+    const [currentDate, setCurrentDate] = useState('2024-05-25');
+    const [isShiftPressed, setIsShiftPressed] = useState(false);
 
     useEffect(() => {
-        storage.getCompanies().then(
-            companiesJson => {
-                setCompanies(companiesJson)
+        const handleKeyDown = (event) => {
+            if (event.keyCode === 16) {
+                setIsShiftPressed(true);
             }
-        );
+        };
+
+        const handleKeyUp = (event) => {
+            if (event.keyCode === 16) {
+                setIsShiftPressed(false);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keyup', handleKeyUp);
+
+        return () => {
+            window.removeEventListener('keydown', handleKeyDown);
+            window.removeEventListener('keyup', handleKeyUp);
+        };
     }, []);
 
-    useEffect(() => {
-        storage.getTasksByUserId().then(
-            userTasksJson => {
-                setUserTasks(userTasksJson)
+    const commitChanges = ({added, changed, deleted}) => {
+        setData((prevData) => {
+            let newData = prevData;
+            if (added) {
+                const startingAddedId = newData.length > 0 ? newData[newData.length - 1].id + 1 : 0;
+                newData = [...newData, {id: startingAddedId, ...added}];
             }
-        );
-    }, []);
+            if (changed) {
+                if (isShiftPressed) {
+                    const changedAppointment = newData.find(appointment => changed[appointment.id]);
+                    const startingAddedId = newData.length > 0 ? newData[newData.length - 1].id + 1 : 0;
+                    newData = [
+                        ...newData,
+                        {...changedAppointment, id: startingAddedId, ...changed[changedAppointment.id]},
+                    ];
+                } else {
+                    newData = newData.map(appointment => (
+                        changed[appointment.id]
+                            ? {...appointment, ...changed[appointment.id]}
+                            : appointment));
+                }
+            }
+            if (deleted !== undefined) {
+                newData = newData.filter(appointment => appointment.id !== deleted);
+            }
+            return newData;
+        });
+    };
 
-    const mappedCompanies = companies.map(
-        company => (
-            <div className="companyBox" key={company.id}>
-                Название: <p>{company.companyName}</p>
-                О компании: <p>{company.about}</p>
-                <Link to={`/company/${company.id}`}>
-                    <button>Подробнее</button>
-                </Link>
-            </div>
-        ));
-
-    const userCeoContent =
-        (<>
-            <SideBarMenu user={user} children={
-                mappedCompanies}/>
-
-        </>);
-
-    const markTaskAsDone = async (taskId) => {
-        try {
-            const jwtToken = localStorage.getItem('jwtToken');
-
-            await axios.post(constants.BACKEND_JAVA_URL + '/task/mark_as_done', {
-                jwt: jwtToken,
-                taskId: taskId
-            });
-
-            alert("Молодец! Выполнил");
-            window.location.reload();
-        } catch (err) {
-            alert("Error while completing task: " + err)
-        }
-    }
-
-    const userDefaultWorkerContent =
-        (<>
-            <SideBarMenu user={user} children={
-                userTasks.map(
-                    task => (
-                        <div className="centeredContent borderedBox">
-                            <p>{task.content}</p>
-                            <p>{task.status}</p>
-                            <div>
-                                <a href={task.inputUrl}>сюда</a>
-                            </div>
-                            <div>
-                                <a href={task.outputUrl}>отсюда</a>
-                            </div>
-
-                            {task.status === "IN_PROCESS" &&
-                                <Button onClick={() => markTaskAsDone(task.id)}>Пометить как выполненное</Button>}
-                        </div>
-                    ))}/>
-        </>)
-
-    return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : null;
+    return user ? (
+        <div>
+            <SideBarMenu user={user}>
+                <div className="schedule-page">
+                    <h1 className="schedule-header">Schedule</h1>
+                    <Paper>
+                        <Scheduler
+                            data={data}
+                            height={660}
+                        >
+                            <ViewState
+                                currentDate={currentDate}
+                                onCurrentDateChange={(date) => setCurrentDate(date)}
+                            />
+                            <EditingState
+                                onCommitChanges={commitChanges}
+                            />
+                            <IntegratedEditing/>
+                            <WeekView
+                                startDayHour={9}
+                                endDayHour={17}
+                            />
+                            <Toolbar/>
+                            <DateNavigator/>
+                            <TodayButton/>
+                            <Appointments/>
+                            <AppointmentTooltip
+                                showDeleteButton
+                            />
+                            <DragDropProvider/>
+                        </Scheduler>
+                    </Paper>
+                </div>
+            </SideBarMenu>
+        </div>
+    ) : null;
 };
+
 export default SchedulePage;

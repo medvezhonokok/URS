@@ -25,7 +25,8 @@ public class TaskController {
     private final TaskService taskService;
     private final CompanyService companyService;
 
-    public TaskController(JwtService jwtService, UserService userService, TaskService taskService, CompanyService companyService) {
+    public TaskController(JwtService jwtService, UserService userService,
+                          TaskService taskService, CompanyService companyService) {
         this.jwtService = jwtService;
         this.userService = userService;
         this.taskService = taskService;

@@ -50,6 +50,33 @@ export const getCompanies = async () => {
     }
 }
 
+export const getAppointments = async () => {
+    await axios.get(constants.BACKEND_JAVA_URL + `/appointment/all`)
+        .then(response => {
+            return response.data.map((app) => ({
+                id: app.id,
+                title: app.title,
+                startTime: app.startTime,
+                endTime: app.endTime,
+            }));
+        }).catch(err => {
+            console.log("Failed to get appointment: " + err)
+        });
+}
+
+export const addAppointment = async (newAppt) => {
+    try {
+        console.log(newAppt);
+        await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+    } catch (err) {
+        console.log("Failed to add appointment");
+    }
+}
+
 export const getTasksByUserId = async () => {
     try {
         const response = await axios.post(constants.BACKEND_JAVA_URL + '/task/all_by_user_id', {
