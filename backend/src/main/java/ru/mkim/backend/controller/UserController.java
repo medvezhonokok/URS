@@ -7,6 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
+import ru.mkim.backend.model.CertificateType;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;
@@ -14,7 +15,9 @@ import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/1/users")
@@ -58,5 +61,24 @@ public class UserController {
         }
 
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @PostMapping("/update_certificate_map")
+    public ResponseEntity<String> updateCertificateMap(@RequestBody Map<String, Map<String, Boolean>> userCertificateMap) {
+        for (Map.Entry<String, Map<String, Boolean>> entry : userCertificateMap.entrySet()) {
+            User user = userService.findById(Long.parseLong(entry.getKey()));
+
+            int certificateSize = CertificateType.values().length;
+            final String[] certificates = new String[certificateSize];
+            int index = 0;
+
+            for (CertificateType value : CertificateType.values()) {
+                certificates[index++] = entry.getValue().get(value.toString()) ? "1" : "0";
+            }
+
+            userService.updateCertificates(user.getId(), String.join("#", certificates));
+        }
+
+        return new ResponseEntity<>("OK", HttpStatus.OK);
     }
 }

@@ -42,29 +42,11 @@ public class UserService {
         userRepository.updatePasswordSha(user.getId(), user.getLogin(), credentials.getPassword());
     }
 
-    public void updateUserSettingsById(long userId, UserCredentials userCredentials) {
-        String phoneNumber = userCredentials.getPhoneNumber();
-        String name = userCredentials.getName();
-        String about = userCredentials.getAbout();
-
-        if (phoneNumber != null && !phoneNumber.isBlank()) {
-            userRepository.updatePhoneNumber(userId, phoneNumber);
-        }
-
-        if (name != null && !name.isBlank()) {
-            userRepository.updateUserName(userId, name);
-        }
-
-        if (about != null && !about.isBlank()) {
-            userRepository.updateAbout(userId, about);
-        }
-    }
-
-    public User findUserByLogin(String login) {
-        return userRepository.findByLogin(login);
-    }
-
     public List<User> findAll() {
         return userRepository.findAll();
+    }
+
+    public void updateCertificates(long userId, String certificates) {
+        userRepository.updateCertificates(userId, certificates);
     }
 }

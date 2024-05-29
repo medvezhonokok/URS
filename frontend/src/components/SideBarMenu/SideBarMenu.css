@@ -1,4 +1,5 @@
 .sidebar-container {
+    width: 100%;
     display: flex;
     justify-content: center;
     text-align: center;
@@ -6,5 +7,6 @@
 
 
 .content-container {
+    width: 50%;
     flex: 1;
 }

@@ -12,13 +12,22 @@ export const getCompanyById = async (companyId) => {
         });
 }
 
+export const updateUserCertificatesMap = async (userCertificateMap) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map`, userCertificateMap, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((response) => {
+
+    })
+}
+
 export const addNewCompany = (newCompanyJson) => {
     axios.post(constants.BACKEND_JAVA_URL + '/company/add', newCompanyJson, {
         headers: {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-        console.log(response);
         return response.data;
     }).catch((err) => {
         console.log("Failed to add company: " + err);
@@ -77,7 +86,8 @@ export const getUsers = async () => {
             about: user.about,
             role: user.userRole,
             inProcess: user.inProcess,
-            companyNames: user.userTask ? getUserCompanyNamesByTask(user.userTask) : null
+            companyNames: user.userTask ? getUserCompanyNamesByTask(user.userTask) : null,
+            certificates: user.certificates
         }));
     } catch (err) {
         console.error("Failed to get users: " + err);

@@ -49,6 +49,7 @@ const formFields = [
     {label: "Сколько часов длится полный рабочий день?", name: "workingDayDurationHours"},
     {label: "Primary Language", name: "primaryLanguage"},
     {label: "Currency Used", name: "currencyUsed"}
+    // TODO: add more fields & names if need
 ];
 
 const CompaniesPage = ({user}) => {

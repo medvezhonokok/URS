@@ -7,6 +7,8 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "login"))
@@ -39,4 +41,6 @@ public class User {
     private UserRole userRole;
 
     private boolean inProcess;
+
+    private String certificates;
 }
