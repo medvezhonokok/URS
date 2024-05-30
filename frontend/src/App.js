@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import LoginForm from "./components/LoginForm/LoginForm";
+import LoginForm from "./components/form/LoginForm/LoginForm";
 import * as index from "./index";
 import * as storage from "./data/storage";
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";

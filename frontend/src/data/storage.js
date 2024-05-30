@@ -64,6 +64,18 @@ export const getAppointments = async () => {
         });
 }
 
+export const saveNewAppointment = async (appointment) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/appointment/add`, appointment, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        // ignored
+    }).catch(err => {
+        console.log("Failed to add appointment: " + err)
+    });
+}
+
 export const addAppointment = async (newAppt) => {
     try {
         console.log(newAppt);

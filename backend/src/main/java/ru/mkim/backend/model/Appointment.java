@@ -20,4 +20,6 @@ public class Appointment {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
+
+    private String color;
 }

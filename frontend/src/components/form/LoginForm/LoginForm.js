@@ -1,8 +1,8 @@
 import React, {useState} from 'react';
 import axios from 'axios';
-import * as constants from '../../constants/constants';
+import * as constants from '../../../constants/constants';
 import {Button} from 'react-bootstrap';
-import styles from './LoginForm.module.css';
+import styles from './LoginForm.css';
 
 const LoginForm = () => {
     const [login, setLogin] = useState('');

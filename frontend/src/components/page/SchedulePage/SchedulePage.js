@@ -14,11 +14,13 @@ import {
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import {appointments} from '../../../data/appointments';
 import './SchedulePage.css';
+import AddAppointmentForm from "../../form/AddAppointmentForm/AddAppointmentForm";
 
 const SchedulePage = ({user}) => {
     const [data, setData] = useState(appointments);
     const [currentDate, setCurrentDate] = useState('2024-05-25');
     const [isShiftPressed, setIsShiftPressed] = useState(false);
+    const [showAddForm, setShowAddForm] = useState(false);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -71,6 +73,16 @@ const SchedulePage = ({user}) => {
         });
     };
 
+    const appointmentComponent = ({style, ...restProps}) => {
+        const {data} = restProps;
+        return (
+            <Appointments.Appointment
+                {...restProps}
+                style={{...style, backgroundColor: data.color}}
+            />
+        );
+    };
+
     return user ? (
         <div>
             <SideBarMenu user={user}>
@@ -96,13 +108,17 @@ const SchedulePage = ({user}) => {
                             <Toolbar/>
                             <DateNavigator/>
                             <TodayButton/>
-                            <Appointments/>
+                            <Appointments
+                                appointmentComponent={appointmentComponent}
+                            />
                             <AppointmentTooltip
                                 showDeleteButton
                             />
                             <DragDropProvider/>
                         </Scheduler>
                     </Paper>
+                    <button onClick={() => setShowAddForm(true)}>Add New Appointment</button>
+                    {showAddForm && <AddAppointmentForm/>}
                 </div>
             </SideBarMenu>
         </div>
