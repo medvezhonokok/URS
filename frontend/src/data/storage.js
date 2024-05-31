@@ -52,18 +52,14 @@ export const getCompanies = async () => {
     }
 }
 
-const convertToLocalTime = (timeString) => {
-    return DateTime.fromISO(timeString, { zone: 'utc' }).toLocal().toString();
-}
-
 export const getAppointments = async () => {
     try {
         const response = await axios.post(constants.BACKEND_JAVA_URL + '/appointment/all?jwt=' + jwtToken);
         return response.data.map(app => ({
             id: app.id,
             title: app.title,
-            startDate: convertToLocalTime(app.startTime),
-            endDate: convertToLocalTime(app.endTime),
+            startDate: app.startTime,
+            endDate: app.endTime,
             color: app.color
         }));
     } catch (err) {

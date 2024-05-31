@@ -56,7 +56,7 @@ const LoginForm = () => {
     };
 
     return (
-        <form className={styles.loginForm} onSubmit={submitLoginForm}>
+        <form className="loginForm" onSubmit={submitLoginForm}>
             <div>
                 <label>Login:</label>
                 <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
@@ -65,7 +65,7 @@ const LoginForm = () => {
                 <label>Password:</label>
                 <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
-            {errors.authentication && <div className={styles.error}>{errors.authentication}</div>}
+            {errors.authentication && <div className="error">{errors.authentication}</div>}
             <Button type="submit">Log in</Button>
         </form>
     );

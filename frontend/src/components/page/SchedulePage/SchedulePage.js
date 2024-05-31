@@ -17,38 +17,38 @@ import './SchedulePage.css';
 import {deleteAppointment, getAppointments, saveNewAppointment, updateAppointment} from "../../../data/storage";
 import {Button} from "react-bootstrap";
 import {Box, Grid, Modal, TextField, Typography} from "@mui/material";
-import * as storage from "../../../data/storage";
+
+// TODO: move to css
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: '80vw',
+    maxHeight: '80vh',
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+    overflowY: 'auto'
+};
+
+const options = [
+    {value: 'red', label: 'Red'},
+    {value: 'orange', label: 'Orange'},
+    {value: 'blue', label: 'Blue'},
+    {value: 'light-blue', label: 'Light blue'},
+    {value: 'green', label: 'Green'},
+]
 
 const SchedulePage = ({user}) => {
     const [data, setData] = useState([]);
-    const [currentDate, setCurrentDate] = useState('2024-05-30');
+    const [currentDate, setCurrentDate] = useState(new Date().toISOString().split('T')[0]);
     const [open, setOpen] = useState(false);
     const [title, setTitle] = useState('');
     const [startTime, setStartTime] = useState('');
     const [endTime, setEndTime] = useState('');
     const [color, setColor] = useState('');
-
-    const style = {
-        position: 'absolute',
-        top: '50%',
-        left: '50%',
-        transform: 'translate(-50%, -50%)',
-        width: '80vw',
-        maxHeight: '80vh',
-        bgcolor: 'background.paper',
-        border: '2px solid #000',
-        boxShadow: 24,
-        p: 4,
-        overflowY: 'auto'
-    };
-
-    const options = [
-        {value: 'red', label: 'Red', color: 'red'},
-        {value: 'orange', label: 'Orange', color: 'orange'},
-        {value: 'blue', label: 'Blue', color: 'blue'},
-        {value: 'light-blue', label: 'Light blue', color: 'light-blue'},
-        {value: 'green', label: 'Green', color: 'green'},
-    ]
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -64,19 +64,26 @@ const SchedulePage = ({user}) => {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        saveNewAppointment({
+        let newAppointment = {
             title: title,
-            startTime: new Date(startTime),
-            endTime: new Date(endTime),
+            startTime: startTime,
+            endTime: endTime,
             color: color
+        };
+
+        saveNewAppointment(newAppointment).then((_) => {
+            setData((prevData) => {
+                return [...(prevData), newAppointment];
+            });
+
+            handleClose();
+            window.location.reload(); // TODO: научиться добавлять без перезагрузки страницы.
         });
 
         setTitle('');
         setStartTime('');
         setEndTime('');
         setColor('');
-
-        window.location.reload();
     };
 
     const commitChanges = ({_, changed, deleted}) => {
@@ -85,17 +92,19 @@ const SchedulePage = ({user}) => {
 
             if (changed) {
                 updateAppointment(changed).then(r => {
-                    // No operations.
+                    console.log("Appointment updated");
                 });
+
+                // TODO: чето странное, как будто можно проще, я не понимаю что тут происходит
                 newData = newData.map(appointment => (
                     changed[appointment.id]
                         ? {...appointment, ...changed[appointment.id]}
                         : appointment));
             }
 
-            if (deleted !== undefined) {
+            if (deleted) {
                 deleteAppointment(deleted).then(r => {
-                    // No operations.
+                    console.log("Appointment deleted.")
                 });
                 newData = newData.filter(appointment => appointment.id !== deleted);
             }
@@ -164,7 +173,7 @@ const SchedulePage = ({user}) => {
                                                     defaultValue={options[1]}
                                                     options={options}
                                                     onChange={(e) => {
-                                                        setColor(e.value);
+                                                        setColor(e.value ? e.value : options[1].value);
                                                     }}
                                                     required
                                             />
@@ -172,7 +181,8 @@ const SchedulePage = ({user}) => {
                                     </Grid>
                                     <div className="modalFooter">
                                         <Button className="companiesButton" onClick={handleClose}>Close</Button>
-                                        <Button className="companiesButton" type="submit">Create new appointment</Button>
+                                        <Button className="companiesButton" type="submit">Create new
+                                            appointment</Button>
                                     </div>
                                 </Box>
                             </Modal>
@@ -183,7 +193,7 @@ const SchedulePage = ({user}) => {
                             <ViewState currentDate={currentDate} onCurrentDateChange={(date) => setCurrentDate(date)}/>
                             <EditingState onCommitChanges={commitChanges}/>
                             <IntegratedEditing/>
-                            <WeekView startDayHour={9} endDayHour={19}/>
+                            <WeekView startDayHour={0} endDayHour={24}/>
                             <Toolbar/>
                             <DateNavigator/>
                             <TodayButton/>
