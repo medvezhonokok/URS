@@ -1,7 +1,9 @@
 import axios from "axios";
 import * as constants from "../constants/constants";
+import { DateTime } from "luxon";
 
 const jwtToken = localStorage.getItem('jwtToken');
+
 
 export const getCompanyById = async (companyId) => {
     await axios.post(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`)
@@ -50,19 +52,48 @@ export const getCompanies = async () => {
     }
 }
 
-export const getAppointments = async () => {
-    await axios.get(constants.BACKEND_JAVA_URL + `/appointment/all`)
-        .then(response => {
-            return response.data.map((app) => ({
-                id: app.id,
-                title: app.title,
-                startTime: app.startTime,
-                endTime: app.endTime,
-            }));
-        }).catch(err => {
-            console.log("Failed to get appointment: " + err)
-        });
+const convertToLocalTime = (timeString) => {
+    return DateTime.fromISO(timeString, { zone: 'utc' }).toLocal().toString();
 }
+
+export const getAppointments = async () => {
+    try {
+        const response = await axios.post(constants.BACKEND_JAVA_URL + '/appointment/all?jwt=' + jwtToken);
+        return response.data.map(app => ({
+            id: app.id,
+            title: app.title,
+            startDate: convertToLocalTime(app.startTime),
+            endDate: convertToLocalTime(app.endTime),
+            color: app.color
+        }));
+    } catch (err) {
+        console.error("Failed to get appointments: " + err);
+        return [];
+    }
+}
+
+
+export const deleteAppointment = async (id) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/appointment/delete/${id}`).then(response => {
+        // No operations.
+    }).catch(err => {
+        console.error("Failed to delete appointment: " + err);
+    })
+}
+
+
+export const updateAppointment = async (appointment) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/appointment/update`, appointment, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => {
+        // ignored
+    }).catch(err => {
+        console.log("Failed to update appointment: " + err)
+    });
+}
+
 
 export const saveNewAppointment = async (appointment) => {
     await axios.post(constants.BACKEND_JAVA_URL + `/appointment/add`, appointment, {
@@ -74,19 +105,6 @@ export const saveNewAppointment = async (appointment) => {
     }).catch(err => {
         console.log("Failed to add appointment: " + err)
     });
-}
-
-export const addAppointment = async (newAppt) => {
-    try {
-        console.log(newAppt);
-        await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-    } catch (err) {
-        console.log("Failed to add appointment");
-    }
 }
 
 export const getTasksByUserId = async () => {

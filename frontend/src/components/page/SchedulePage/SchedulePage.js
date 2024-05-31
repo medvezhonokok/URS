@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+import Select from 'react-select';
 import Paper from '@mui/material/Paper';
 import {EditingState, IntegratedEditing, ViewState} from '@devexpress/dx-react-scheduler';
 import {
@@ -12,63 +13,93 @@ import {
     WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
-import {appointments} from '../../../data/appointments';
 import './SchedulePage.css';
-import AddAppointmentForm from "../../form/AddAppointmentForm/AddAppointmentForm";
+import {deleteAppointment, getAppointments, saveNewAppointment, updateAppointment} from "../../../data/storage";
+import {Button} from "react-bootstrap";
+import {Box, Grid, Modal, TextField, Typography} from "@mui/material";
+import * as storage from "../../../data/storage";
 
 const SchedulePage = ({user}) => {
-    const [data, setData] = useState(appointments);
-    const [currentDate, setCurrentDate] = useState('2024-05-25');
-    const [isShiftPressed, setIsShiftPressed] = useState(false);
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [data, setData] = useState([]);
+    const [currentDate, setCurrentDate] = useState('2024-05-30');
+    const [open, setOpen] = useState(false);
+    const [title, setTitle] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
+    const [color, setColor] = useState('');
+
+    const style = {
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: '80vw',
+        maxHeight: '80vh',
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+        overflowY: 'auto'
+    };
+
+    const options = [
+        {value: 'red', label: 'Red', color: 'red'},
+        {value: 'orange', label: 'Orange', color: 'orange'},
+        {value: 'blue', label: 'Blue', color: 'blue'},
+        {value: 'light-blue', label: 'Light blue', color: 'light-blue'},
+        {value: 'green', label: 'Green', color: 'green'},
+    ]
+
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        const handleKeyDown = (event) => {
-            if (event.keyCode === 16) {
-                setIsShiftPressed(true);
+        getAppointments().then(
+            appointmentsJson => {
+                setData(appointmentsJson)
             }
-        };
-
-        const handleKeyUp = (event) => {
-            if (event.keyCode === 16) {
-                setIsShiftPressed(false);
-            }
-        };
-
-        window.addEventListener('keydown', handleKeyDown);
-        window.addEventListener('keyup', handleKeyUp);
-
-        return () => {
-            window.removeEventListener('keydown', handleKeyDown);
-            window.removeEventListener('keyup', handleKeyUp);
-        };
+        );
     }, []);
 
-    const commitChanges = ({added, changed, deleted}) => {
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        saveNewAppointment({
+            title: title,
+            startTime: new Date(startTime),
+            endTime: new Date(endTime),
+            color: color
+        });
+
+        setTitle('');
+        setStartTime('');
+        setEndTime('');
+        setColor('');
+
+        window.location.reload();
+    };
+
+    const commitChanges = ({_, changed, deleted}) => {
         setData((prevData) => {
             let newData = prevData;
-            if (added) {
-                const startingAddedId = newData.length > 0 ? newData[newData.length - 1].id + 1 : 0;
-                newData = [...newData, {id: startingAddedId, ...added}];
-            }
+
             if (changed) {
-                if (isShiftPressed) {
-                    const changedAppointment = newData.find(appointment => changed[appointment.id]);
-                    const startingAddedId = newData.length > 0 ? newData[newData.length - 1].id + 1 : 0;
-                    newData = [
-                        ...newData,
-                        {...changedAppointment, id: startingAddedId, ...changed[changedAppointment.id]},
-                    ];
-                } else {
-                    newData = newData.map(appointment => (
-                        changed[appointment.id]
-                            ? {...appointment, ...changed[appointment.id]}
-                            : appointment));
-                }
+                updateAppointment(changed).then(r => {
+                    // No operations.
+                });
+                newData = newData.map(appointment => (
+                    changed[appointment.id]
+                        ? {...appointment, ...changed[appointment.id]}
+                        : appointment));
             }
+
             if (deleted !== undefined) {
+                deleteAppointment(deleted).then(r => {
+                    // No operations.
+                });
                 newData = newData.filter(appointment => appointment.id !== deleted);
             }
+
             return newData;
         });
     };
@@ -87,38 +118,80 @@ const SchedulePage = ({user}) => {
         <div>
             <SideBarMenu user={user}>
                 <div className="schedule-page">
-                    <h1 className="schedule-header">Schedule</h1>
+                    <div className="companiesPageHeader">
+                        <h1 className="companiesHeader">Schedule</h1>
+                        <div className="companiesAddNewCompanyButton">
+                            <Button onClick={handleOpen}><h1>NEW +</h1></Button>
+                            <Modal open={open}
+                                   onClose={handleClose}
+                                   aria-labelledby="modal-modal-title"
+                                   aria-describedby="modal-modal-description">
+                                <Box component="form" onSubmit={handleSubmit} sx={style}>
+                                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                                        Add New Appointment
+                                    </Typography>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12}>
+                                            <TextField fullWidth
+                                                       label="Title"
+                                                       value={title}
+                                                       onChange={(e) => setTitle(e.target.value)}
+                                                       required
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField fullWidth
+                                                       id="dt"
+                                                       label="Start Time"
+                                                       type="datetime-local"
+                                                       value={startTime ? startTime : new Date()}
+                                                       onChange={(e) => setStartTime(e.target.value)}
+                                                       required
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <TextField fullWidth
+                                                       id="dt"
+                                                       label="End Time"
+                                                       type="datetime-local"
+                                                       value={endTime ? endTime : new Date()}
+                                                       onChange={(e) => setEndTime(e.target.value)}
+                                                       required
+                                            />
+                                        </Grid>
+                                        <Grid item xs={12}>
+                                            <Select unstyled={false}
+                                                    defaultValue={options[1]}
+                                                    options={options}
+                                                    onChange={(e) => {
+                                                        setColor(e.value);
+                                                    }}
+                                                    required
+                                            />
+                                        </Grid>
+                                    </Grid>
+                                    <div className="modalFooter">
+                                        <Button className="companiesButton" onClick={handleClose}>Close</Button>
+                                        <Button className="companiesButton" type="submit">Create new appointment</Button>
+                                    </div>
+                                </Box>
+                            </Modal>
+                        </div>
+                    </div>
                     <Paper>
-                        <Scheduler
-                            data={data}
-                            height={660}
-                        >
-                            <ViewState
-                                currentDate={currentDate}
-                                onCurrentDateChange={(date) => setCurrentDate(date)}
-                            />
-                            <EditingState
-                                onCommitChanges={commitChanges}
-                            />
+                        <Scheduler data={data} height={660}>
+                            <ViewState currentDate={currentDate} onCurrentDateChange={(date) => setCurrentDate(date)}/>
+                            <EditingState onCommitChanges={commitChanges}/>
                             <IntegratedEditing/>
-                            <WeekView
-                                startDayHour={9}
-                                endDayHour={17}
-                            />
+                            <WeekView startDayHour={9} endDayHour={19}/>
                             <Toolbar/>
                             <DateNavigator/>
                             <TodayButton/>
-                            <Appointments
-                                appointmentComponent={appointmentComponent}
-                            />
-                            <AppointmentTooltip
-                                showDeleteButton
-                            />
+                            <Appointments appointmentComponent={appointmentComponent}/>
+                            <AppointmentTooltip showDeleteButton/>
                             <DragDropProvider/>
                         </Scheduler>
                     </Paper>
-                    <button onClick={() => setShowAddForm(true)}>Add New Appointment</button>
-                    {showAddForm && <AddAppointmentForm/>}
                 </div>
             </SideBarMenu>
         </div>
