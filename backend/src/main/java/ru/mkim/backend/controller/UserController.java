@@ -15,7 +15,6 @@ import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -37,6 +36,11 @@ public class UserController {
     @InitBinder("userCredentialsRegister")
     public void initBinder(WebDataBinder binder) {
         binder.addValidators(userCredentialsRegisterValidator);
+    }
+
+    @GetMapping("/{userId}")
+    public User findById(@PathVariable Long userId) {
+        return userService.findById(userId);
     }
 
     @GetMapping("/auth")

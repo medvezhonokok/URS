@@ -9,6 +9,7 @@ import UsersPage from "./components/page/UsersPage/UsersPage";
 import SchedulePage from "./components/page/SchedulePage/SchedulePage";
 import CompanyPage from "./components/page/CompanyPage/CompanyPage";
 import CompaniesPage from "./components/page/CompaniesPage/CompaniesPage";
+import UserPage from "./components/page/UserPage/UserPage";
 
 export function logout() {
     localStorage.removeItem('user');
@@ -48,6 +49,11 @@ const router = createBrowserRouter([
         path: '/company/:companyId',
         name: 'CompanyPage',
         element: <div><CompanyPage/></div>,
+    },
+    {
+        path: '/user/:userId',
+        name: 'UserPage',
+        element: <div><UserPage user={getUser()}/></div>,
     },
 ]);
 

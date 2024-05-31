@@ -12,13 +12,22 @@ export const getCompanyById = async (companyId) => {
         });
 }
 
+export const getUserById = async (userId) => {
+    await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
+        .then(response => {
+            return response.data;
+        }).catch(err => {
+            console.log("Failed to get user by id: " + err)
+        });
+}
+
 export const updateUserCertificatesMap = async (userCertificateMap) => {
     await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map`, userCertificateMap, {
         headers: {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-
+        // No operations.
     })
 }
 
