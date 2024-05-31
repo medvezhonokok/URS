@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import * as constants from '../../../constants/constants';
 import {Button} from 'react-bootstrap';
-import styles from './LoginForm.css';
+import './LoginForm.css';
 
 const LoginForm = () => {
     const [login, setLogin] = useState('');
@@ -25,8 +25,7 @@ const LoginForm = () => {
         localStorage.setItem('jwtToken', jwtToken);
 
         try {
-            axios
-                .get(constants.BACKEND_JAVA_URL + `/1/users/auth?jwt=${jwtToken}`)
+            axios.get(constants.BACKEND_JAVA_URL + `/1/users/auth?jwt=${jwtToken}`)
                 .then((response) => {
                     const user = JSON.stringify(response.data);
                     localStorage.setItem('user', user);
@@ -56,7 +55,7 @@ const LoginForm = () => {
     };
 
     return (
-        <form className={styles.loginForm} onSubmit={submitLoginForm}>
+        <form className="loginForm" onSubmit={submitLoginForm}>
             <div>
                 <label>Login:</label>
                 <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
@@ -65,7 +64,7 @@ const LoginForm = () => {
                 <label>Password:</label>
                 <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
-            {errors.authentication && <div className={styles.error}>{errors.authentication}</div>}
+            {errors.authentication && <div className="error">{errors.authentication}</div>}
             <Button type="submit">Log in</Button>
         </form>
     );
