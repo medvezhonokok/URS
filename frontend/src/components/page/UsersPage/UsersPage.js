@@ -16,6 +16,7 @@ import {Checkbox} from "@mui/material";
 const UsersPage = ({user}) => {
     const [users, setUsers] = useState([]);
     const [userCertificates, setUserCertificates] = useState({});
+    const [isEditMode, setIsEditMode] = useState(false);
 
     useEffect(() => {
         storage.getUsers().then(usersJson => {
@@ -38,24 +39,31 @@ const UsersPage = ({user}) => {
     }, []);
 
     const handleCertificateToggle = (userId, certificateKey) => {
-        setUserCertificates(prevState => {
-            const updatedUserCertificates = {...prevState};
-            updatedUserCertificates[userId] = {
-                ...updatedUserCertificates[userId],
-                [certificateKey]: !updatedUserCertificates[userId][certificateKey]
-            };
-            return updatedUserCertificates;
-        });
+        if (isEditMode) {
+            setUserCertificates(prevState => {
+                const updatedUserCertificates = {...prevState};
+                updatedUserCertificates[userId] = {
+                    ...updatedUserCertificates[userId],
+                    [certificateKey]: !updatedUserCertificates[userId][certificateKey]
+                };
+                return updatedUserCertificates;
+            });
+        }
+    };
+
+    const handleEditToggle = () => {
+        setIsEditMode(prevState => !prevState);
     };
 
     const handleSave = () => {
         updateUserCertificatesMap(userCertificates);
+        setIsEditMode(false);
     };
 
     return (
         user
             ? <SideBarMenu user={user} children={
-                <div>
+                <div className="usersPageContainer">
                     <h1 className="companiesHeader">Users: </h1>
                     <TableContainer component={Paper}>
                         <Table sx={{minWidth: 650}} aria-label="companies table">
@@ -78,8 +86,10 @@ const UsersPage = ({user}) => {
                                         {CertificateTypes.map(certificate => (
                                             <TableCell key={certificate.key}>
                                                 <Checkbox
+                                                    className={`checkbox ${isEditMode ? '' : 'checked'}`}
                                                     checked={userCertificates[user.id] && userCertificates[user.id][certificate.key]}
                                                     onChange={() => handleCertificateToggle(user.id, certificate.key)}
+                                                    disabled={!isEditMode}
                                                 />
                                             </TableCell>
                                         ))}
@@ -88,12 +98,15 @@ const UsersPage = ({user}) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                    <Button variant="contained" onClick={handleSave}>Сохранить</Button>
+                    {isEditMode
+                        ? <Button variant="contained" onClick={handleSave} className="saveButton">Сохранить</Button>
+                        :
+                        <Button variant="contained" onClick={handleEditToggle} className="editButton">Редактировать</Button>
+                    }
                 </div>
             }/>
             : null
     )
 };
-
 
 export default UsersPage;
