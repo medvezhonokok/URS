@@ -96,7 +96,7 @@ const CompaniesPage = ({user}) => {
     return (
         user
             ? <SideBarMenu user={user} children={
-                <div>
+                <div className="usersPageContainer">
                     <div className="companiesPageHeader">
                         <h1 className="companiesHeader">Companies: </h1>
                         <div className="companiesAddNewCompanyButton">
