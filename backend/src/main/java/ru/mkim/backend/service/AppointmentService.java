@@ -21,4 +21,16 @@ public class AppointmentService {
     public List<Appointment> findAll() {
         return appointmentRepository.findAll();
     }
+
+    public void update(Appointment appointment) {
+        appointmentRepository.save(appointment);
+    }
+
+    public Appointment findById(long id) {
+        return appointmentRepository.findById(id).orElse(null);
+    }
+
+    public void removeById(Long id) {
+        appointmentRepository.deleteById(id);
+    }
 }
