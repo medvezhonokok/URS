@@ -138,7 +138,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ru.backend.BackendApplication</mainClass>
+                            <mainClass>ru.mkim.backend.BackendApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
