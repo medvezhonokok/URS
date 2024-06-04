@@ -1,0 +1,39 @@
+.borderedBox {
+    background: var(--default-medium-background-color);
+    border: var(--border-color) solid 0.2rem;
+    border-radius: 0.7rem;
+    width: 40%;
+}
+
+.companies {
+    background: var(--default-light-background-color);
+    margin-left: 4rem;
+    left: 0;
+}
+
+.users {
+    margin-right: 4rem;
+    position: absolute;
+    right: 0;
+}
+
+.centeredContent {
+    width: 90%;
+    margin: 2rem auto;
+}
+
+.borderedBottom {
+    border-bottom: 0.1rem solid var(--border-color);
+}
+
+.centeredText {
+    text-align: center;
+}
+
+.companyBox {
+    width: 50%;
+    margin: 2rem auto;
+    background: var(--default-medium-background-color);
+    border: var(--border-color) solid 0.2rem;
+    border-radius: 0.7rem;
+}

@@ -1,30 +1,37 @@
 import React from 'react';
 import './SideBarMenu.css';
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Button } from "react-bootstrap";
-import * as index from "../../index";
+import {SideBarData} from "./SideBarData";
+import {Link} from "react-router-dom";
+import {logout} from "../../index";
 
-const SideBarMenu = ({ user, children }) => {
+const SideBarMenu = ({ user }) => {
+    console.log(SideBarData);
     return (
-        <div className="sidebar-container">
-            <Sidebar>
-                <Menu>
-                    <MenuItem>{user.userRole} | {user.name}</MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/"}>Home</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/users"}>Users</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/schedule"}>Schedule</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/companies"}>Companies</Button></MenuItem>
-                    <SubMenu label="Additional info">
-                        <MenuItem><Button className="buttonNavBar" href={"#"}><b>{user.name}</b></Button></MenuItem>
-                        <MenuItem><Button onClick={() => index.logout()}>Log out</Button></MenuItem>
-                    </SubMenu>
-                </Menu>
-            </Sidebar>
-            <div className="content-container">
-                {children}
+        <>
+            <div>
+                Sidebar
             </div>
-        </div>
+            <nav className='nav-menu'>
+                <ul className='nav-menu-items'>
+                    {SideBarData.map((item, index) => {
+                        return (
+                            <li key={index} className={item.cName}>
+                                <Link to={item.path}>
+                                    {item.icon}
+                                    <span>{item.title}</span>
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+                <div className='user-info'>
+                    <span>{user.userRole} | {user.name}</span>
+                    <button className='logout-button' onClick={() => logout()}>Log out</button>
+                </div>
+            </nav>
+        </>
     );
-};
+}
+
 
 export default SideBarMenu;

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import * as storage from "../../../data/storage";
 import {CertificateTypes, updateUserCertificatesMap} from "../../../data/storage";
 import './UsersPage.css';
-import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -62,49 +61,49 @@ const UsersPage = ({user}) => {
 
     return (
         user
-            ? <SideBarMenu user={user} children={
-                <div className="usersPageContainer">
-                    <h1 className="companiesHeader">Users: </h1>
-                    <TableContainer component={Paper}>
-                        <Table sx={{minWidth: 650}} aria-label="companies table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>ФИО</TableCell>
+            ?
+            <div className="usersPageContainer">
+                <h1 className="companiesHeader">Users: </h1>
+                <TableContainer component={Paper}>
+                    <Table sx={{minWidth: 650}} aria-label="companies table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>ФИО</TableCell>
+                                {CertificateTypes.map(certificate => (
+                                    <TableCell key={certificate.key}>{certificate.value}</TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {users.map(user => (
+                                <TableRow key={user.id}>
+                                    <TableCell>
+                                        <a href={`/user/${user.id}`}>
+                                            {user.name}
+                                        </a>
+                                    </TableCell>
                                     {CertificateTypes.map(certificate => (
-                                        <TableCell key={certificate.key}>{certificate.value}</TableCell>
+                                        <TableCell key={certificate.key}>
+                                            <Checkbox
+                                                className={`checkbox ${isEditMode ? '' : 'checked'}`}
+                                                checked={userCertificates[user.id] && userCertificates[user.id][certificate.key]}
+                                                onChange={() => handleCertificateToggle(user.id, certificate.key)}
+                                                disabled={!isEditMode}
+                                            />
+                                        </TableCell>
                                     ))}
                                 </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {users.map(user => (
-                                    <TableRow key={user.id}>
-                                        <TableCell>
-                                            <a href={`/user/${user.id}`}>
-                                                {user.name}
-                                            </a>
-                                        </TableCell>
-                                        {CertificateTypes.map(certificate => (
-                                            <TableCell key={certificate.key}>
-                                                <Checkbox
-                                                    className={`checkbox ${isEditMode ? '' : 'checked'}`}
-                                                    checked={userCertificates[user.id] && userCertificates[user.id][certificate.key]}
-                                                    onChange={() => handleCertificateToggle(user.id, certificate.key)}
-                                                    disabled={!isEditMode}
-                                                />
-                                            </TableCell>
-                                        ))}
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    {isEditMode
-                        ? <Button variant="contained" onClick={handleSave} className="saveButton">Сохранить</Button>
-                        :
-                        <Button variant="contained" onClick={handleEditToggle} className="editButton">Редактировать</Button>
-                    }
-                </div>
-            }/>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                {isEditMode
+                    ? <Button variant="contained" onClick={handleSave} className="saveButton">Сохранить</Button>
+                    :
+                    <Button variant="contained" onClick={handleEditToggle} className="editButton">Редактировать</Button>
+                }
+            </div>
+
             : null
     )
 };
