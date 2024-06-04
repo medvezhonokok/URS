@@ -92,6 +92,7 @@ export const saveNewAppointment = async (appointment) => {
 
 export const addAppointment = async (newAppt) => {
     try {
+        console.log(newAppt);
         await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
             headers: {
                 'Content-Type': 'application/json'
