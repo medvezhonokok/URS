@@ -13,12 +13,17 @@ export const getCompanyById = async (companyId) => {
 }
 
 export const getUserById = async (userId) => {
-    await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
-        .then(response => {
-            return response.data;
-        }).catch(err => {
-            console.log("Failed to get user by id: " + err)
-        });
+    try {
+        const response =  await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
+        return response.data;
+        // return response.data.map((user) => ({
+        //     id: user.id,
+        //     name: user.name,
+        //     phoneNumber: user.phoneNumber,
+        // }));
+    } catch (err) {
+        console.log("Failed to get user by id: " + err)
+    }
 }
 
 export const updateUserCertificatesMap = async (userCertificateMap) => {
@@ -87,7 +92,6 @@ export const saveNewAppointment = async (appointment) => {
 
 export const addAppointment = async (newAppt) => {
     try {
-        console.log(newAppt);
         await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
             headers: {
                 'Content-Type': 'application/json'

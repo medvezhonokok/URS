@@ -30,5 +30,17 @@ services:
       PMA_USER: root
       PMA_PASSWORD: 6B3D6E268DCB76E175A7DB3D9E031349AB2C32654C7E57581A851E64DD6214AB
 
+  # main back application container
+  java-backend:
+    build:
+      context: ./../backend
+      dockerfile: Dockerfile
+    container_name: java-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - maria-db
+
 volumes:
   dbdata:

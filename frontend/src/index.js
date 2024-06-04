@@ -53,7 +53,7 @@ const router = createBrowserRouter([
     {
         path: '/user/:userId',
         name: 'UserPage',
-        element: <div><UserPage user={getUser()}/></div>,
+        element: <div><UserPage authUser={getUser()}/></div>,
     },
 ]);
 

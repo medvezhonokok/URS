@@ -9,25 +9,28 @@ const UserPage = ({authUser}) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
-        setUser(storage.getUserById(userId));
-    })
+        storage.getUserById(userId).then(userJson => {
+            setUser(userJson);
+        });
+    }, [userId])
 
     return (
         authUser ?
             <div>
-                <SideBarMenu user={user} children={
+                <SideBarMenu user={authUser} children={
                     user
                         ? <div className="companyContainer" style={{width: "80%"}}>
                             <h1>User page</h1>
-                            <h1>{user.name}</h1>
-                            <h1>{user.phoneNumber}</h1>
+                            <h1>Номер телефона: {user.phoneNumber}</h1>
                         </div>
                         : <div>
                             No such user
                         </div>
                 }/>
             </div>
-            : null
+            : <div>
+                Nothing there
+            </div>
     );
 };
 
