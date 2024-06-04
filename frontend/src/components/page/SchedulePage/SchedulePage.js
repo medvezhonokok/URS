@@ -85,8 +85,7 @@ const SchedulePage = ({user}) => {
 
     return user ? (
         <div>
-            <SideBarMenu user={user}>
-                <div className="schedule-page">
+            <div className="schedule-page">
                     <h1 className="schedule-header">Schedule</h1>
                     <Paper>
                         <Scheduler
@@ -120,7 +119,6 @@ const SchedulePage = ({user}) => {
                     <button onClick={() => setShowAddForm(true)}>Add New Appointment</button>
                     {showAddForm && <AddAppointmentForm/>}
                 </div>
-            </SideBarMenu>
         </div>
     ) : null;
 };

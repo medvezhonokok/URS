@@ -1,5 +1,4 @@
 import './CompaniesPage.css';
-import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import * as storage from "../../../data/storage";
@@ -95,90 +94,88 @@ const CompaniesPage = ({user}) => {
 
     return (
         user
-            ? <SideBarMenu user={user} children={
-                <div className="usersPageContainer">
-                    <div className="companiesPageHeader">
-                        <h1 className="companiesHeader">Companies: </h1>
-                        <div className="companiesAddNewCompanyButton">
-                            <Button onClick={handleOpen}><h1>NEW +</h1></Button>
-                            <Modal
-                                open={open}
-                                onClose={handleClose}
-                                aria-labelledby="modal-modal-title"
-                                aria-describedby="modal-modal-description"
-                            >
-                                <Box component="form" onSubmit={handleSubmit} sx={style}>
-                                    <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Add New Company
-                                    </Typography>
-                                    <Grid container spacing={2}>
-                                        {formFields.map((field, index) => (
-                                            <Grid item xs={12} key={index}>
-                                                <TextField
-                                                    fullWidth
-                                                    label={field.label}
-                                                    variant="outlined"
-                                                    required={true}
-                                                    onChange={(e) => handleChange(e, field.name)}
-                                                />
-                                            </Grid>
-                                        ))}
-                                    </Grid>
-                                    <div className="modalFooter">
-                                        <Button className="companiesButton" onClick={handleClose}>
-                                            Close
-                                        </Button>
-                                        <Button className="companiesButton" type="submit">
-                                            Create new company
-                                        </Button>
-                                    </div>
-                                </Box>
-
-                            </Modal>
-                        </div>
+            ?
+            <div className="usersPageContainer">
+                <div className="companiesPageHeader">
+                    <h1 className="companiesHeader">Companies: </h1>
+                    <div className="companiesAddNewCompanyButton">
+                        <Button onClick={handleOpen}><h1>NEW +</h1></Button>
+                        <Modal
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="modal-modal-title"
+                            aria-describedby="modal-modal-description"
+                        >
+                            <Box component="form" onSubmit={handleSubmit} sx={style}>
+                                <Typography id="modal-modal-title" variant="h6" component="h2">
+                                    Add New Company
+                                </Typography>
+                                <Grid container spacing={2}>
+                                    {formFields.map((field, index) => (
+                                        <Grid item xs={12} key={index}>
+                                            <TextField
+                                                fullWidth
+                                                label={field.label}
+                                                variant="outlined"
+                                                required={true}
+                                                onChange={(e) => handleChange(e, field.name)}
+                                            />
+                                        </Grid>
+                                    ))}
+                                </Grid>
+                                <div className="modalFooter">
+                                    <Button className="companiesButton" onClick={handleClose}>
+                                        Close
+                                    </Button>
+                                    <Button className="companiesButton" type="submit">
+                                        Create new company
+                                    </Button>
+                                </div>
+                            </Box>
+                        </Modal>
                     </div>
-                    <TableContainer component={Paper}>
-                        <Table sx={{minWidth: 650}} aria-label="companies table">
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell>Company Name</TableCell>
-                                    <TableCell>Certificate №</TableCell>
-                                    <TableCell>Certificate type</TableCell>
-                                    <TableCell>About</TableCell>
-                                    <TableCell>Status</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {(rowsPerPage > 0
-                                        ? companies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                        : companies
-                                ).map(company => (
-                                    <TableRow key={company.id}>
-                                        <TableCell>
-                                            <a href={`/company/${company.id}`}>
-                                                {company.companyName}
-                                            </a>
-                                        </TableCell>
-                                        <TableCell>{company.certificate && company.certificate.certificateNumber}</TableCell>
-                                        <TableCell>{company.certificate && company.certificate.certificateType}</TableCell>
-                                        <TableCell>{company.about}</TableCell>
-                                        <TableCell>{company.inProcess === true ? "in process" : "not in process"}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-                    <TablePagination
-                        rowsPerPageOptions={[10, 25, 100]}
-                        component="div"
-                        count={companies.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                    />
                 </div>
-            }/>
+                <TableContainer component={Paper}>
+                    <Table sx={{minWidth: 650}} aria-label="companies table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell>Company Name</TableCell>
+                                <TableCell>Certificate №</TableCell>
+                                <TableCell>Certificate type</TableCell>
+                                <TableCell>About</TableCell>
+                                <TableCell>Status</TableCell>
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {(rowsPerPage > 0
+                                    ? companies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                    : companies
+                            ).map(company => (
+                                <TableRow key={company.id}>
+                                    <TableCell>
+                                        <a href={`/company/${company.id}`}>
+                                            {company.companyName}
+                                        </a>
+                                    </TableCell>
+                                    <TableCell>{company.certificate && company.certificate.certificateNumber}</TableCell>
+                                    <TableCell>{company.certificate && company.certificate.certificateType}</TableCell>
+                                    <TableCell>{company.about}</TableCell>
+                                    <TableCell>{company.inProcess === true ? "in process" : "not in process"}</TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+                <TablePagination
+                    rowsPerPageOptions={[10, 25, 100]}
+                    component="div"
+                    count={companies.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                />
+            </div>
             : null
     );
 };
