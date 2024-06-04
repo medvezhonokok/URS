@@ -50,7 +50,7 @@ public class CompanyController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @PostMapping("/get_by_id")
+    @GetMapping("/get_by_id")
     public ResponseEntity<Company> getCompanyByCompanyId(@RequestParam String companyId, @RequestParam String jwt) {
         try {
             Long id = Long.parseLong(companyId);

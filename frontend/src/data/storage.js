@@ -4,13 +4,14 @@ import * as constants from "../constants/constants";
 const jwtToken = localStorage.getItem('jwtToken');
 
 export const getCompanyById = async (companyId) => {
-    await axios.post(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`)
-        .then(response => {
-            return response.data;
-        }).catch(err => {
-            console.log("Failed to get company: " + err)
-        });
-}
+    try {
+        const response = await axios.get(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`);
+        return response.data;
+    } catch (error) {
+        console.error("Failed to get company:", error);
+    }
+};
+
 
 export const getUserById = async (userId) => {
     try {
@@ -46,13 +47,7 @@ export const addNewCompany = (newCompanyJson) => {
 export const getCompanies = async () => {
     try {
         const response = await axios.post(constants.BACKEND_JAVA_URL + '/company/all?jwt=' + jwtToken);
-        return response.data.map(company => ({
-            id: company.id,
-            certificate: company.certificate,
-            about: company.about,
-            inProcess: company.inProcess,
-            companyName: company.companyName,
-        }));
+        return response.data;
     } catch (err) {
         console.error("Failed to get companies: " + err);
         return [];
@@ -87,7 +82,6 @@ export const saveNewAppointment = async (appointment) => {
 
 export const addAppointment = async (newAppt) => {
     try {
-        console.log(newAppt);
         await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
             headers: {
                 'Content-Type': 'application/json'
