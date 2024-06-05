@@ -51,7 +51,7 @@ public class AuditCredentialsValidator implements Validator {
                     LocalDate auditStartDate = audit.getStartDate().toLocalDate();
                     LocalDate auditEndDate = audit.getEndDate().toLocalDate();
 
-                    if (endDate.isAfter(auditStartDate) || startDate.isBefore(auditEndDate)) {
+                    if (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)) {
                         errors.rejectValue("startDate",
                                 "audit-overlap",
                                 "Данный пользователь уже занят в эти даты");
