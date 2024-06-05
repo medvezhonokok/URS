@@ -11,7 +11,6 @@ import {
     Toolbar,
     WeekView,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import {appointments} from '../../../data/appointments';
 import './SchedulePage.css';
 
@@ -81,44 +80,40 @@ const SchedulePage = ({user}) => {
         );
     };
 
-    return user ? (
-        <div>
-            <SideBarMenu user={user}>
-                <div className="usersPageContainer">
-                    <h1 className="companiesHeader">Расписание</h1>
-                    <Paper>
-                        <Scheduler
-                            data={data}
-                            height={660}
-                        >
-                            <ViewState
-                                currentDate={currentDate}
-                                onCurrentDateChange={(date) => setCurrentDate(date)}
-                            />
-                            <EditingState
-                                onCommitChanges={commitChanges}
-                            />
-                            <IntegratedEditing/>
-                            <WeekView
-                                startDayHour={9}
-                                endDayHour={17}
-                            />
-                            <Toolbar/>
-                            <DateNavigator/>
-                            <TodayButton/>
-                            <Appointments
-                                appointmentComponent={appointmentComponent}
-                            />
-                            <AppointmentTooltip
-                                showDeleteButton
-                            />
-                            <DragDropProvider/>
-                        </Scheduler>
-                    </Paper>
-                </div>
-            </SideBarMenu>
+    return (user
+        ? <div className="usersPageContainer">
+            <h1 className="companiesHeader">Расписание</h1>
+            <Paper>
+                <Scheduler
+                    data={data}
+                    height={660}
+                >
+                    <ViewState
+                        currentDate={currentDate}
+                        onCurrentDateChange={(date) => setCurrentDate(date)}
+                    />
+                    <EditingState
+                        onCommitChanges={commitChanges}
+                    />
+                    <IntegratedEditing/>
+                    <WeekView
+                        startDayHour={9}
+                        endDayHour={17}
+                    />
+                    <Toolbar/>
+                    <DateNavigator/>
+                    <TodayButton/>
+                    <Appointments
+                        appointmentComponent={appointmentComponent}
+                    />
+                    <AppointmentTooltip
+                        showDeleteButton
+                    />
+                    <DragDropProvider/>
+                </Scheduler>
+            </Paper>
         </div>
-    ) : null;
+        : null);
 };
 
 export default SchedulePage;

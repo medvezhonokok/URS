@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import * as storage from "../../../data/storage";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -64,75 +63,71 @@ const CommonSchedulePage = ({user}) => {
     };
 
     return (
-        user ?
-            <div>
-                <SideBarMenu user={user} children={
-                    <div className="usersPageContainer">
-                        <div className="companiesPageHeader">
-                            <h1 className="companiesHeader">Общий график</h1>
-                            <div className="companiesAddNewCompanyButton">
-                                <Button onClick={() => setIsModalOpen(true)}><h1>ДОБАВИТЬ АУДИТ +</h1></Button>
-                                <AddAuditForm isOpen={isModalOpen}
-                                              handleClose={() => setIsModalOpen(false)}
-                                              companies={companies}
-                                              users={users}
-                                />
-                            </div>
-                        </div>
-                        <div className="selectContainer">
-                            <FormControl>
-                                <InputLabel id="month-select-label">Месяц</InputLabel>
-                                <Select
-                                    labelId="month-select-label"
-                                    id="month-select"
-                                    value={selectedMonth}
-                                    onChange={handleMonthChange}
-                                >
-                                    {storage.monthNames.map(month => (
-                                        <MenuItem key={month.value} value={month.value}>{month.label}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                            <FormControl>
-                                <InputLabel id="year-select-label">Год</InputLabel>
-                                <Select
-                                    labelId="year-select-label"
-                                    id="year-select"
-                                    value={selectedYear}
-                                    onChange={handleYearChange}
-                                >
-                                    {yearNames.map(year => (
-                                        <MenuItem key={year} value={year}>{year}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </div>
-                        <TableContainer component={Paper}>
-                            <Table sx={{minWidth: 650}} aria-label="companies table">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell></TableCell>
-                                        {daysInMonth.map(day => (
-                                            <TableCell key={day}>{day}</TableCell>
-                                        ))}
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {users.map(user => (
-                                        <TableRow key={user.id}>
-                                            <TableCell>{user.name}</TableCell>
-                                            {daysInMonth.map(day => (
-                                                <TableCell key={`${user.id}-${day}`}
-                                                           style={{backgroundColor: hasAudit(user.id, day) ? 'green' : 'white'}}>
-                                                </TableCell>
-                                            ))}
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </TableContainer>
+        user
+            ? <div className="usersPageContainer">
+                <div className="companiesPageHeader">
+                    <h1 className="companiesHeader">Общий график</h1>
+                    <div className="companiesAddNewCompanyButton">
+                        <Button onClick={() => setIsModalOpen(true)}><h1>ДОБАВИТЬ АУДИТ +</h1></Button>
+                        <AddAuditForm isOpen={isModalOpen}
+                                      handleClose={() => setIsModalOpen(false)}
+                                      companies={companies}
+                                      users={users}
+                        />
                     </div>
-                }/>
+                </div>
+                <div className="selectContainer">
+                    <FormControl>
+                        <InputLabel id="month-select-label">Месяц</InputLabel>
+                        <Select
+                            labelId="month-select-label"
+                            id="month-select"
+                            value={selectedMonth}
+                            onChange={handleMonthChange}
+                        >
+                            {storage.monthNames.map(month => (
+                                <MenuItem key={month.value} value={month.value}>{month.label}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                    <FormControl>
+                        <InputLabel id="year-select-label">Год</InputLabel>
+                        <Select
+                            labelId="year-select-label"
+                            id="year-select"
+                            value={selectedYear}
+                            onChange={handleYearChange}
+                        >
+                            {yearNames.map(year => (
+                                <MenuItem key={year} value={year}>{year}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </div>
+                <TableContainer component={Paper}>
+                    <Table sx={{minWidth: 650}} aria-label="companies table">
+                        <TableHead>
+                            <TableRow>
+                                <TableCell></TableCell>
+                                {daysInMonth.map(day => (
+                                    <TableCell key={day}>{day}</TableCell>
+                                ))}
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {users.map(user => (
+                                <TableRow key={user.id}>
+                                    <TableCell>{user.name}</TableCell>
+                                    {daysInMonth.map(day => (
+                                        <TableCell key={`${user.id}-${day}`}
+                                                   style={{backgroundColor: hasAudit(user.id, day) ? 'green' : 'white'}}>
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </div>
             : null
     );

@@ -1,110 +1,41 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './App.css';
 import LoginForm from "./components/form/LoginForm/LoginForm";
 import * as index from "./index";
-import * as storage from "./data/storage";
+import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";
+import UsersPage from "./components/page/UsersPage/UsersPage";
+import CompaniesPage from "./components/page/CompaniesPage/CompaniesPage";
+import SchedulePage from "./components/page/SchedulePage/SchedulePage";
+import CompanyPage from "./components/page/CompanyPage/CompanyPage";
+import UserPage from "./components/page/UserPage/UserPage";
+import HomePage from "./components/page/HomePage/HomePage";
+import CommonSchedulePage from "./components/page/CommonSchedulePage/CommonSchedulePage";
+import { AnimatePresence } from 'framer-motion';
 
 const App = () => {
-    const [companies, setCompanies] = useState([]);
-    const [selectedCompanyId, setSelectedCompany] = useState(null);
     const user = index.getUser();
 
-    useEffect(() => {
-        storage.getCompanies().then(
-            companiesJson => {
-                setCompanies(companiesJson)
-            }
-        );
-    }, []);
-
-    const showCompanyInfoByCompanyId = (companyId) => {
-        setSelectedCompany(selectedCompanyId === companyId ? null : companyId);
-    };
-
-    const getInProcessCompanies = companies
-        .filter(company => company.inProcess)
-        .map(company => (
-            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
-                <div>
-                    <h3>{company.englishName}</h3>
-                    {company.certificate ? (
-                        <>
-                            <p>Certificate type: {company.certificate.auditCriterion}</p>
-                            <p>Certificate number: {company.certificate.auditCriterion}</p>
-                        </>
-                    ) : (
-                        <p>У компании нет сертификата</p>
-                    )}
-                    {selectedCompanyId === company.id && (
-                        <div>
-                            <p>About: {company.about}</p>
-                        </div>
-                    )}
+    return user ? (
+        <div className="app-container">
+            <Router>
+                <SideBarMenu user={user} className="sidebar"/>
+                <div className="content">
+                    <AnimatePresence>
+                        <Routes>
+                            <Route path='/' exact element={<HomePage user={user}/>}/>
+                            <Route path='/users' element={<UsersPage user={user}/>}/>
+                            <Route path='/companies' element={<CompaniesPage user={user}/>}/>
+                            <Route path='/schedule' element={<SchedulePage user={user}/>}/>
+                            <Route path='/common' element={<CommonSchedulePage user={user}/>}/>
+                            <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
+                            <Route path='/user/:userId' element={<UserPage user={user}/>}/>
+                        </Routes>
+                    </AnimatePresence>
                 </div>
-            </div>
-        ));
-
-    const getNotInProcessCompanies = companies
-        .filter(company => !company.inProcess)
-        .map(company => (
-            <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
-                <div>
-                    <h3>{company.englishName}</h3>
-                    {company.certificate ? (
-                        <>
-                            <p>Certificate type: {company.certificate.auditCriterion}</p>
-                            <p>Certificate number: {company.certificate.certificateNumber}</p>
-                        </>
-                    ) : (
-                        <p>У компании нет сертификата</p>
-                    )}
-                    {selectedCompanyId === company.id && (
-                        <div>
-                            <p>About: {company.about}</p>
-                        </div>
-                    )}
-                </div>
-            </div>
-        ));
-
-    const userCeoContent =
-        <div className="App">
-            <div>
-                <SideBarMenu user={user} children={
-                    <div className="userCard">
-                        <h3>COMPANIES</h3>
-                        <h2>IN PROCESS</h2>
-                        {getInProcessCompanies}
-                        <h2>NOT IN PROCESS</h2>
-                        {getNotInProcessCompanies}
-                    </div>
-                }/>
-            </div>
-        </div>;
-
-    const userDefaultWorkerContent =
-        <div className="App">
-            <div>
-                <SideBarMenu user={user} children={
-                    // TODO....
-                    <div style={{display: "flex", paddingTop: "5rem"}}>
-                        <div className="borderedBox companies">
-                            <h3>COMPANIES</h3>
-                            <h2>IN PROCESS</h2>
-                            {getInProcessCompanies}
-                        </div>
-                        <div className="borderedBox companies">
-                            <h3>COMPANIES</h3>
-                            <h2>NOT IN PROCESS</h2>
-                            {getNotInProcessCompanies}
-                        </div>
-                    </div>
-                }/>
-            </div>
-        </div>;
-
-    return user ? user.userRole === "CEO" ? userCeoContent : userDefaultWorkerContent : <LoginForm/>;
+            </Router>
+        </div>
+    ) : <LoginForm/>;
 };
 
 export default App;

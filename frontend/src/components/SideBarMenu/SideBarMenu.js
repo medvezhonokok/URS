@@ -1,29 +1,72 @@
 import React from 'react';
 import './SideBarMenu.css';
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import { Button } from "react-bootstrap";
-import * as index from "../../index";
+import * as AiIcons from 'react-icons/ai';
+import * as FaIcons from 'react-icons/fa';
+import { MdBusinessCenter } from 'react-icons/md';
+import { NavLink } from 'react-router-dom';
 
-const SideBarMenu = ({ user, children }) => {
+const SideBarData = [
+    {
+        title: 'Главная',
+        path: '/',
+        icon: <AiIcons.AiFillHome />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Сотрудники',
+        path: '/users',
+        icon: <FaIcons.FaUsers />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Мое расписание',
+        path: '/schedule',
+        icon: <FaIcons.FaCalendarAlt />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Клиенты',
+        path: '/companies',
+        icon: <MdBusinessCenter />,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Общий график',
+        path: '/common',
+        icon: <FaIcons.FaRegCalendarAlt />,
+        cName: 'nav-text'
+    }
+];
+
+const SideBarMenu = ({ user }) => {
+    const logout = () => {
+        localStorage.removeItem('user');
+        window.location.href = "/";
+    }
+
     return (
-        <div className="sidebar-container">
-            <Sidebar>
-                <Menu>
-                    <MenuItem>{user.userRole} | {user.name}</MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/"}>Общее</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/users"}>Сотрудники</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/schedule"}>Мое расписание</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/companies"}>Клиенты</Button></MenuItem>
-                    <MenuItem><Button className="buttonNavBar" href={"/common"}>Общий график</Button></MenuItem>
-                    <SubMenu label="Additional info">
-                        <MenuItem><Button className="buttonNavBar" href={"#"}><b>{user.name}</b></Button></MenuItem>
-                        <MenuItem><Button onClick={() => index.logout()}>Выйти из системы</Button></MenuItem>
-                    </SubMenu>
-                </Menu>
-            </Sidebar>
-            <div className="content-container">
-                {children}
-            </div>
+        <div className="sidebar">
+            <nav className='nav-menu'>
+                <ul className='nav-menu-items'>
+                    {SideBarData.map((item, index) => (
+                        <li key={index} className={item.cName}>
+                            <NavLink
+                                to={item.path}
+                                className={({ isActive }) => isActive ? 'nav-text active' : 'nav-text'}
+                            >
+                                {item.icon}
+                                <span>{item.title}</span>
+                            </NavLink>
+                        </li>
+                    ))}
+                </ul>
+                <div className='user-info'>
+                    <span>{user.userRole} | {user.name}</span>
+                    <button className='logout-button' onClick={logout}>
+                        Выйти из системы
+                    </button>
+                </div>
+            </nav>
         </div>
     );
 };
