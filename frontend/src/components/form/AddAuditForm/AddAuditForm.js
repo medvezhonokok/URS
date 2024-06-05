@@ -4,6 +4,7 @@ import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
 import axios from "axios";
 import * as constants from "../../../constants/constants";
+import {CertificateTypes} from "../../../data/storage";
 
 const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
     const [errors, setErrors] = useState({});
@@ -15,6 +16,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
         companyId: "",
         userId: ""
     });
+    const [selectedCompany, setSelectedCompany] = useState(null);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,6 +36,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                 userId: ""
             });
             handleClose();
+            window.location.reload();
         }).catch((ignored) => {
             setErrors({auditOverlap: 'Выбранный аудитор уже занят в выбранные даты'});
         });
@@ -47,12 +50,36 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
         });
     };
 
+    const handleCompanyChange = (event) => {
+        const companyId = event.target.value;
+        const selectedCompany = companies.find(company => company.id === companyId);
+        setSelectedCompany(selectedCompany);
+        setAuditData({
+            ...auditData,
+            companyId: companyId
+        });
+    };
+
     const getCompanyInfoString = (company) => {
         return company.companyName + (company.certificate ? `\t(${company.certificate.certificateType})` : "\t(НОВАЯ)");
     };
 
     const competentByCertificateType = (user) => {
-        return true;
+        if (selectedCompany) {
+            const certificateType = selectedCompany.certificate.certificateType; // IATF_16949
+
+            let idx = 0;
+            for (const {key} of CertificateTypes) {
+                if (key === certificateType) {
+                    break;
+                }
+
+                idx++;
+            }
+            return user.certificates.split('#')[idx] === '1';
+        }
+
+        return false;
     }
 
     return (
@@ -118,10 +145,10 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                                 id="company-select"
                                 name="companyId"
                                 value={auditData.companyId}
-                                onChange={handleInputChange}
+                                onChange={handleCompanyChange}
                             >
                                 {companies
-                                    .filter(company => company.certificate !== null)
+                                    .filter(company => company.certificate !== null && company.audit === null)
                                     .map(company => (
                                         <MenuItem key={company.id} value={company.id}>
                                             {getCompanyInfoString(company)}

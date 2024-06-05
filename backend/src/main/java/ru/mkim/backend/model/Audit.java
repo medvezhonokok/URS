@@ -30,7 +30,7 @@ public class Audit {
 
     private LocalDateTime endDate;
 
-    @ManyToOne
+    @OneToOne
     @JsonIgnore
     @JoinColumn(name = "company_id")
     private Company company;

@@ -92,8 +92,8 @@ public class Company {
 
     private boolean inProcess;
 
-    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Audit> audit;
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Audit audit;
 
     public boolean getInProcess() {
         if (tasks != null && !tasks.isEmpty()) return tasks.stream().anyMatch(task -> task.getUser() != null);
