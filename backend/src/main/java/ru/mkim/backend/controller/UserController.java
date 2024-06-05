@@ -7,7 +7,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
-import ru.mkim.backend.model.CertificateType;
+import ru.mkim.backend.model.AuditCriterion;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;
@@ -72,11 +72,11 @@ public class UserController {
         for (Map.Entry<String, Map<String, Boolean>> entry : userCertificateMap.entrySet()) {
             User user = userService.findById(Long.parseLong(entry.getKey()));
 
-            int certificateSize = CertificateType.values().length;
+            int certificateSize = AuditCriterion.values().length;
             final String[] certificates = new String[certificateSize];
             int index = 0;
 
-            for (CertificateType value : CertificateType.values()) {
+            for (AuditCriterion value : AuditCriterion.values()) {
                 certificates[index++] = entry.getValue().get(value.toString()) ? "1" : "0";
             }
 

@@ -89,7 +89,7 @@ export const getUsers = async () => {
     function getUserCompanyNamesByTask(userTasks) {
         return userTasks.map(
             userTask => (
-                userTask.company ? userTask.company.companyName : null
+                userTask.company ? userTask.company.englishName : null
             ));
     }
 

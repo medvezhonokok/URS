@@ -61,16 +61,16 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
     };
 
     const getCompanyInfoString = (company) => {
-        return company.companyName + (company.certificate ? `\t(${company.certificate.certificateType})` : "\t(НОВАЯ)");
+        return company.englishName + (company.certificate ? `\t(${company.certificate.auditCriterion})` : "\t(НОВАЯ)");
     };
 
     const competentByCertificateType = (user) => {
-        if (selectedCompany) {
-            const certificateType = selectedCompany.certificate.certificateType; // IATF_16949
+        if (selectedCompany && selectedCompany.certificate) {
+            const auditCriterion = selectedCompany.certificate.auditCriterion; // IATF_16949
 
             let idx = 0;
             for (const {key} of CertificateTypes) {
-                if (key === certificateType) {
+                if (key === auditCriterion) {
                     break;
                 }
 
@@ -148,7 +148,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                                 onChange={handleCompanyChange}
                             >
                                 {companies
-                                    .filter(company => company.certificate !== null && company.audit === null)
+                                    .filter(company =>company.audit === null)
                                     .map(company => (
                                         <MenuItem key={company.id} value={company.id}>
                                             {getCompanyInfoString(company)}

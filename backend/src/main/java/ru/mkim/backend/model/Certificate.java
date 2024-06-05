@@ -19,7 +19,7 @@ public class Certificate {
     @NonNull
     @Enumerated(EnumType.STRING)
     @Column(length = 40)
-    private CertificateType certificateType;
+    private AuditCriterion auditCriterion;
 
     @Nullable
     private String certificateNumber;

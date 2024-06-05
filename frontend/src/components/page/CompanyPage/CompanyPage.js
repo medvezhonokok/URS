@@ -34,7 +34,7 @@ const CompanyPage = ({user}) => {
                     <>
                         <SideBarMenu user={user} children={
                             <div className="usersPageContainer">
-                                <h1 className="companiesHeader">Компания: {company.companyName}</h1>
+                                <h1 className="companiesHeader">Компания: {company.englishName}</h1>
                                 <p><strong>Address:</strong> {company.companyAddress}</p>
                                 <p><strong>Contact Email:</strong> {company.headEmail}</p>
                                 <p><strong>Website:</strong> <a href={company.webSite} target="_blank"

@@ -1,8 +1,12 @@
 package ru.mkim.backend.form;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
+import ru.mkim.backend.model.AuditCriterion;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -14,14 +18,24 @@ import javax.validation.constraints.Size;
 public class CompanyCredentials {
 
     @NonNull
-    @NotEmpty(message = "Company name is required")
-    @Size(max = 255, message = "Company name must be less than 255 characters")
-    private String companyName;
+    @NotEmpty(message = "English name is required")
+    @Size(max = 255, message = "English name must be less than 255 characters")
+    private String englishName;
 
     @NonNull
-    @NotEmpty(message = "Company address is required")
-    @Size(max = 255, message = "Company address must be less than 255 characters")
-    private String companyAddress;
+    @NotEmpty(message = "Russian name is required")
+    @Size(max = 255, message = "Russian name must be less than 255 characters")
+    private String russianName;
+
+    @NonNull
+    @NotEmpty(message = "English address is required")
+    @Size(max = 255, message = "English address must be less than 255 characters")
+    private String englishAddress;
+
+    @NonNull
+    @NotEmpty(message = "Russian address is required")
+    @Size(max = 255, message = "Russian address must be less than 255 characters")
+    private String russianAddress;
 
     @NonNull
     @NotEmpty(message = "Postal or Zip code is required")
@@ -34,19 +48,29 @@ public class CompanyCredentials {
     private String countryOrState;
 
     @NonNull
-    @NotEmpty(message = "CEO name is required")
-    @Size(max = 255, message = "CEO name must be less than 255 characters")
-    private String companyCeoName;
+    @NotEmpty(message = "English manager name is required")
+    @Size(max = 255, message = "English manager name must be less than 255 characters")
+    private String englishManagerName;
 
     @NonNull
-    @NotEmpty(message = "Head phone number is required")
-    @Pattern(regexp = "\\+?[0-9]+", message = "Head phone number must be a valid phone number")
-    private String headPhoneNumber;
+    @NotEmpty(message = "Russian manager name is required")
+    @Size(max = 255, message = "Russian manager name must be less than 255 characters")
+    private String russianManagerName;
 
     @NonNull
-    @NotEmpty(message = "Head email is required")
-    @Email(message = "Head email should be valid")
-    private String headEmail;
+    @NotEmpty(message = "Manager position is required")
+    @Size(max = 255, message = "Manager position must be less than 255 characters")
+    private String managerPosition;
+
+    @NonNull
+    @NotEmpty(message = "Manager phone number is required")
+    @Pattern(regexp = "\\+?[0-9]+", message = "Manager phone number must be a valid phone number")
+    private String managerPhoneNumber;
+
+    @NonNull
+    @NotEmpty(message = "Manager email is required")
+    @Email(message = "Manager email should be valid")
+    private String managerEmail;
 
     @NonNull
     @NotEmpty(message = "Website is required")
@@ -54,9 +78,19 @@ public class CompanyCredentials {
     private String webSite;
 
     @NonNull
-    @NotEmpty(message = "Contact person name is required")
-    @Size(max = 255, message = "Contact person name must be less than 255 characters")
-    private String contactPersonName;
+    @NotEmpty(message = "English contact person name is required")
+    @Size(max = 255, message = "English contact person name must be less than 255 characters")
+    private String englishContactPersonName;
+
+    @NonNull
+    @NotEmpty(message = "Russian contact person name is required")
+    @Size(max = 255, message = "Russian contact person name must be less than 255 characters")
+    private String russianContactPersonName;
+
+    @NonNull
+    @NotEmpty(message = "Contact person position is required")
+    @Size(max = 255, message = "Contact person position must be less than 255 characters")
+    private String contactPersonPosition;
 
     @NonNull
     @NotEmpty(message = "Contact person email is required")
@@ -74,27 +108,17 @@ public class CompanyCredentials {
     private String okved;
 
     @NonNull
-    @NotEmpty(message = "Requested accreditation is required")
-    @Size(max = 255, message = "Requested accreditation must be less than 255 characters")
-    private String requestedAccreditation;
+    @NotEmpty(message = "English certification scope is required")
+    @Size(max = 255, message = "English certification scope must be less than 255 characters")
+    private String englishCertificationScope;
 
     @NonNull
-    @NotEmpty(message = "Product type is required")
-    @Size(max = 255, message = "Product type must be less than 255 characters")
-    private String productType;
+    @NotEmpty(message = "Russian certification scope is required")
+    @Size(max = 255, message = "Russian certification scope must be less than 255 characters")
+    private String russianCertificationScope;
 
-    private long totalWorkerCount;
-
-    private long organizationShiftNumber;
-
-    private long workingDayDurationHours;
-
-    @Size(max = 100, message = "Primary language must be less than 100 characters")
-    private String primaryLanguage;
-
-    @Size(max = 50, message = "Currency used must be less than 50 characters")
-    private String currencyUsed;
-
-    @Size(max = 500, message = "About section must be less than 500 characters")
-    private String about;
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 40)
+    private AuditCriterion auditCriterion;
 }

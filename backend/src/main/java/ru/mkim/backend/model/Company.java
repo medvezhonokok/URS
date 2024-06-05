@@ -1,7 +1,5 @@
 package ru.mkim.backend.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NonNull;
@@ -10,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -22,10 +19,16 @@ public class Company {
     private long id;
 
     @NonNull
-    private String companyName;
+    private String englishName;
 
     @NonNull
-    private String companyAddress;
+    private String russianName;
+
+    @NonNull
+    private String englishAddress;
+
+    @NonNull
+    private String russianAddress;
 
     @NonNull
     private String postalOrZipCode;
@@ -34,19 +37,31 @@ public class Company {
     private String countryOrState;
 
     @NonNull
-    private String companyCeoName;
+    private String englishManagerName;
 
     @NonNull
-    private String headPhoneNumber;
+    private String russianManagerName;
 
     @NonNull
-    private String headEmail;
+    private String managerPosition;
+
+    @NonNull
+    private String managerPhoneNumber;
+
+    @NonNull
+    private String managerEmail;
 
     @NonNull
     private String webSite;
 
     @NonNull
-    private String contactPersonName;
+    private String englishContactPersonName;
+
+    @NonNull
+    private String russianContactPersonName;
+
+    @NonNull
+    private String contactPersonPosition;
 
     @NonNull
     private String contactPersonEmail;
@@ -58,45 +73,19 @@ public class Company {
     private String okved;
 
     @NonNull
-    private String requestedAccreditation;
+    private String englishCertificationScope;
 
     @NonNull
-    private String productType;
-
-    private long totalWorkerCount;
-
-    private long organizationShiftNumber;
-
-    private long workingDayDurationHours;
-
-    private String primaryLanguage;
-
-    private String currencyUsed;
+    private String russianCertificationScope;
 
     @CreationTimestamp
     private LocalDateTime creationTime;
+
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Audit audit;
 
     @Nullable
     @OneToOne
     @JoinColumn(name = "certificate_id")
     private Certificate certificate;
-
-    private String about;
-
-    @Nullable
-    private String pathToReceiptOfPayment;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "company")
-    private List<Task> tasks;
-
-    private boolean inProcess;
-
-    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Audit audit;
-
-    public boolean getInProcess() {
-        if (tasks != null && !tasks.isEmpty()) return tasks.stream().anyMatch(task -> task.getUser() != null);
-        return false;
-    }
 }

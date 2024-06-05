@@ -3,7 +3,7 @@ package ru.mkim.backend.model;
 import lombok.Getter;
 
 @Getter
-public enum CertificateType {
+public enum AuditCriterion {
     IATF_16949("IATF 16949"),
     ГОСТР_58139("ГОСТР 58139"),
     ISO_9001("ISO 9001"),
@@ -33,7 +33,7 @@ public enum CertificateType {
 
     private final String typeString;
 
-    CertificateType(String typeString) {
+    AuditCriterion(String typeString) {
         this.typeString = typeString;
     }
 }

@@ -3,7 +3,7 @@ import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import * as storage from "../../../data/storage";
-import {addNewCompany} from "../../../data/storage";
+import {addNewCompany, CertificateTypes} from "../../../data/storage";
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -12,7 +12,7 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-import {Box, Grid, Modal, TextField, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material";
 
 const style = {
     position: 'absolute',
@@ -29,27 +29,28 @@ const style = {
 };
 
 const formFields = [
-    {label: "Название организации", name: "companyName"},
-    {label: "Фактический адрес организации", name: "companyAddress"},
+    {label: "Название организации [en]", name: "englishName"},
+    {label: "Название организации [ru]", name: "russianName"},
+    {label: "Фактический адрес организации [en]", name: "englishAddress"},
+    {label: "Фактический адрес организации [ru]", name: "russianAddress"},
     {label: "Postal/Zip Code", name: "postalOrZipCode"},
     {label: "Country/State", name: "countryOrState"},
-    {label: "ФИО руководителя (без сокращений)", name: "companyCeoName"},
-    {label: "Телефон", name: "headPhoneNumber"},
-    {label: "E-mail", name: "headEmail"},
+    {label: "ФИО руководителя (без сокращений) [en]", name: "englishManagerName"},
+    {label: "ФИО руководителя (без сокращений) [ru]", name: "russianManagerName"},
+    {label: "Должность руководителя", name: "managerPosition"},
+    {label: "Телефон руководителя", name: "managerPhoneNumber"},
+    {label: "E-mail руководителя", name: "managerEmail"},
     {label: "Web site", name: "webSite"},
-    {label: "Контактное лицо", name: "contactPersonName"},
-    {label: "E-mail", name: "contactPersonEmail"},
+    {label: "ФИО контактного лица [en]", name: "englishContactPersonName"},
+    {label: "ФИО контактного лица [ru]", name: "russianContactPersonName"},
+    {label: "Должность контактного лица", name: "contactPersonPosition"},
+    {label: "E-mail контактного лица", name: "contactPersonEmail"},
     {label: "ИНН", name: "tin"},
     {label: "ОКВЭД", name: "okved"},
-    {label: "Критерий аудита: (Например ISO9001:2015)", name: "requestedAccreditation"},
-    {label: "Запрашиваемая аккредитация (UKAS, NABCB, ANAB, Accredia)", name: "requestedAccreditation"},
-    {label: "Тип продукции", name: "productType"},
-    {label: "Общее количество сотрудников (включая временных сотрудников и совместителей)", name: "totalWorkerCount"},
-    {label: "Укажите количество смен", name: "organizationShiftNumber"},
-    {label: "Сколько часов длится полный рабочий день?", name: "workingDayDurationHours"},
-    {label: "Primary Language", name: "primaryLanguage"},
-    {label: "Currency Used", name: "currencyUsed"}
-    // TODO: add more fields & names if need
+    {label: "Область сертифицирования [en]", name: "englishCertificationScope"},
+    {label: "Область сертифицирования [ru]", name: "russianCertificationScope"},
+    {label: "Критерий аудита", name: "auditCriterion"},
+    // TODO.....
 ];
 
 const CompaniesPage = ({user}) => {
@@ -57,7 +58,7 @@ const CompaniesPage = ({user}) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [open, setOpen] = useState(false);
-    const [formData, setFormData] = useState({});
+    const [companyCredentials, setCompanyCredentials] = useState({});
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -80,15 +81,16 @@ const CompaniesPage = ({user}) => {
     };
 
     const handleChange = (event, name) => {
-        setFormData({
-            ...formData,
+        setCompanyCredentials({
+            ...companyCredentials,
             [name]: event.target.value,
         });
     };
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        addNewCompany(JSON.stringify(formData));
+        addNewCompany(JSON.stringify(companyCredentials));
+        setCompanies([...companies, companyCredentials]);
         handleClose();
     };
 
@@ -113,13 +115,30 @@ const CompaniesPage = ({user}) => {
                                     <Grid container spacing={2}>
                                         {formFields.map((field, index) => (
                                             <Grid item xs={12} key={index}>
-                                                <TextField
-                                                    fullWidth
-                                                    label={field.label}
-                                                    variant="outlined"
-                                                    required={true}
-                                                    onChange={(e) => handleChange(e, field.name)}
-                                                />
+                                                {field.name === "auditCriterion" ? (
+                                                    <FormControl fullWidth variant="outlined" required>
+                                                        <InputLabel>{field.label}</InputLabel>
+                                                        <Select
+                                                            onChange={(e) => handleChange(e, field.name)}
+                                                            label={field.label}
+                                                            defaultValue=""
+                                                        >
+                                                            {CertificateTypes.map((type) => (
+                                                                <MenuItem key={type.key} value={type.key}>
+                                                                    {type.value}
+                                                                </MenuItem>
+                                                            ))}
+                                                        </Select>
+                                                    </FormControl>
+                                                ) : (
+                                                    <TextField
+                                                        fullWidth
+                                                        label={field.label}
+                                                        variant="outlined"
+                                                        required={true}
+                                                        onChange={(e) => handleChange(e, field.name)}
+                                                    />
+                                                )}
                                             </Grid>
                                         ))}
                                     </Grid>
@@ -154,11 +173,11 @@ const CompaniesPage = ({user}) => {
                                     <TableRow key={company.id}>
                                         <TableCell>
                                             <a href={`/company/${company.id}`}>
-                                                {company.companyName}
+                                                {company.englishName}
                                             </a>
                                         </TableCell>
                                         <TableCell>{company.certificate && company.certificate.certificateNumber}</TableCell>
-                                        <TableCell>{company.certificate && company.certificate.certificateType}</TableCell>
+                                        <TableCell>{company.certificate && company.certificate.auditCriterion}</TableCell>
                                         <TableCell>{company.about}</TableCell>
                                         <TableCell>{company.inProcess === true ? "in process" : "not in process"}</TableCell>
                                     </TableRow>

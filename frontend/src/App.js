@@ -27,11 +27,11 @@ const App = () => {
         .map(company => (
             <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
                 <div>
-                    <h3>{company.companyName}</h3>
+                    <h3>{company.englishName}</h3>
                     {company.certificate ? (
                         <>
-                            <p>Certificate type: {company.certificate.certificateType}</p>
-                            <p>Certificate number: {company.certificate.certificateNumber}</p>
+                            <p>Certificate type: {company.certificate.auditCriterion}</p>
+                            <p>Certificate number: {company.certificate.auditCriterion}</p>
                         </>
                     ) : (
                         <p>У компании нет сертификата</p>
@@ -50,10 +50,10 @@ const App = () => {
         .map(company => (
             <div className="companyBox" key={company.id} onClick={() => showCompanyInfoByCompanyId(company.id)}>
                 <div>
-                    <h3>{company.companyName}</h3>
+                    <h3>{company.englishName}</h3>
                     {company.certificate ? (
                         <>
-                            <p>Certificate type: {company.certificate.certificateType}</p>
+                            <p>Certificate type: {company.certificate.auditCriterion}</p>
                             <p>Certificate number: {company.certificate.certificateNumber}</p>
                         </>
                     ) : (
