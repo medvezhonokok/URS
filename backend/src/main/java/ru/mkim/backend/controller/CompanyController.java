@@ -16,6 +16,7 @@ import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -37,17 +38,17 @@ public class CompanyController {
         binder.addValidators(companyCredentialsValidator);
     }
 
-    @PostMapping("/all")
-    public ResponseEntity<List<Company>> getAllInProcess(@RequestParam String jwt) {
+    @GetMapping("/all")
+    public List<Company> getAllInProcess(@RequestParam String jwt) {
         if (StringUtil.isNotNullOrEmpty(jwt)) {
             User user = jwtService.findUserByJWT(jwt);
 
             if (user != null) {
-                return new ResponseEntity<>(companyService.findAll(), HttpStatusCode.valueOf(200));
+                return companyService.findAll();
             }
         }
 
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        return new ArrayList<>();
     }
 
     @GetMapping("/get_by_id")

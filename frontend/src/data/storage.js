@@ -5,23 +5,19 @@ const jwtToken = localStorage.getItem('jwtToken');
 
 export const getCompanyById = async (companyId) => {
     try {
-        const response = await axios.get(constants.BACKEND_JAVA_URL + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`);
+        const response = await axios.get(constants.BACKEND_JAVA_URL
+            + `/company/get_by_id?companyId=${companyId}&jwt=${jwtToken}`);
+
         return response.data;
     } catch (error) {
         console.error("Failed to get company:", error);
     }
 };
 
-
 export const getUserById = async (userId) => {
     try {
-        const response =  await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
+        const response = await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
         return response.data;
-        // return response.data.map((user) => ({
-        //     id: user.id,
-        //     name: user.name,
-        //     phoneNumber: user.phoneNumber,
-        // }));
     } catch (err) {
         console.log("Failed to get user by id: " + err)
     }
@@ -51,7 +47,8 @@ export const addNewCompany = (newCompanyJson) => {
 
 export const getCompanies = async () => {
     try {
-        const response = await axios.post(constants.BACKEND_JAVA_URL + '/company/all?jwt=' + jwtToken);
+        const response = await axios.get(constants.BACKEND_JAVA_URL
+            + '/company/all?jwt=' + jwtToken);
         return response.data;
     } catch (err) {
         console.error("Failed to get companies: " + err);
@@ -59,59 +56,32 @@ export const getCompanies = async () => {
     }
 }
 
-export const getAppointments = async () => {
-    await axios.get(constants.BACKEND_JAVA_URL + `/appointment/all`)
-        .then(response => {
-            return response.data.map((app) => ({
-                id: app.id,
-                title: app.title,
-                startTime: app.startTime,
-                endTime: app.endTime,
-            }));
-        }).catch(err => {
-            console.log("Failed to get appointment: " + err)
-        });
-}
-
-export const saveNewAppointment = async (appointment) => {
-    await axios.post(constants.BACKEND_JAVA_URL + `/appointment/add`, appointment, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => {
-        // ignored
-    }).catch(err => {
-        console.log("Failed to add appointment: " + err)
-    });
-}
-
-export const addAppointment = async (newAppt) => {
+export const getAudits = async () => {
     try {
-        await axios.post(constants.BACKEND_JAVA_URL + '/appointment/add', newAppt, {
+        const response = await axios.get(constants.BACKEND_JAVA_URL
+            + '/audit/all');
+        return response.data;
+    } catch (err) {
+        console.error("Failed to get audits: " + err);
+        return [];
+    }
+}
+
+export const addAudit = async (audit) => {
+    try {
+        const response = await axios.post(constants.BACKEND_JAVA_URL + `/audit/add`, audit, {
             headers: {
                 'Content-Type': 'application/json'
             }
         });
-    } catch (err) {
-        console.log("Failed to add appointment");
-    }
-}
-
-export const getTasksByUserId = async () => {
-    try {
-        const response = await axios.post(constants.BACKEND_JAVA_URL + '/task/all_by_user_id', {
-            jwt: jwtToken
-        });
-        return response.data.map(task => ({
-            id: task.id,
-            content: task.content,
-            inputUrl: task.inputUrl,
-            outputUrl: task.outputUrl,
-            status: task.status,
-        }));
-    } catch (err) {
-        console.error("Failed to get tasks by userId: " + err);
-        return [];
+        alert("Аудит был добавлен");
+        return response.data;
+    } catch (error) {
+        if (error.response && error.response.data) {
+            return {error: error.response.data};
+        } else {
+            return {error: {general: "Server error"}};
+        }
     }
 }
 
@@ -124,7 +94,9 @@ export const getUsers = async () => {
     }
 
     try {
-        const response = await axios.get(constants.BACKEND_JAVA_URL + '/1/users/all?jwt=' + jwtToken);
+        const response = await axios.get(constants.BACKEND_JAVA_URL
+            + '/1/users/all?jwt=' + jwtToken);
+
         return response.data.map(user => ({
             id: user.id,
             login: user.login,
@@ -141,7 +113,6 @@ export const getUsers = async () => {
         return [];
     }
 }
-
 
 export const CertificateTypes = [
     {key: "IATF_16949", value: "IATF 16949"},
@@ -170,4 +141,19 @@ export const CertificateTypes = [
     {key: "EN_14065", value: "EN 14065"},
     {key: "ГОСТ_Р_ИСО_14001_2016", value: "ГОСТ Р ИСО 14001-2016"},
     {key: "ГОСТ_Р_ИСО_9001_2015_ФСА", value: "ГОСТ Р ИСО 9001-2015 (ФСА)"}
+];
+
+export const monthNames = [
+    {value: 1, label: 'Январь'},
+    {value: 2, label: 'Февраль'},
+    {value: 3, label: 'Март'},
+    {value: 4, label: 'Апрель'},
+    {value: 5, label: 'Май'},
+    {value: 6, label: 'Июнь'},
+    {value: 7, label: 'Июль'},
+    {value: 8, label: 'Август'},
+    {value: 9, label: 'Сентябрь'},
+    {value: 10, label: 'Октябрь'},
+    {value: 11, label: 'Ноябрь'},
+    {value: 12, label: 'Декабрь'},
 ];

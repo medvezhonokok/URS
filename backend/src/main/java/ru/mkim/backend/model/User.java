@@ -1,5 +1,6 @@
 package ru.mkim.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,6 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "login"))
@@ -43,4 +43,8 @@ public class User {
     private boolean inProcess;
 
     private String certificates;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Audit> audits;
 }

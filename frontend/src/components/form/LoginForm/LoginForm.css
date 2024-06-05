@@ -22,7 +22,7 @@
     border-color: var(--light-blue);
 }
 
-.loginForm .error {
+.error {
     text-align: center;
     color: var(--error-color);
     margin: 0.5rem auto 1rem auto;

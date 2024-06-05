@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import * as storage from "./../../../data/storage";
 import {CertificateTypes} from "../../../data/storage";
+import {List, ListItem} from "@mui/material";
 
 const UserPage = ({authUser}) => {
     const {userId} = useParams();
@@ -33,23 +34,25 @@ const UserPage = ({authUser}) => {
             <div>
                 <SideBarMenu user={authUser} children={
                     user
-                        ? <div className="companyContainer" style={{width: "80%"}}>
-                            <h1>User page</h1>
-                            <h1>{user.name}</h1>
-                            <h1>{user.phoneNumber}</h1>
+                        ? <div className="usersPageContainer">
+                            <h1 className="companiesHeader">Профиль сотрудника: </h1>
+                            <h1>ФИО: {user.name}</h1>
+                            <h1>Номер телефона: {user.phoneNumber}</h1>
                             <h1>Список доступных сертификатов сотрудника:</h1>
                             {userCertificatesList && userCertificatesList.length > 0 ? (
-                                <ul>
+                                <List>
                                     {userCertificatesList.map((certificate, index) => (
-                                        <li key={index}>{certificate}</li>
+                                        <ListItem key={index}>
+                                            {certificate}
+                                        </ListItem>
                                     ))}
-                                </ul>
+                                </List>
                             ) : (
                                 <p>Нет доступных сертификатов.</p>
                             )}
                         </div>
                         : <div>
-                            No such user
+                        No such user
                         </div>
                 }/>
             </div>

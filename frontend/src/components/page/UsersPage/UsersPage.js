@@ -64,7 +64,7 @@ const UsersPage = ({user}) => {
         user
             ? <SideBarMenu user={user} children={
                 <div className="usersPageContainer">
-                    <h1 className="companiesHeader">Users: </h1>
+                    <h1 className="companiesHeader">Сотрудники: </h1>
                     <TableContainer component={Paper}>
                         <Table sx={{minWidth: 650}} aria-label="companies table">
                             <TableHead>

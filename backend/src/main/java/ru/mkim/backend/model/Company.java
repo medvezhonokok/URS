@@ -1,5 +1,6 @@
 package ru.mkim.backend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -90,6 +91,9 @@ public class Company {
     private List<Task> tasks;
 
     private boolean inProcess;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Audit> audit;
 
     public boolean getInProcess() {
         if (tasks != null && !tasks.isEmpty()) return tasks.stream().anyMatch(task -> task.getUser() != null);

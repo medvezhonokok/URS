@@ -1,0 +1,42 @@
+.usersPageContainer {
+    padding: 20px;
+}
+
+.companiesHeader {
+    margin-bottom: 20px;
+}
+
+.selectContainer {
+    display: flex;
+    gap: 10px;
+    margin-top: 1rem;
+    margin-bottom: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #f2f2f2;
+}
+
+.MuiSelect-root:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.MuiInputLabel-root {
+    color: #666;
+}
+
+.MuiSelect-icon {
+    color: #666;
+}

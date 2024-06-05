@@ -14,13 +14,11 @@ import {
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
 import {appointments} from '../../../data/appointments';
 import './SchedulePage.css';
-import AddAppointmentForm from "../../form/AddAppointmentForm/AddAppointmentForm";
 
 const SchedulePage = ({user}) => {
     const [data, setData] = useState(appointments);
     const [currentDate, setCurrentDate] = useState('2024-05-25');
     const [isShiftPressed, setIsShiftPressed] = useState(false);
-    const [showAddForm, setShowAddForm] = useState(false);
 
     useEffect(() => {
         const handleKeyDown = (event) => {
@@ -86,8 +84,8 @@ const SchedulePage = ({user}) => {
     return user ? (
         <div>
             <SideBarMenu user={user}>
-                <div className="schedule-page">
-                    <h1 className="schedule-header">Schedule</h1>
+                <div className="usersPageContainer">
+                    <h1 className="companiesHeader">Расписание</h1>
                     <Paper>
                         <Scheduler
                             data={data}
@@ -117,8 +115,6 @@ const SchedulePage = ({user}) => {
                             <DragDropProvider/>
                         </Scheduler>
                     </Paper>
-                    <button onClick={() => setShowAddForm(true)}>Add New Appointment</button>
-                    {showAddForm && <AddAppointmentForm/>}
                 </div>
             </SideBarMenu>
         </div>

@@ -1,53 +1,61 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import * as index from "../../../index";
 import './CompanyPage.css';
 import SideBarMenu from "../../SideBarMenu/SideBarMenu";
-import {getCompanyById} from "../../../data/storage";
+import * as storage from "../../../data/storage";
 
-const CompanyPage = () => {
-    const user = index.getUser();
-
+const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
     const {companyId} = useParams();
-    const jwtToken = localStorage.getItem('jwtToken');
 
     useEffect(() => {
-        if (user && companyId && jwtToken) {
-            setCompany(getCompanyById(companyId));
+        const getCompanyAsync = async () => {
+            try {
+                const companyById = await storage.getCompanyById(companyId);
+                setCompany(companyById);
+            } catch (error) {
+                console.error("Failed to get company:", error);
+            }
+        };
+
+        if (companyId && !company) {
+            getCompanyAsync();
         }
-    }, [user, companyId, jwtToken]);
+    }, [companyId]);
 
 
-    if (!user || !companyId || !jwtToken) {
+    if (!user || !companyId) {
         return null;
     }
 
     return (
         <div>
             {company ? (
-                <>
-                    <SideBarMenu user={user} children={
-                        <div className="companyContainer" style={{width: "80%"}}>
-                            <h1>{company.companyName}</h1>
-                            <p>EAST/WEST</p>
-                            <p>ID</p>
-                            <p>Наименование организации (ENG)</p>
-                            <p>Наименование организации (RU)</p>
-                            <p>Критерий сертификации</p>
-                            <p>Страна</p>
-                            <p>Кто планирует и проводит</p>
-                            <p>АДМ</p>
-                            <p>IATF №</p>
-                            <p>Issue</p>
-                            <p>Expire</p>
-                            <p>Дата заключительного совещания</p>
-                        </div>
-                    }/>
-                </>
-            ) : (
-                <p>No such company</p>
-            )}
+                    <>
+                        <SideBarMenu user={user} children={
+                            <div className="usersPageContainer">
+                                <h1 className="companiesHeader">Компания: {company.companyName}</h1>
+                                <p><strong>Address:</strong> {company.companyAddress}</p>
+                                <p><strong>Contact Email:</strong> {company.headEmail}</p>
+                                <p><strong>Website:</strong> <a href={company.webSite} target="_blank"
+                                                                rel="noopener noreferrer">{company.webSite}</a></p>
+                                <p><strong>About:</strong> {company.about}</p>
+                                {company.audit && (
+                                    <div>
+                                        <h1 className="companiesHeader"> АУДИТ</h1>
+                                        <p>Ответственный: <a href={`/user/${company.audit.user.id}`}>
+                                            {company.audit.user.name}
+                                        </a></p>
+                                        <p>Дата начала аудита: {company.audit.startDate}</p>
+                                        <p>Дата окончания аудита: {company.audit.endDate}</p>
+                                    </div>
+                                )}
+                            </div>
+                        }/>
+                    </>
+                ) :
+                (<p>No such company</p>)
+            }
         </div>
     );
 };

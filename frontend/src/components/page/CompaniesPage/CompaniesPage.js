@@ -88,7 +88,6 @@ const CompaniesPage = ({user}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(JSON.stringify(formData));
         addNewCompany(JSON.stringify(formData));
         handleClose();
     };
@@ -98,9 +97,9 @@ const CompaniesPage = ({user}) => {
             ? <SideBarMenu user={user} children={
                 <div className="usersPageContainer">
                     <div className="companiesPageHeader">
-                        <h1 className="companiesHeader">Companies: </h1>
+                        <h1 className="companiesHeader">Клиенты: </h1>
                         <div className="companiesAddNewCompanyButton">
-                            <Button onClick={handleOpen}><h1>NEW +</h1></Button>
+                            <Button onClick={handleOpen}><h1>ДОБАВИТЬ +</h1></Button>
                             <Modal
                                 open={open}
                                 onClose={handleClose}
@@ -109,7 +108,7 @@ const CompaniesPage = ({user}) => {
                             >
                                 <Box component="form" onSubmit={handleSubmit} sx={style}>
                                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                                        Add New Company
+                                        Добавление нового клиента
                                     </Typography>
                                     <Grid container spacing={2}>
                                         {formFields.map((field, index) => (
@@ -126,14 +125,13 @@ const CompaniesPage = ({user}) => {
                                     </Grid>
                                     <div className="modalFooter">
                                         <Button className="companiesButton" onClick={handleClose}>
-                                            Close
+                                            Отмена
                                         </Button>
                                         <Button className="companiesButton" type="submit">
-                                            Create new company
+                                            Создать
                                         </Button>
                                     </div>
                                 </Box>
-
                             </Modal>
                         </div>
                     </div>
