@@ -39,7 +39,7 @@ export const addNewCompany = (newCompanyJson) => {
             'Content-Type': 'application/json'
         }
     }).then((response) => {
-        return response.data;
+        // return response.data;
     }).catch((err) => {
         console.log("Failed to add company: " + err);
     })
@@ -54,6 +54,18 @@ export const getCompanies = async () => {
         console.error("Failed to get companies: " + err);
         return [];
     }
+}
+
+export const updateCompany = async (companyId, updateCompanyJson) => {
+    await axios.put(constants.BACKEND_JAVA_URL + `/company/update/${companyId}`, updateCompanyJson, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then((response) => {
+        // return response.data;
+    }).catch((err) => {
+        console.log("Failed to add company: " + err);
+    })
 }
 
 export const getAudits = async () => {
