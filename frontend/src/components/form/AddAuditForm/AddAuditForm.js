@@ -123,6 +123,9 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                             name="startDate"
                             value={auditData.startDate}
                             onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -134,6 +137,9 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                             name="endDate"
                             value={auditData.endDate}
                             onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
                         />
                     </Grid>
                     <Grid item xs={12}>

@@ -78,4 +78,13 @@ public class CompanyController {
         companyService.register(credentials);
         return new ResponseEntity<>("Company was created", HttpStatus.OK);
     }
+
+    @PutMapping("/update/{companyId}")
+    public ResponseEntity<String> updateCompany(@PathVariable Long companyId, @RequestBody @Valid CompanyCredentials credentials,
+                                                BindingResult bindingResult) {
+        companyService.update(companyId, credentials);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }

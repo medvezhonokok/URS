@@ -1,12 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {FormControl, Input, InputLabel} from "@mui/material";
+import {Button, FormControl, Input, InputLabel, MenuItem, Select} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
+import {CertificateTypes} from "../../../data/storage";
+
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
     const [companyFields, setCompanyFields] = useState([]);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editedFields, setEditedFields] = useState({});
     const {companyId} = useParams();
 
     useEffect(() => {
@@ -16,6 +20,7 @@ const CompanyPage = ({user}) => {
                 setCompany(companyById);
                 setCompanyFields(
                     [
+                        {label: "Название (английский)", value: companyById.englishName, id: "englishName"},
                         {label: "Название (русский)", value: companyById.russianName, id: "russianName"},
                         {label: "Адрес (английский)", value: companyById.englishAddress, id: "englishAddress"},
                         {label: "Адрес (русский)", value: companyById.russianAddress, id: "russianAddress"},
@@ -70,9 +75,10 @@ const CompanyPage = ({user}) => {
                             label: "Область сертификации (русский)",
                             value: companyById.russianCertificationScope,
                             id: "russianCertificationScope"
-                        }
+                        },
+                        {label: "Критерий аудита", value: companyById.certificate.auditCriterion, id: "auditCriterion"}
                     ]
-                )
+                );
             } catch (error) {
                 console.error("Failed to get company:", error);
             }
@@ -83,6 +89,27 @@ const CompanyPage = ({user}) => {
         }
     }, [companyId]);
 
+    const handleEditClick = () => {
+        setIsEditing(true);
+        setEditedFields(companyFields.reduce((acc, field) => ({...acc, [field.id]: field.value}), {}));
+    };
+
+    const handleSaveClick = async () => {
+        try {
+            await storage.updateCompany(companyId, JSON.stringify(editedFields));
+            console.log(editedFields);
+
+            setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.id]})));
+            setIsEditing(false);
+        } catch (error) {
+            console.error("Failed to save company:", error);
+        }
+    };
+
+    const handleFieldChange = (id, value) => {
+        setEditedFields(prevState => ({...prevState, [id]: value}));
+    };
+
     if (!user || !companyId) {
         return null;
     }
@@ -90,15 +117,49 @@ const CompanyPage = ({user}) => {
     return (
         company
             ? <div className="usersPageContainer">
-                <h1 className="companiesHeader">Компания: {company.englishName}</h1>
-                <div className="companyInfo">
-                    {companyFields.map(field => (
-                        <FormControl key={field.id} margin="normal" fullWidth variant="standard">
-                            <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
-                            <Input id={field.id} value={field.value} disabled/>
-                        </FormControl>
-                    ))}
+                <div className="companiesPageHeader">
+                    <h1 className="companiesHeader">Компания: {company.englishName}</h1>
+                    <div className="companiesAddNewCompanyButton">
+                        {/*TODO CEO*/}
+                        {isEditing
+                            ? <Button onClick={handleSaveClick}>Сохранить</Button>
+                            : <Button onClick={handleEditClick}>Редактировать</Button>
+                        }
+                    </div>
                 </div>
+
+                <div className="companyInfo">
+                {companyFields.map(field => {
+                        return field.id !== "auditCriterion" ? (
+
+                                <FormControl key={field.id} margin="normal" fullWidth variant="standard">
+                                    <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
+                                    <Input
+                                        id={field.id}
+                                        value={isEditing ? editedFields[field.id] : field.value}
+                                        onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                                        disabled={!isEditing}
+                                    />
+                                </FormControl>
+                            )
+                            :
+                            (<FormControl key={field.id} margin="normal" fullWidth variant="standard">
+                                <Select
+                                    onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                                    disabled={!isEditing}
+                                    label={field.label}
+                                    value={isEditing ? editedFields[field.id] : field.value}
+                                >
+                                    {CertificateTypes.map((type) => (
+                                        <MenuItem key={type.key} value={type.key}>
+                                            {type.value}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>);
+                    })}
+                </div>
+
                 {company.audit && (
                     <div className="auditInfo">
                         <h2 className="companiesHeader">АУДИТ</h2>

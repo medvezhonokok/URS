@@ -62,4 +62,35 @@ public class CompanyService {
     public void save(Company company) {
         companyRepository.save(company);
     }
+
+    public void update(Long companyId, CompanyCredentials credentials) {
+        Company company = companyRepository.findById(companyId).orElse(null);
+        company.setEnglishName(credentials.getEnglishName());
+        company.setRussianName(credentials.getRussianName());
+        company.setEnglishAddress(credentials.getEnglishAddress());
+        company.setRussianAddress(credentials.getRussianAddress());
+        company.setPostalOrZipCode(credentials.getPostalOrZipCode());
+        company.setCountryOrState(credentials.getCountryOrState());
+        company.setEnglishManagerName(credentials.getEnglishManagerName());
+        company.setRussianManagerName(credentials.getRussianManagerName());
+        company.setManagerPosition(credentials.getManagerPosition());
+        company.setManagerPhoneNumber(credentials.getManagerPhoneNumber());
+        company.setManagerEmail(credentials.getManagerEmail());
+        company.setWebSite(credentials.getWebSite());
+        company.setEnglishContactPersonName(credentials.getEnglishContactPersonName());
+        company.setRussianContactPersonName(credentials.getRussianContactPersonName());
+        company.setContactPersonPosition(credentials.getContactPersonPosition());
+        company.setContactPersonEmail(credentials.getContactPersonEmail());
+        company.setTin(credentials.getTin());
+        company.setOkved(credentials.getOkved());
+        company.setEnglishCertificationScope(credentials.getEnglishCertificationScope());
+        company.setRussianCertificationScope(credentials.getRussianCertificationScope());
+
+        Certificate certificate = company.getCertificate();
+        certificate.setAuditCriterion(credentials.getAuditCriterion());
+        certificateService.save(certificate);
+        company.setCertificate(certificate);
+
+        companyRepository.save(company);
+    }
 }
