@@ -1,3 +1,12 @@
+.dateTimeIcon {
+    font-size: 1.6rem;
+}
+
+.popover-content {
+    background-color: #f4ecec;
+    padding: 20px;
+}
+
 .selectContainer {
     display: flex;
     gap: 10px;
