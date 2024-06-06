@@ -8,37 +8,34 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import "./CommonSchedulePage.css";
-import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Popover, Select} from "@mui/material";
 import {Button} from "react-bootstrap";
+import {MdAccessTimeFilled} from "react-icons/md";
 import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
 
 const CommonSchedulePage = ({user}) => {
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
-    const [audits, setAudits] = useState([]);
 
     const [daysInMonth, setDaysInMonth] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
+    const [selectedAudit, setSelectedAudit] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
 
-    const yearNames = Array.from({
-        length: 10
-    }, (_, i) => new Date().getFullYear() - i);
+    const yearNames = Array.from({length: 10}, (_, i) => new Date().getFullYear() - i);
 
     useEffect(() => {
         const fetchData = async () => {
             const usersData = await storage.getUsers();
             const companiesData = await storage.getCompanies();
-            const auditsData = await storage.getAudits();
 
             setUsers(usersData);
             setCompanies(companiesData);
-            setAudits(auditsData);
 
-            const days = Array.from({
-                length: new Date(selectedYear, selectedMonth, 0).getDate()
-            }, (_, i) => i + 1);
+            const days = Array.from({length: new Date(selectedYear, selectedMonth, 0).getDate()}, (_, i) => i + 1);
             setDaysInMonth(days);
         };
 
@@ -60,6 +57,24 @@ const CommonSchedulePage = ({user}) => {
             const auditEndDate = new Date(audit.endDate).setHours(0, 0, 0, 0);
             return auditStartDate <= auditDate && auditDate <= auditEndDate;
         });
+    };
+
+    const handleCellClick = (user, day, event) => {
+        const selectedDate = new Date(selectedYear, selectedMonth - 1, day);
+        selectedDate.setHours(0, 0, 0, 0);
+
+        const selectedAudit = user.audits.find(audit => {
+            const auditStartDate = new Date(audit.startDate);
+            const auditEndDate = new Date(audit.endDate);
+            auditStartDate.setHours(0, 0, 0, 0);
+            auditEndDate.setHours(0, 0, 0, 0);
+
+            return auditStartDate <= selectedDate && selectedDate <= auditEndDate;
+        });
+
+        setSelectedAudit(selectedAudit);
+        setIsPopoverOpen(true);
+        setAnchorEl(event.currentTarget);
     };
 
     return (
@@ -119,8 +134,11 @@ const CommonSchedulePage = ({user}) => {
                                 <TableRow key={user.id}>
                                     <TableCell>{user.name}</TableCell>
                                     {daysInMonth.map(day => (
-                                        <TableCell key={`${user.id}-${day}`}
-                                                   style={{backgroundColor: hasAudit(user, day) ? 'green' : 'white'}}>
+                                        <TableCell
+                                            key={`${user.id}-${day}`}
+                                            style={{backgroundColor: hasAudit(user, day) ? 'green' : 'white'}}
+                                            onClick={(event) => hasAudit(user, day) && handleCellClick(user, day, event)}
+                                        >
                                         </TableCell>
                                     ))}
                                 </TableRow>
@@ -128,6 +146,38 @@ const CommonSchedulePage = ({user}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
+                {selectedAudit && <Popover
+                    open={isPopoverOpen}
+                    anchorEl={anchorEl}
+                    PaperProps={{
+                        style: {
+                            borderRadius: '1rem'
+                        }
+                    }}
+                    onClose={() => setIsPopoverOpen(false)}
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'right',
+                    }}
+                    transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                    }}
+                >
+                    <Box className="popover-content">
+                        <h2>
+                            Аудирование "{selectedAudit.companyName}"
+                        </h2>
+                        <Grid container spacing={2} alignItems="center">
+                            <Grid className="dateTimeIcon" item xs="auto">
+                                <MdAccessTimeFilled/>
+                            </Grid>
+                            <Grid className="auditInfo" item xs>
+                                {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
+                            </Grid>
+                        </Grid>
+                    </Box>
+                </Popover>}
             </div>
             : null
     );
