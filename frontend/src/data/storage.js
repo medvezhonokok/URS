@@ -28,7 +28,7 @@ export const updateUserCertificatesMap = async (userCertificateMap) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then((response) => {
+    }).then((ignored) => {
         // No operations.
     })
 }
@@ -64,24 +64,6 @@ export const getAudits = async () => {
     } catch (err) {
         console.error("Failed to get audits: " + err);
         return [];
-    }
-}
-
-export const addAudit = async (audit) => {
-    try {
-        const response = await axios.post(constants.BACKEND_JAVA_URL + `/audit/add`, audit, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        alert("Аудит был добавлен");
-        return response.data;
-    } catch (error) {
-        if (error.response && error.response.data) {
-            return {error: error.response.data};
-        } else {
-            return {error: {general: "Server error"}};
-        }
     }
 }
 

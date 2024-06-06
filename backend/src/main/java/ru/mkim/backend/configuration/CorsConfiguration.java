@@ -19,7 +19,7 @@ public class CorsConfiguration {
             @Override
             public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(clientUrl, "http://5.101.51.223")
+                        .allowedOrigins(clientUrl)
                         .allowedMethods("*")
                         .allowCredentials(true);
             }
