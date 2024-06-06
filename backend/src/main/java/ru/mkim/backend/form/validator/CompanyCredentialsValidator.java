@@ -18,7 +18,8 @@ public class CompanyCredentialsValidator implements Validator {
 
     public void validate(Object target, Errors errors) {
         if (!errors.hasErrors()) {
-            CompanyCredentials enterForm = (CompanyCredentials) target;
+            CompanyCredentials credentials = (CompanyCredentials) target;
+
             // TODO....validate if needed
         }
     }

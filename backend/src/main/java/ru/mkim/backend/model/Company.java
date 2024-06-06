@@ -88,7 +88,7 @@ public class Company {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Nullable
+    @NonNull
     @OneToOne
     @JoinColumn(name = "certificate_id")
     private Certificate certificate;

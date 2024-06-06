@@ -27,36 +27,7 @@ public class CompanyService {
     }
 
     public void register(CompanyCredentials credentials) {
-        Company company = new Company();
-        Certificate certificate = new Certificate();
-
-        certificate.setAuditCriterion(credentials.getAuditCriterion());
-
-        company.setEnglishName(credentials.getEnglishName());
-        company.setRussianName(credentials.getRussianName());
-        company.setEnglishAddress(credentials.getEnglishAddress());
-        company.setRussianAddress(credentials.getRussianAddress());
-        company.setPostalOrZipCode(credentials.getPostalOrZipCode());
-        company.setCountryOrState(credentials.getCountryOrState());
-        company.setEnglishManagerName(credentials.getEnglishManagerName());
-        company.setRussianManagerName(credentials.getRussianManagerName());
-        company.setManagerPosition(credentials.getManagerPosition());
-        company.setManagerPhoneNumber(credentials.getManagerPhoneNumber());
-        company.setManagerEmail(credentials.getManagerEmail());
-        company.setWebSite(credentials.getWebSite());
-        company.setEnglishContactPersonName(credentials.getEnglishContactPersonName());
-        company.setRussianContactPersonName(credentials.getRussianContactPersonName());
-        company.setContactPersonPosition(credentials.getContactPersonPosition());
-        company.setContactPersonEmail(credentials.getContactPersonEmail());
-        company.setTin(credentials.getTin());
-        company.setOkved(credentials.getOkved());
-        company.setEnglishCertificationScope(credentials.getEnglishCertificationScope());
-        company.setRussianCertificationScope(credentials.getRussianCertificationScope());
-
-        certificateService.save(certificate);
-        company.setCertificate(certificate);
-
-        companyRepository.save(company);
+        copyCredentialsFieldToCompany(new Certificate(), new Company(), credentials);
     }
 
     public void save(Company company) {
@@ -64,7 +35,15 @@ public class CompanyService {
     }
 
     public void update(Long companyId, CompanyCredentials credentials) {
-        Company company = companyRepository.findById(companyId).orElse(null);
+        Company company = findById(companyId);
+        Certificate certificate = company.getCertificate();
+        copyCredentialsFieldToCompany(certificate, company, credentials);
+    }
+
+    private void copyCredentialsFieldToCompany(Certificate certificate, Company company,
+                                               CompanyCredentials credentials) {
+        certificate.setAuditCriterion(credentials.getAuditCriterion());
+
         company.setEnglishName(credentials.getEnglishName());
         company.setRussianName(credentials.getRussianName());
         company.setEnglishAddress(credentials.getEnglishAddress());
@@ -86,8 +65,6 @@ public class CompanyService {
         company.setEnglishCertificationScope(credentials.getEnglishCertificationScope());
         company.setRussianCertificationScope(credentials.getRussianCertificationScope());
 
-        Certificate certificate = company.getCertificate();
-        certificate.setAuditCriterion(credentials.getAuditCriterion());
         certificateService.save(certificate);
         company.setCertificate(certificate);
 

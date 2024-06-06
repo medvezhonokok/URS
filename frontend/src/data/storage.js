@@ -38,8 +38,8 @@ export const addNewCompany = (newCompanyJson) => {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then((response) => {
-        // return response.data;
+    }).then((ignored) => {
+        // No operations.
     }).catch((err) => {
         console.log("Failed to add company: " + err);
     })
@@ -56,15 +56,15 @@ export const getCompanies = async () => {
     }
 }
 
-export const updateCompany = async (companyId, updateCompanyJson) => {
-    await axios.put(constants.BACKEND_JAVA_URL + `/company/update/${companyId}`, updateCompanyJson, {
+export const updateCompany = async (companyId, updatedCompany) => {
+    await axios.put(constants.BACKEND_JAVA_URL + `/company/update/${companyId}`, updatedCompany, {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then((response) => {
-        // return response.data;
+    }).then((ignored) => {
+        // No operations.
     }).catch((err) => {
-        console.log("Failed to add company: " + err);
+        console.log("Failed to update company: " + err);
     })
 }
 

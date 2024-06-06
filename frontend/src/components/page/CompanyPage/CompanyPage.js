@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Button, FormControl, Input, InputLabel, MenuItem, Select} from "@mui/material";
+import {Button, FormControl, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
 import {CertificateTypes} from "../../../data/storage";
-
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
     const [companyFields, setCompanyFields] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editedFields, setEditedFields] = useState({});
+    const [errors, setErrors] = useState({});
     const {companyId} = useParams();
 
     useEffect(() => {
@@ -95,19 +95,31 @@ const CompanyPage = ({user}) => {
     };
 
     const handleSaveClick = async () => {
-        try {
-            await storage.updateCompany(companyId, JSON.stringify(editedFields));
-            console.log(editedFields);
-
-            setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.id]})));
-            setIsEditing(false);
-        } catch (error) {
-            console.error("Failed to save company:", error);
+        if (validateFields()) {
+            try {
+                await storage.updateCompany(companyId, JSON.stringify(editedFields));
+                setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.id]})));
+                setIsEditing(false);
+            } catch (error) {
+                console.error("Failed to save company:", error);
+            }
         }
+    };
+
+    const validateFields = () => {
+        const newErrors = {};
+        companyFields.forEach(field => {
+            if (!editedFields[field.id]) {
+                newErrors[field.id] = "Поле не может быть пустым";
+            }
+        });
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleFieldChange = (id, value) => {
         setEditedFields(prevState => ({...prevState, [id]: value}));
+        setErrors(prevState => ({...prevState, [id]: !value ? "Поле не может быть пустым" : ""}));
     };
 
     if (!user || !companyId) {
@@ -120,46 +132,41 @@ const CompanyPage = ({user}) => {
                 <div className="companiesPageHeader">
                     <h1 className="companiesHeader">Компания: {company.englishName}</h1>
                     <div className="companiesAddNewCompanyButton">
-                        {/*TODO CEO*/}
                         {isEditing
                             ? <Button onClick={handleSaveClick}>Сохранить</Button>
                             : <Button onClick={handleEditClick}>Редактировать</Button>
                         }
                     </div>
                 </div>
-
                 <div className="companyInfo">
-                {companyFields.map(field => {
-                        return field.id !== "auditCriterion" ? (
-
-                                <FormControl key={field.id} margin="normal" fullWidth variant="standard">
-                                    <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
-                                    <Input
-                                        id={field.id}
-                                        value={isEditing ? editedFields[field.id] : field.value}
-                                        onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
-                                        disabled={!isEditing}
-                                    />
-                                </FormControl>
-                            )
-                            :
-                            (<FormControl key={field.id} margin="normal" fullWidth variant="standard">
-                                <Select
+                    {companyFields.map(field => (
+                        <FormControl key={field.id} margin="normal" fullWidth variant="standard">
+                            {field.id !== "auditCriterion"
+                                ? <TextField
+                                    fullWidth
+                                    label={field.label}
+                                    name={field.label}
+                                    value={isEditing ? editedFields[field.id] : field.value}
+                                    required
                                     onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
                                     disabled={!isEditing}
-                                    label={field.label}
-                                    value={isEditing ? editedFields[field.id] : field.value}
-                                >
+                                    error={!!errors[field.id]}
+                                    helperText={errors[field.id]}
+                                />
+                                : <Select onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                                          disabled={!isEditing}
+                                          label={field.label}
+                                          value={isEditing ? editedFields[field.id] : field.value}>
                                     {CertificateTypes.map((type) => (
                                         <MenuItem key={type.key} value={type.key}>
                                             {type.value}
                                         </MenuItem>
                                     ))}
                                 </Select>
-                            </FormControl>);
-                    })}
+                            }
+                        </FormControl>
+                    ))}
                 </div>
-
                 {company.audit && (
                     <div className="auditInfo">
                         <h2 className="companiesHeader">АУДИТ</h2>
