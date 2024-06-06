@@ -104,7 +104,8 @@ const UsersPage = ({user}) => {
                 {isEditMode
                     ? <Button variant="contained" onClick={handleSave} className="saveOrEditButton">Сохранить</Button>
                     :
-                    <Button variant="contained" onClick={handleEditToggle} className="saveOrEditButton">Редактировать</Button>
+                    <Button variant="contained" onClick={handleEditToggle}
+                            className="saveOrEditButton">Редактировать</Button>
                 }
             </div>
             : null

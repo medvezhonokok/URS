@@ -11,7 +11,7 @@ import CompanyPage from "./components/page/CompanyPage/CompanyPage";
 import UserPage from "./components/page/UserPage/UserPage";
 import HomePage from "./components/page/HomePage/HomePage";
 import CommonSchedulePage from "./components/page/CommonSchedulePage/CommonSchedulePage";
-import { AnimatePresence } from 'framer-motion';
+import {AnimatePresence} from 'framer-motion';
 
 const App = () => {
     const user = index.getUser();

@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
-import { FormControl, Input, InputLabel, List, ListItem } from "@mui/material";
+import React, {useEffect, useState} from 'react';
+import {useParams} from "react-router-dom";
+import {FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
 import * as storage from "../../../data/storage";
-import { CertificateTypes } from "../../../data/storage";
+import {CertificateTypes} from "../../../data/storage";
 import "./UserPage.css";
 
-const UserPage = ({ user }) => {
-    const { userId } = useParams();
+const UserPage = ({user}) => {
+    const {userId} = useParams();
     const [userById, setUserById] = useState(null);
     const [userFields, setUserFields] = useState([]);
     const [userCertificatesList, setUserCertificatesList] = useState([]);
@@ -24,8 +24,8 @@ const UserPage = ({ user }) => {
                     setUserCertificatesList(userAvailableCertificates);
 
                     setUserFields([
-                        { label: "ФИО", value: userJson.name, id: "name" },
-                        { label: "Номер телефона", value: userJson.phoneNumber, id: "phoneNumber" },
+                        {label: "ФИО", value: userJson.name, id: "name"},
+                        {label: "Номер телефона", value: userJson.phoneNumber, id: "phoneNumber"},
                         // Add more fields as necessary
                     ]);
 
@@ -55,12 +55,12 @@ const UserPage = ({ user }) => {
                     {userFields.map(field => (
                         <FormControl key={field.id} margin="normal" fullWidth variant="standard">
                             <InputLabel htmlFor={field.id}>{field.label}</InputLabel>
-                            <Input id={field.id} value={field.value} disabled />
+                            <Input id={field.id} value={field.value} disabled/>
                         </FormControl>
                     ))}
                     <h2>Список доступных сертификатов сотрудника:</h2>
                     {userCertificatesList && userCertificatesList.length > 0 ? (
-                        <List >
+                        <List>
                             {userCertificatesList.map((certificate, index) => (
                                 <ListItem style={{background: "#83d10b"}} key={index}>
                                     {certificate}

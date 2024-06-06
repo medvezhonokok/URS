@@ -2,43 +2,43 @@ import React from 'react';
 import './SideBarMenu.css';
 import * as AiIcons from 'react-icons/ai';
 import * as FaIcons from 'react-icons/fa';
-import { MdBusinessCenter } from 'react-icons/md';
-import { NavLink } from 'react-router-dom';
+import {MdBusinessCenter} from 'react-icons/md';
+import {NavLink} from 'react-router-dom';
 
 const SideBarData = [
     {
         title: 'Главная',
         path: '/',
-        icon: <AiIcons.AiFillHome />,
+        icon: <AiIcons.AiFillHome/>,
         cName: 'nav-text'
     },
     {
         title: 'Сотрудники',
         path: '/users',
-        icon: <FaIcons.FaUsers />,
+        icon: <FaIcons.FaUsers/>,
         cName: 'nav-text'
     },
     {
         title: 'Мое расписание',
         path: '/schedule',
-        icon: <FaIcons.FaCalendarAlt />,
+        icon: <FaIcons.FaCalendarAlt/>,
         cName: 'nav-text'
     },
     {
         title: 'Клиенты',
         path: '/companies',
-        icon: <MdBusinessCenter />,
+        icon: <MdBusinessCenter/>,
         cName: 'nav-text'
     },
     {
         title: 'Общий график',
         path: '/common',
-        icon: <FaIcons.FaRegCalendarAlt />,
+        icon: <FaIcons.FaRegCalendarAlt/>,
         cName: 'nav-text'
     }
 ];
 
-const SideBarMenu = ({ user }) => {
+const SideBarMenu = ({user}) => {
     const logout = () => {
         localStorage.removeItem('user');
         window.location.href = "/";
@@ -52,7 +52,7 @@ const SideBarMenu = ({ user }) => {
                         <li key={index} className={item.cName}>
                             <NavLink
                                 to={item.path}
-                                className={({ isActive }) => isActive ? 'nav-text active' : 'nav-text'}
+                                className={({isActive}) => isActive ? 'nav-text active' : 'nav-text'}
                             >
                                 {item.icon}
                                 <span>{item.title}</span>

@@ -76,6 +76,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
 
                 idx++;
             }
+
             return user.certificates.split('#')[idx] === '1';
         }
 
@@ -154,7 +155,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                                 onChange={handleCompanyChange}
                             >
                                 {companies
-                                    .filter(company =>company.audit === null)
+                                    .filter(company => company.audit === null)
                                     .map(company => (
                                         <MenuItem key={company.id} value={company.id}>
                                             {getCompanyInfoString(company)}
