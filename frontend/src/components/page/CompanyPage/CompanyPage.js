@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Button, FormControl, MenuItem, Select, TextField} from "@mui/material";
+import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
 import {CertificateTypes} from "../../../data/storage";
@@ -76,7 +76,12 @@ const CompanyPage = ({user}) => {
                             value: companyById.russianCertificationScope,
                             id: "russianCertificationScope"
                         },
-                        {label: "Критерий аудита", value: companyById.certificate.auditCriterion, id: "auditCriterion"}
+                        {
+                            label: "Критерий аудита", value: companyById.certificate
+                                ? companyById.certificate.auditCriterion
+                                : ''
+                            , id: "auditCriterion"
+                        }
                     ]
                 );
             } catch (error) {
@@ -153,16 +158,19 @@ const CompanyPage = ({user}) => {
                                     error={!!errors[field.id]}
                                     helperText={errors[field.id]}
                                 />
-                                : <Select onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
-                                          disabled={!isEditing}
-                                          label={field.label}
-                                          value={isEditing ? editedFields[field.id] : field.value}>
-                                    {CertificateTypes.map((type) => (
-                                        <MenuItem key={type.key} value={type.key}>
-                                            {type.value}
-                                        </MenuItem>
-                                    ))}
-                                </Select>
+                                :
+                                <>
+                                    <InputLabel>{field.label}</InputLabel>
+                                    <Select onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                                            disabled={!isEditing}
+                                            value={isEditing ? editedFields[field.id] : field.value}>
+                                        {CertificateTypes.map((type) => (
+                                            <MenuItem key={type.key} value={type.key}>
+                                                {type.value}
+                                            </MenuItem>
+                                        ))}
+                                    </Select>
+                                </>
                             }
                         </FormControl>
                     ))}
