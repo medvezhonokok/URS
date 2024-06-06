@@ -58,4 +58,8 @@ public class CompanyService {
 
         companyRepository.save(company);
     }
+
+    public void save(Company company) {
+        companyRepository.save(company);
+    }
 }

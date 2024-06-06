@@ -84,6 +84,10 @@ public class Company {
     @OneToOne(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Audit audit;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Nullable
     @OneToOne
     @JoinColumn(name = "certificate_id")

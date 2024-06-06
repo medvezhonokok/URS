@@ -63,7 +63,11 @@ const UsersPage = ({user}) => {
     return (
         user
             ? <div className="usersPageContainer">
-                <h1 className="companiesHeader">Сотрудники</h1>
+                <div className="companiesPageHeader">
+                    <h1 className="companiesHeader">Сотрудники</h1>
+                    <div className="companiesAddNewCompanyButton">
+                    </div>
+                </div>
                 <TableContainer component={Paper}>
                     <Table sx={{minWidth: 650}} aria-label="companies table">
                         <TableHead>
@@ -98,9 +102,9 @@ const UsersPage = ({user}) => {
                     </Table>
                 </TableContainer>
                 {isEditMode
-                    ? <Button variant="contained" onClick={handleSave} className="saveButton">Сохранить</Button>
+                    ? <Button variant="contained" onClick={handleSave} className="saveOrEditButton">Сохранить</Button>
                     :
-                    <Button variant="contained" onClick={handleEditToggle} className="editButton">Редактировать</Button>
+                    <Button variant="contained" onClick={handleEditToggle} className="saveOrEditButton">Редактировать</Button>
                 }
             </div>
             : null

@@ -45,6 +45,9 @@ public class User {
     private String certificates;
 
     @OneToMany(mappedBy = "user")
-    @JsonIgnore
     private List<Audit> audits;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Company> companies;
 }

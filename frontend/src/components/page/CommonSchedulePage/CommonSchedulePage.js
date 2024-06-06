@@ -53,12 +53,12 @@ const CommonSchedulePage = ({user}) => {
         setSelectedYear(event.target.value);
     };
 
-    const hasAudit = (userId, date) => {
+    const hasAudit = (currentUser, date) => {
         const auditDate = new Date(selectedYear, selectedMonth - 1, date).setHours(0, 0, 0, 0);
-        return audits.some(audit => {
+        return currentUser.audits.some(audit => {
             const auditStartDate = new Date(audit.startDate).setHours(0, 0, 0, 0);
             const auditEndDate = new Date(audit.endDate).setHours(0, 0, 0, 0);
-            return audit.user.id === userId && auditStartDate <= auditDate && auditDate <= auditEndDate;
+            return auditStartDate <= auditDate && auditDate <= auditEndDate;
         });
     };
 
@@ -120,7 +120,7 @@ const CommonSchedulePage = ({user}) => {
                                     <TableCell>{user.name}</TableCell>
                                     {daysInMonth.map(day => (
                                         <TableCell key={`${user.id}-${day}`}
-                                                   style={{backgroundColor: hasAudit(user.id, day) ? 'green' : 'white'}}>
+                                                   style={{backgroundColor: hasAudit(user, day) ? 'green' : 'white'}}>
                                         </TableCell>
                                     ))}
                                 </TableRow>

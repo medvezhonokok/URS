@@ -1,20 +1,3 @@
-.companyContainer {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background-color: beige;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    color: #fff;
-}
-
-.companyHeader {
-    color: black;
-    text-decoration: underline;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
 .companyInfo {
     margin-bottom: 20px;
     text-align: left;
@@ -26,6 +9,8 @@
 
 
 .auditInfo {
+    text-align: left;
+    color: black;
     border-top: 1px solid #ccc;
     padding-top: 20px;
 }

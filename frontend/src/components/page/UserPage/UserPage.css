@@ -1,0 +1,50 @@
+.userInfo {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.userInfo h2 {
+    color: black;
+    margin-bottom: 15px;
+    font-size: 20px;
+}
+
+.userInfo p {
+    color: black;
+    margin: 10px 0;
+}
+
+.userInfo .MuiList-root {
+    margin: 20px 0;
+}
+
+.userInfo .MuiListItem-root {
+    color: black;
+    background-color: #f0f0f0;
+    margin: 5px 0;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+}
+
+.auditList {
+    margin-top: 20px;
+}
+
+
+.auditItem {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.List {
+    background-color: #fff;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}

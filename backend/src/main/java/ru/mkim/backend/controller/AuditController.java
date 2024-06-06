@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.form.AuditCredentials;
 import ru.mkim.backend.form.validator.AuditCredentialsValidator;
 import ru.mkim.backend.model.Audit;
+import ru.mkim.backend.model.Company;
+import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.AuditService;
 import ru.mkim.backend.service.CompanyService;
 import ru.mkim.backend.service.UserService;
@@ -49,13 +51,19 @@ public class AuditController {
         }
 
         Audit audit = new Audit();
+        Company company = companyService.findById(auditCredentials.getCompanyId());
+        User user = userService.findById(auditCredentials.getUserId());
+
+        company.setUser(user);
+        companyService.save(company);
 
         audit.setTitle(auditCredentials.getTitle());
         audit.setAbout(auditCredentials.getAbout());
-        audit.setCompany(companyService.findById(auditCredentials.getCompanyId()));
-        audit.setUser(userService.findById(auditCredentials.getUserId()));
+        audit.setCompany(company);
+        audit.setUser(user);
         audit.setStartDate(auditCredentials.getStartDate());
         audit.setEndDate(auditCredentials.getEndDate());
+        audit.setCompanyName(company.getEnglishName());
 
         auditService.save(audit);
     }

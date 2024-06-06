@@ -89,8 +89,8 @@ const CompanyPage = ({user}) => {
 
     return (
         company
-            ? <div className="companyContainer">
-                <h1 className="companyHeader">Компания: {company.englishName}</h1>
+            ? <div className="usersPageContainer">
+                <h1 className="companiesHeader">Компания: {company.englishName}</h1>
                 <div className="companyInfo">
                     {companyFields.map(field => (
                         <FormControl key={field.id} margin="normal" fullWidth variant="standard">
@@ -101,8 +101,8 @@ const CompanyPage = ({user}) => {
                 </div>
                 {company.audit && (
                     <div className="auditInfo">
-                        <h2 className="companyHeader">АУДИТ</h2>
-                        <p>Ответственный: <a href={`/user/${company.audit.user.id}`}>{company.audit.user.name}</a></p>
+                        <h2 className="companiesHeader">АУДИТ</h2>
+                        <p>Ответственный: <a href={`/user/${company.user.id}`}>{company.user.name}</a></p>
                         <p>Дата начала аудита: {company.audit.startDate}</p>
                         <p>Дата окончания аудита: {company.audit.endDate}</p>
                     </div>

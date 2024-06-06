@@ -36,6 +36,13 @@ public class Audit {
     private Company company;
 
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "user_id")
     private User user;
+
+    private String companyName;
+
+    public String getCompanyName() {
+        return company.getEnglishName();
+    }
 }

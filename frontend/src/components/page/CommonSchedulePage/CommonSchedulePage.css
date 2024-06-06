@@ -1,11 +1,3 @@
-.usersPageContainer {
-    padding: 20px;
-}
-
-.companiesHeader {
-    margin-bottom: 20px;
-}
-
 .selectContainer {
     display: flex;
     gap: 10px;
