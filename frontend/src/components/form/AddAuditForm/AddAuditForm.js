@@ -6,7 +6,7 @@ import axios from "axios";
 import * as constants from "../../../constants/constants";
 import {CertificateTypes} from "../../../data/storage";
 
-const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
+const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
     const [errors, setErrors] = useState({});
     const [auditData, setAuditData] = useState({
         title: "",
@@ -26,6 +26,14 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                 'Content-Type': 'application/json'
             }
         }).then((ignored) => {
+            const updatedUsers = users.map(user => {
+                if (user.id === auditData.userId) {
+                    user.audits.push(auditData); // предполагаем, что API возвращает добавленный аудит
+                }
+                return user;
+            });
+
+            updateUsers(updatedUsers);
             alert("Аудит был добавлен");
             setAuditData({
                 title: "",
@@ -36,7 +44,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                 userId: ""
             });
             handleClose();
-            window.location.reload();
         }).catch((ignored) => {
             setErrors({auditOverlap: 'Выбранный аудитор уже занят в выбранные даты'});
         });

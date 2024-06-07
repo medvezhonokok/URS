@@ -77,6 +77,10 @@ const CommonSchedulePage = ({user}) => {
         setAnchorEl(event.currentTarget);
     };
 
+    const updateUsers = (newUsers) => {
+        setUsers(newUsers);
+    };
+
     return (
         user
             ? <div className="usersPageContainer">
@@ -88,6 +92,7 @@ const CommonSchedulePage = ({user}) => {
                                       handleClose={() => setIsModalOpen(false)}
                                       companies={companies}
                                       users={users}
+                                      updateUsers={updateUsers}
                         />
                     </div>
                 </div>
