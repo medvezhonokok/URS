@@ -34,15 +34,15 @@ export const updateUserCertificatesMap = async (userCertificateMap) => {
 }
 
 export const addNewCompany = (newCompanyJson) => {
-    axios.post(constants.BACKEND_JAVA_URL + '/company/add', newCompanyJson, {
+    return axios.post(constants.BACKEND_JAVA_URL + '/company/add', newCompanyJson, {
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then((ignored) => {
-        // No operations.
+    }).then((response) => {
+        return response.data;
     }).catch((err) => {
         console.log("Failed to add company: " + err);
-    })
+    });
 }
 
 export const getCompanies = async () => {

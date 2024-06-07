@@ -81,8 +81,9 @@ const CompaniesPage = ({user}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        addNewCompany(JSON.stringify(companyCredentials));
-        setCompanies([...companies, companyCredentials]);
+        addNewCompany(JSON.stringify(companyCredentials)).then((company) => {
+            setCompanies([...companies, company]);
+        });
         handleClose();
     };
 
