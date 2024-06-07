@@ -26,8 +26,8 @@ public class CompanyService {
         return companyRepository.findById(companyId).orElse(null);
     }
 
-    public void register(CompanyCredentials credentials) {
-        copyCredentialsFieldToCompany(new Certificate(), new Company(), credentials);
+    public Company register(CompanyCredentials credentials) {
+        return copyCredentialsFieldToCompany(new Certificate(), new Company(), credentials);
     }
 
     public void save(Company company) {
@@ -40,7 +40,7 @@ public class CompanyService {
         copyCredentialsFieldToCompany(certificate, company, credentials);
     }
 
-    private void copyCredentialsFieldToCompany(Certificate certificate, Company company,
+    private Company copyCredentialsFieldToCompany(Certificate certificate, Company company,
                                                CompanyCredentials credentials) {
         certificate.setAuditCriterion(credentials.getAuditCriterion());
 
@@ -68,6 +68,6 @@ public class CompanyService {
         certificateService.save(certificate);
         company.setCertificate(certificate);
 
-        companyRepository.save(company);
+        return companyRepository.save(company);
     }
 }

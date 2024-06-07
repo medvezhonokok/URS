@@ -70,14 +70,13 @@ public class CompanyController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addNewCompany(@Valid @RequestBody CompanyCredentials credentials,
+    public ResponseEntity<Company> addNewCompany(@Valid @RequestBody CompanyCredentials credentials,
                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getAllErrors().toString());
         }
 
-        companyService.register(credentials);
-        return new ResponseEntity<>("Company was created", HttpStatus.OK);
+        return new ResponseEntity<>(companyService.register(credentials), HttpStatus.OK);
     }
 
     @PutMapping("/update/{companyId}")
