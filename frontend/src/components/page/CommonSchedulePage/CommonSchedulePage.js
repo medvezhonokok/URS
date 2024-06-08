@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import "./CommonSchedulePage.css";
-import {Box, FormControl, Grid, InputLabel, MenuItem, Popover, Select} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
 import {Button} from "react-bootstrap";
 import {MdAccessTimeFilled} from "react-icons/md";
 import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
@@ -77,8 +77,9 @@ const CommonSchedulePage = ({user}) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const updateUsers = (newUsers) => {
+    const updateUsersAndCompanies = (newUsers, newCompanies) => {
         setUsers(newUsers);
+        setCompanies(newCompanies);
     };
 
     return (
@@ -92,7 +93,7 @@ const CommonSchedulePage = ({user}) => {
                                       handleClose={() => setIsModalOpen(false)}
                                       companies={companies}
                                       users={users}
-                                      updateUsers={updateUsers}
+                                      updateUsersAndCompanies={updateUsersAndCompanies}
                         />
                     </div>
                 </div>
@@ -151,38 +152,66 @@ const CommonSchedulePage = ({user}) => {
                         </TableBody>
                     </Table>
                 </TableContainer>
-                {selectedAudit && <Popover
-                    open={isPopoverOpen}
-                    anchorEl={anchorEl}
-                    PaperProps={{
-                        style: {
-                            borderRadius: '1rem'
-                        }
-                    }}
-                    onClose={() => setIsPopoverOpen(false)}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                    transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
-                >
-                    <Box className="popover-content">
-                        <h2>
-                            Аудирование "{selectedAudit.companyName}"
-                        </h2>
-                        <Grid container spacing={2} alignItems="center">
-                            <Grid className="dateTimeIcon" item xs="auto">
-                                <MdAccessTimeFilled/>
-                            </Grid>
-                            <Grid className="auditInfo" item xs>
-                                {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
-                            </Grid>
-                        </Grid>
-                    </Box>
-                </Popover>}
+                {selectedAudit && (
+                    <Popover
+                        open={isPopoverOpen}
+                        anchorEl={anchorEl}
+                        PaperProps={{
+                            style: {
+                                borderRadius: '1rem',
+                            },
+                        }}
+                        onClose={() => setIsPopoverOpen(false)}
+                        anchorOrigin={{
+                            vertical: 'bottom',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical: 'top',
+                            horizontal: 'left',
+                        }}
+                    >
+                        <Box className="popover-content">
+                            <Typography variant="h6">Аудирование "{selectedAudit.companyName}"</Typography>
+                            <Box className="auditInfoContainer">
+                                <Box className="auditInfo">
+                                    <Typography>
+                                        <span className="label">Локация:</span> {selectedAudit.location}
+                                    </Typography>
+                                </Box>
+                                <Box className="auditInfo">
+                                    <Typography>
+                                        <span className="label">Активность:</span> {selectedAudit.activity}
+                                    </Typography>
+                                </Box>
+                                <Box className="auditInfo">
+                                    <Typography>
+                                        <span className="label">Соглашение:</span> {selectedAudit.agreement}
+                                    </Typography>
+                                </Box>
+                                <Box className="auditInfo">
+                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <Typography>
+                                        <span className="label">Заключительная встреча:</span> {selectedAudit.closingMeetingDate ? new Date(selectedAudit.closingMeetingDate).toLocaleDateString() : 'Не указана'}
+                                    </Typography>
+                                </Box>
+                                <Box className="auditInfo">
+                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <Typography>
+                                        <span className="label">Срок действия сертификата:</span> {selectedAudit.certificateExpirationDate ? new Date(selectedAudit.certificateExpirationDate).toLocaleDateString() : 'Не указана'}
+                                    </Typography>
+                                </Box>
+                                <Box className="auditInfo">
+                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <Typography>
+                                        {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
+                                    </Typography>
+                                </Box>
+                            </Box>
+                        </Box>
+                    </Popover>
+                )}
+
             </div>
             : null
     );

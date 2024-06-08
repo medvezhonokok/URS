@@ -7,7 +7,7 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "audit")
@@ -19,16 +19,24 @@ public class Audit {
     private long id;
 
     @NonNull
-    @Size(max = 25)
-    private String title;
+    @Size(max = 100)
+    private String location;
 
     @NonNull
     @Size(max = 100)
-    private String about;
+    private String activity;
 
-    private LocalDateTime startDate;
+    @NonNull
+    @Size(max = 100)
+    private String agreement;
 
-    private LocalDateTime endDate;
+    private LocalDate closingMeetingDate;
+
+    private LocalDate certificateExpirationDate;
+
+    private LocalDate startDate;
+
+    private LocalDate endDate;
 
     @OneToOne
     @JsonIgnore

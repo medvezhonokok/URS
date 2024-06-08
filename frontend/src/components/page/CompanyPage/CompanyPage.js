@@ -176,9 +176,14 @@ const CompanyPage = ({user}) => {
                     ))}
                 </div>
                 {company.audit && (
-                    <div className="auditInfo">
+                    <div className="companyAuditInfo">
                         <h2 className="companiesHeader">АУДИТ</h2>
                         <p>Ответственный: <a href={`/user/${company.user.id}`}>{company.user.name}</a></p>
+                        <p>Локация: {company.audit.location}</p>
+                        <p>Активность: {company.audit.activity}</p>
+                        <p>Договор: {company.audit.agreement}</p>
+                        <p>Дата заключительного собрания: {company.audit.closingMeetingDate}</p>
+                        <p>Дата истечения сертификата: {company.audit.certificateExpirationDate}</p>
                         <p>Дата начала аудита: {company.audit.startDate}</p>
                         <p>Дата окончания аудита: {company.audit.endDate}</p>
                     </div>

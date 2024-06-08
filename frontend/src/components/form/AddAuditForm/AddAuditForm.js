@@ -6,11 +6,14 @@ import axios from "axios";
 import * as constants from "../../../constants/constants";
 import {CertificateTypes} from "../../../data/storage";
 
-const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
+const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
     const [errors, setErrors] = useState({});
     const [auditData, setAuditData] = useState({
-        title: "",
-        about: "",
+        location: "",
+        activity: "",
+        agreement: "",
+        closingMeetingDate: null,
+        certificateExpirationDate: null,
         startDate: null,
         endDate: null,
         companyId: "",
@@ -28,16 +31,28 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
         }).then((ignored) => {
             const updatedUsers = users.map(user => {
                 if (user.id === auditData.userId) {
-                    user.audits.push(auditData); // предполагаем, что API возвращает добавленный аудит
+                    user.audits.push(auditData);
                 }
                 return user;
             });
 
-            updateUsers(updatedUsers);
+            const updatedCompanies = companies.map(company => {
+                if (company.id === auditData.companyId) {
+                    company.audit = auditData;
+                }
+
+                return company;
+            })
+
+            updateUsersAndCompanies(updatedUsers, updatedCompanies);
+
             alert("Аудит был добавлен");
             setAuditData({
-                title: "",
-                about: "",
+                location: "",
+                activity: "",
+                agreement: "",
+                closingMeetingDate: null,
+                certificateExpirationDate: null,
                 startDate: null,
                 endDate: null,
                 companyId: "",
@@ -73,7 +88,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
 
     const competentByCertificateType = (user) => {
         if (selectedCompany && selectedCompany.certificate) {
-            const auditCriterion = selectedCompany.certificate.auditCriterion; // IATF_16949
+            const auditCriterion = selectedCompany.certificate.auditCriterion;
 
             let idx = 0;
             for (const {key} of CertificateTypes) {
@@ -103,54 +118,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
                 </Typography>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="Title"
-                            name="title"
-                            value={auditData.title}
-                            required={true}
-                            onChange={handleInputChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            label="About"
-                            name="about"
-                            value={auditData.about}
-                            required={true}
-                            onChange={handleInputChange}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            required={true}
-                            fullWidth
-                            type="datetime-local"
-                            label="Start Date"
-                            name="startDate"
-                            value={auditData.startDate}
-                            onChange={handleInputChange}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                            fullWidth
-                            required={true}
-                            type="datetime-local"
-                            label="End Date"
-                            name="endDate"
-                            value={auditData.endDate}
-                            onChange={handleInputChange}
-                            InputLabelProps={{
-                                shrink: true,
-                            }}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
                         <FormControl fullWidth>
                             <InputLabel id="company-select-label">Компания</InputLabel>
                             <Select
@@ -170,6 +137,92 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsers}) => {
                                     ))}
                             </Select>
                         </FormControl>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Локация"
+                            name="location"
+                            value={auditData.location}
+                            required={true}
+                            onChange={handleInputChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Активность"
+                            name="activity"
+                            value={auditData.activity}
+                            required={true}
+                            onChange={handleInputChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            label="Договор"
+                            name="agreement"
+                            value={auditData.agreement}
+                            required={true}
+                            onChange={handleInputChange}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            required={true}
+                            type="date"
+                            label="Заключительное совещание"
+                            name="closingMeetingDate"
+                            value={auditData.closingMeetingDate}
+                            onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            required={true}
+                            type="date"
+                            label="Сертификат действителен до:"
+                            name="certificateExpirationDate"
+                            value={auditData.certificateExpirationDate}
+                            onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            required={true}
+                            fullWidth
+                            type="date"
+                            label="Начало аудита"
+                            name="startDate"
+                            value={auditData.startDate}
+                            onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField
+                            fullWidth
+                            required={true}
+                            type="date"
+                            label="Конец аудита"
+                            name="endDate"
+                            value={auditData.endDate}
+                            onChange={handleInputChange}
+                            InputLabelProps={{
+                                shrink: true,
+                            }}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth>

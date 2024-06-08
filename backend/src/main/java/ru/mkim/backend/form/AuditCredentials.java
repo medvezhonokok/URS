@@ -5,21 +5,26 @@ import lombok.NonNull;
 import lombok.Setter;
 
 import javax.validation.constraints.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Setter
 @Getter
 public class AuditCredentials {
 
     @NonNull
-    @NotEmpty(message = "Title is required")
-    @Size(max = 25, message = "Title must be less than 25 characters")
-    private String title;
+    @NotEmpty(message = "Activity is required")
+    @Size(max = 100, message = "Activity must be less than 100 characters")
+    private String activity;
 
     @NonNull
     @NotEmpty(message = "About is required")
     @Size(max = 100, message = "About must be less than 100 characters")
-    private String about;
+    private String location;
+
+    @NonNull
+    @NotEmpty(message = "Agreement is required")
+    @Size(max = 100, message = "Agreement must be less than 100 characters")
+    private String agreement;
 
     @NotNull(message = "Company ID is required")
     private Long companyId;
@@ -27,9 +32,19 @@ public class AuditCredentials {
     @NotNull(message = "User ID is required")
     private Long userId;
 
+    @NotNull(message = "Start date is required")
     @FutureOrPresent(message = "Start date must be in the present or future")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
+    @NotNull(message = "End date is required")
     @Future(message = "End date must be in the future")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
+
+    @NotNull(message = "Closing meeting date is required")
+    @FutureOrPresent(message = "Closing meeting date must be in the present or future")
+    private LocalDate closingMeetingDate;
+
+    @NotNull(message = "Certificate expiration date is required")
+    @FutureOrPresent(message = "Certificate expiration date must be in the present or future")
+    private LocalDate certificateExpirationDate;
 }

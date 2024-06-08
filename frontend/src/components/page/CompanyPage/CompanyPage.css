@@ -8,13 +8,13 @@
 }
 
 
-.auditInfo {
+.companyAuditInfo {
     text-align: left;
     color: black;
     padding-top: 20px;
 }
 
-.auditInfo p {
+.companyAuditInfo p {
     margin: 5px 0;
 }
 

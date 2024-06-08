@@ -57,12 +57,15 @@ public class AuditController {
         company.setUser(user);
         companyService.save(company);
 
-        audit.setTitle(auditCredentials.getTitle());
-        audit.setAbout(auditCredentials.getAbout());
+        audit.setActivity(auditCredentials.getActivity());
+        audit.setLocation(auditCredentials.getLocation());
+        audit.setAgreement(auditCredentials.getAgreement());
         audit.setCompany(company);
         audit.setUser(user);
         audit.setStartDate(auditCredentials.getStartDate());
         audit.setEndDate(auditCredentials.getEndDate());
+        audit.setClosingMeetingDate(auditCredentials.getClosingMeetingDate());
+        audit.setCertificateExpirationDate(auditCredentials.getCertificateExpirationDate());
         audit.setCompanyName(company.getEnglishName());
 
         auditService.save(audit);

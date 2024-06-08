@@ -10,7 +10,6 @@ import ru.mkim.backend.service.AuditService;
 import ru.mkim.backend.service.UserService;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @SuppressWarnings("NullableProblems")
@@ -42,19 +41,16 @@ public class AuditCredentialsValidator implements Validator {
                         a -> a.getUser() != null && a.getUser().getId() == user.getId()).toList();
 
                 for (Audit userAudit : userAudits) {
-                    LocalDateTime userAuditStartDate = userAudit.getStartDate();
-                    LocalDateTime userAuditEndDate = userAudit.getEndDate();
+                    LocalDate startDate = userAudit.getStartDate();
+                    LocalDate endDate = userAudit.getEndDate();
 
-                    LocalDate startDate = userAuditStartDate.toLocalDate();
-                    LocalDate endDate = userAuditEndDate.toLocalDate();
-
-                    LocalDate auditStartDate = audit.getStartDate().toLocalDate();
-                    LocalDate auditEndDate = audit.getEndDate().toLocalDate();
+                    LocalDate auditStartDate = audit.getStartDate();
+                    LocalDate auditEndDate = audit.getEndDate();
 
                     if (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)) {
                         errors.rejectValue("startDate",
                                 "audit-overlap",
-                                "Данный пользователь уже занят в эти даты");
+                                "Данный пользователь уже занят в выбранные даты");
                         break;
                     }
                 }

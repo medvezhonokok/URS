@@ -76,11 +76,14 @@ const UserPage = ({user}) => {
                             {userAudits.map(audit => (
                                 <ListItem key={audit.id} className="auditItem">
                                     <div>Компания: {audit.companyName}</div>
-                                    <div>Название: {audit.title}</div>
-                                    <div>Описание: {audit.about}</div>
+                                    <div>Активность: {audit.activity}</div>
+                                    <div>Локация: {audit.location}</div>
+                                    <div>Договор: {audit.agreement}</div>
+                                    <div>Дата заключительного собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
+                                    <div>Дата истечения сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
                                     <div className="auditDates">
-                                        <span>Дата начала: {new Date(audit.startDate).toLocaleDateString()}</span>
-                                        <span>Дата окончания: {new Date(audit.endDate).toLocaleDateString()}</span>
+                                    <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
+                                        <span>Дата окончания аудита: {new Date(audit.endDate).toLocaleDateString()}</span>
                                     </div>
                                 </ListItem>
                             ))}
