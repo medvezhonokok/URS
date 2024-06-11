@@ -80,6 +80,7 @@ const CommonSchedulePage = ({user}) => {
     const updateUsersAndCompanies = (newUsers, newCompanies) => {
         setUsers(newUsers);
         setCompanies(newCompanies);
+        //huy
     };
 
     return (
