@@ -39,7 +39,7 @@ public class CompanyController {
     }
 
     @GetMapping("/all")
-    public List<Company> getAllInProcess(@RequestParam String jwt) {
+    public List<Company> getAll(@RequestParam String jwt) {
         if (StringUtil.isNotNullOrEmpty(jwt)) {
             User user = jwtService.findUserByJWT(jwt);
 

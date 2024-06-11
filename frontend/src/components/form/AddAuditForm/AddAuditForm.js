@@ -4,7 +4,7 @@ import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
 import axios from "axios";
 import * as constants from "../../../constants/constants";
-import {CertificateTypes} from "../../../data/storage";
+import {AuditCriterion} from "../../../data/storage";
 
 const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
     const [errors, setErrors] = useState({});
@@ -83,15 +83,15 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
     };
 
     const getCompanyInfoString = (company) => {
-        return company.englishName + (company.certificate ? `\t(${company.certificate.auditCriterion})` : "\t(НОВАЯ)");
+        return company.englishName + `\t(${company.auditCriterion})`;
     };
 
-    const competentByCertificateType = (user) => {
-        if (selectedCompany && selectedCompany.certificate) {
-            const auditCriterion = selectedCompany.certificate.auditCriterion;
+    const competentByAuditCriterion = (user) => {
+        if (selectedCompany && selectedCompany.auditCriterion) {
+            const auditCriterion = selectedCompany.auditCriterion;
 
             let idx = 0;
-            for (const {key} of CertificateTypes) {
+            for (const {key} of AuditCriterion) {
                 if (key === auditCriterion) {
                     break;
                 }
@@ -119,7 +119,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <FormControl fullWidth>
-                            <InputLabel id="company-select-label">Компания</InputLabel>
+                            <InputLabel id="company-select-label">Клиент</InputLabel>
                             <Select
                                 required={true}
                                 labelId="company-select-label"
@@ -226,7 +226,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                     </Grid>
                     <Grid item xs={12}>
                         <FormControl fullWidth>
-                            <InputLabel id="user-select-label">Ответственный</InputLabel>
+                            <InputLabel id="user-select-label">Сотрудник</InputLabel>
                             <Select
                                 required={true}
                                 labelId="user-select-label"
@@ -236,7 +236,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                                 onChange={handleInputChange}
                             >
                                 {users
-                                    .filter(user => competentByCertificateType(user))
+                                    .filter(user => competentByAuditCriterion(user))
                                     .map(user => (
                                         <MenuItem key={user.id} value={user.id}>
                                             {user.name}

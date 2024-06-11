@@ -23,8 +23,8 @@ export const getUserById = async (userId) => {
     }
 }
 
-export const updateUserCertificatesMap = async (userCertificateMap) => {
-    await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map`, userCertificateMap, {
+export const updateUserAuditCriterionMap = async (auditCriterionMap) => {
+    await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map`, auditCriterionMap, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -91,10 +91,7 @@ export const getUsers = async () => {
     }
 }
 
-export const CertificateTypes = [
-    {key: "IATF_16949", value: "IATF 16949"},
-    {key: "ГОСТР_58139", value: "ГОСТР 58139"},
-    {key: "ISO_9001", value: "ISO 9001"},
+export const AuditCriterion = [
     {key: "ISO_9001_2015", value: "ISO 9001:2015"},
     {key: "ISO_50001_2018", value: "ISO 50001:2018"},
     {key: "ISO_45001_2018", value: "ISO 45001:2018"},
@@ -106,18 +103,22 @@ export const CertificateTypes = [
     {key: "ISO_20000_1_2018", value: "ISO 20000-1:2018"},
     {key: "ISO_14001_2015", value: "ISO 14001:2015"},
     {key: "ISO_13485_2016", value: "ISO 13485:2016"},
-    {key: "IATF_16949_2016_TO_ISO_9001_2015", value: "IATF 16949:2016 -> ISO 9001:2015"},
+    {key: "IATF_16949_2016_ISO_9001_2015", value: "IATF 16949:2016 -> ISO 9001:2015"},
     {key: "IATF_16949_2016", value: "IATF 16949:2016"},
     {key: "FSSC_22000", value: "FSSC 22000"},
-    {key: "ГОСТ_ISO_13485_2017", value: "ГОСТ ISO 13485-2017"},
-    {key: "ГОСТ_Р_ИСО_МЭК_27001_2021", value: "ГОСТ Р ИСО/МЭК 27001-2021"},
-    {key: "ГОСТ_Р_ИСО_9001_2015_СДС", value: "ГОСТ Р ИСО 9001:2015 (СДС)"},
-    {key: "ГОСТ_Р_ИСО_45001", value: "ГОСТ Р ИСО 45001"},
-    {key: "ГОСТ_Р_ИСО_14001", value: "ГОСТ Р ИСО 14001"},
-    {key: "ГОСТ_Р_58139_2018", value: "ГОСТ Р 58139-2018"},
+    {
+        key: "GOST_R_ISO_9001_2015_GOST_RV_0015_002_2012",
+        value: "ГOСТ Р ИСО 9001-2015, доп. требования ГОСТ РВ 0015-002-2012"
+    },
+    {key: "GOST_ISO_13485_2017", value: "ГОСТ ISO 13485-2017"},
+    {key: "GOST_R_ISO_IEC_27001_2021", value: "ГОСТ Р ИСО/МЭК 27001-2021"},
+    {key: "GOST_R_ISO_9001_2015_SDS", value: "ГОСТ Р ИСО 9001:2015 (СДС)"},
+    {key: "GOST_R_ISO_45001", value: "ГОСТ Р ИСО 45001"},
+    {key: "GOST_R_ISO_14001", value: "ГОСТ Р ИСО 14001"},
+    {key: "GOST_R_58139_2018", value: "ГОСТ Р 58139-2018"},
     {key: "EN_14065", value: "EN 14065"},
-    {key: "ГОСТ_Р_ИСО_14001_2016", value: "ГОСТ Р ИСО 14001-2016"},
-    {key: "ГОСТ_Р_ИСО_9001_2015_ФСА", value: "ГОСТ Р ИСО 9001-2015 (ФСА)"}
+    {key: "GOST_R_ISO_9001_2015_FSA", value: "ГОСТ Р ИСО 9001-2015 (ФСА)"},
+    {key: "IATF_16949_2016_REPORT", value: "IATF 16949:2016 (отчет)"}
 ];
 
 export const monthNames = [

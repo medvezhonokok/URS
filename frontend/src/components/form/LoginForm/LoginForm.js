@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import axios from 'axios';
 import * as constants from '../../../constants/constants';
 import {Button} from 'react-bootstrap';
-import {motion} from 'framer-motion';
 import './LoginForm.css';
 
 const LoginForm = () => {
@@ -49,26 +48,18 @@ const LoginForm = () => {
         });
     };
 
-    return (
-        <motion.div
-            initial={{rotate: -360 * 50, scale: 0.5, opacity: 0}}
-            animate={{rotate: 0, scale: 1, opacity: 1}}
-            exit={{rotate: 360 * 50, scale: 0.5, opacity: 0}}
-            transition={{type: 'spring', stiffness: 100, damping: 10, duration: 0.5}}
-        >
-            <form className="loginForm" onSubmit={submitLoginForm}>
-                <div>
-                    <label>Login:</label>
-                    <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
-                </div>
-                {errors.authentication && <div className="error">{errors.authentication}</div>}
-                <Button style={{fontWeight: "bold"}} type="submit">Log in</Button>
-            </form>
-        </motion.div>
+    return (<form className="loginForm" onSubmit={submitLoginForm}>
+            <div>
+                <label>Login:</label>
+                <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
+            </div>
+            <div>
+                <label>Password:</label>
+                <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
+            </div>
+            {errors.authentication && <div className="error">{errors.authentication}</div>}
+            <Button style={{fontWeight: "bold"}} type="submit">Log in</Button>
+        </form>
     );
 };
 

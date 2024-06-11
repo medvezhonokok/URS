@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import * as storage from "../../../data/storage";
-import {CertificateTypes, updateUserCertificatesMap} from "../../../data/storage";
+import {AuditCriterion, updateUserAuditCriterionMap} from "../../../data/storage";
 import './UsersPage.css';
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -29,7 +29,7 @@ const UsersPage = ({user}) => {
 
                 const userCertificateMap = {};
                 certificateValues.forEach((value, index) => {
-                    const certificateKey = CertificateTypes[index].key;
+                    const certificateKey = AuditCriterion[index].key;
                     userCertificateMap[certificateKey] = value === 1;
                 });
                 certificatesMap[user.id] = userCertificateMap;
@@ -56,7 +56,7 @@ const UsersPage = ({user}) => {
     };
 
     const handleSave = () => {
-        updateUserCertificatesMap(userCertificates);
+        updateUserAuditCriterionMap(userCertificates);
         setIsEditMode(false);
     };
 
@@ -73,7 +73,7 @@ const UsersPage = ({user}) => {
                         <TableHead>
                             <TableRow>
                                 <TableCell>ФИО</TableCell>
-                                {CertificateTypes.map(certificate => (
+                                {AuditCriterion.map(certificate => (
                                     <TableCell key={certificate.key}>{certificate.value}</TableCell>
                                 ))}
                             </TableRow>
@@ -86,7 +86,7 @@ const UsersPage = ({user}) => {
                                             {user.name}
                                         </Link>
                                     </TableCell>
-                                    {CertificateTypes.map(certificate => (
+                                    {AuditCriterion.map(certificate => (
                                         <TableCell key={certificate.key}>
                                             <Checkbox
                                                 className={`checkbox ${isEditMode ? '' : 'checked'}`}

@@ -89,7 +89,10 @@ public class Company {
     private User user;
 
     @NonNull
-    @OneToOne
-    @JoinColumn(name = "certificate_id")
-    private Certificate certificate;
+    @Enumerated(EnumType.STRING)
+    @Column(length = 40)
+    private AuditCriterion auditCriterion;
+
+    @Nullable
+    private String certificateNumber;
 }

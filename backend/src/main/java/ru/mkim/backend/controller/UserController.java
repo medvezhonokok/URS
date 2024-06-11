@@ -77,7 +77,7 @@ public class UserController {
             int index = 0;
 
             for (AuditCriterion value : AuditCriterion.values()) {
-                certificates[index++] = entry.getValue().get(value.toString()) ? "1" : "0";
+                certificates[index++] = entry.getValue().getOrDefault(value.toString(), false) ? "1" : "0";
             }
 
             userService.updateCertificates(user.getId(), String.join("#", certificates));

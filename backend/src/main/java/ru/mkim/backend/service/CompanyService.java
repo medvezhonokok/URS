@@ -2,7 +2,6 @@ package ru.mkim.backend.service;
 
 import org.springframework.stereotype.Service;
 import ru.mkim.backend.form.CompanyCredentials;
-import ru.mkim.backend.model.Certificate;
 import ru.mkim.backend.model.Company;
 import ru.mkim.backend.repository.CompanyRepository;
 
@@ -11,11 +10,9 @@ import java.util.List;
 @Service
 public class CompanyService {
     private final CompanyRepository companyRepository;
-    private final CertificateService certificateService;
 
-    public CompanyService(CompanyRepository companyRepository, CertificateService certificateService) {
+    public CompanyService(CompanyRepository companyRepository) {
         this.companyRepository = companyRepository;
-        this.certificateService = certificateService;
     }
 
     public List<Company> findAll() {
@@ -27,7 +24,7 @@ public class CompanyService {
     }
 
     public Company register(CompanyCredentials credentials) {
-        return copyCredentialsFieldToCompany(new Certificate(), new Company(), credentials);
+        return copyCredentialsFieldToCompany(new Company(), credentials);
     }
 
     public void save(Company company) {
@@ -35,14 +32,10 @@ public class CompanyService {
     }
 
     public void update(Long companyId, CompanyCredentials credentials) {
-        Company company = findById(companyId);
-        Certificate certificate = company.getCertificate();
-        copyCredentialsFieldToCompany(certificate, company, credentials);
+        copyCredentialsFieldToCompany(findById(companyId), credentials);
     }
 
-    private Company copyCredentialsFieldToCompany(Certificate certificate, Company company,
-                                               CompanyCredentials credentials) {
-        certificate.setAuditCriterion(credentials.getAuditCriterion());
+    private Company copyCredentialsFieldToCompany(Company company, CompanyCredentials credentials) {
 
         company.setEnglishName(credentials.getEnglishName());
         company.setRussianName(credentials.getRussianName());
@@ -64,9 +57,8 @@ public class CompanyService {
         company.setOkved(credentials.getOkved());
         company.setEnglishCertificationScope(credentials.getEnglishCertificationScope());
         company.setRussianCertificationScope(credentials.getRussianCertificationScope());
-
-        certificateService.save(certificate);
-        company.setCertificate(certificate);
+        company.setCertificateNumber(credentials.getCertificateNumber());
+        company.setAuditCriterion(credentials.getAuditCriterion());
 
         return companyRepository.save(company);
     }

@@ -2,7 +2,7 @@ import './CompaniesPage.css';
 import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import * as storage from "../../../data/storage";
-import {addNewCompany, CertificateTypes} from "../../../data/storage";
+import {addNewCompany, AuditCriterion} from "../../../data/storage";
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -121,7 +121,7 @@ const CompaniesPage = ({user}) => {
                                                         label={field.label}
                                                         defaultValue=""
                                                     >
-                                                        {CertificateTypes.map((type) => (
+                                                        {AuditCriterion.map((type) => (
                                                             <MenuItem key={type.key} value={type.key}>
                                                                 {type.value}
                                                             </MenuItem>

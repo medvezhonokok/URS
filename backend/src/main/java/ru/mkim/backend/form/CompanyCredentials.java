@@ -121,4 +121,7 @@ public class CompanyCredentials {
     @Enumerated(EnumType.STRING)
     @Column(length = 40)
     private AuditCriterion auditCriterion;
+
+    @Size(max = 255, message = "Russian certification scope must be less than 255 characters")
+    private String certificateNumber;
 }

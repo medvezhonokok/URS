@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import "./CommonSchedulePage.css";
-import {Box, FormControl, Grid, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
+import {Box, FormControl, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
 import {Button} from "react-bootstrap";
 import {MdAccessTimeFilled} from "react-icons/md";
 import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
@@ -190,19 +190,21 @@ const CommonSchedulePage = ({user}) => {
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <MdAccessTimeFilled className="dateTimeIcon"/>
                                     <Typography>
-                                        <span className="label">Заключительная встреча:</span> {selectedAudit.closingMeetingDate ? new Date(selectedAudit.closingMeetingDate).toLocaleDateString() : 'Не указана'}
+                                        <span
+                                            className="label">Заключительная встреча:</span> {selectedAudit.closingMeetingDate ? new Date(selectedAudit.closingMeetingDate).toLocaleDateString() : 'Не указана'}
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <MdAccessTimeFilled className="dateTimeIcon"/>
                                     <Typography>
-                                        <span className="label">Срок действия сертификата:</span> {selectedAudit.certificateExpirationDate ? new Date(selectedAudit.certificateExpirationDate).toLocaleDateString() : 'Не указана'}
+                                        <span
+                                            className="label">Срок действия сертификата:</span> {selectedAudit.certificateExpirationDate ? new Date(selectedAudit.certificateExpirationDate).toLocaleDateString() : 'Не указана'}
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon" />
+                                    <MdAccessTimeFilled className="dateTimeIcon"/>
                                     <Typography>
                                         {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
                                     </Typography>

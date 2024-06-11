@@ -13,15 +13,15 @@ const SideBarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Сотрудники',
-        path: '/users',
-        icon: <FaIcons.FaUsers/>,
+        title: 'Схемы сертификации',
+        path: '/certification_scheme',
+        icon: <FaIcons.FaRegCalendarAlt/>,
         cName: 'nav-text'
     },
     {
-        title: 'Мое расписание',
-        path: '/schedule',
-        icon: <FaIcons.FaCalendarAlt/>,
+        title: 'Сотрудники',
+        path: '/users',
+        icon: <FaIcons.FaUsers/>,
         cName: 'nav-text'
     },
     {
@@ -31,9 +31,15 @@ const SideBarData = [
         cName: 'nav-text'
     },
     {
-        title: 'Общий график',
-        path: '/common',
+        title: 'План работ',
+        path: '/schedule',
         icon: <FaIcons.FaRegCalendarAlt/>,
+        cName: 'nav-text'
+    },
+    {
+        title: 'Статистика',
+        path: '/stats',
+        icon: <FaIcons.FaArtstation/>,
         cName: 'nav-text'
     }
 ];

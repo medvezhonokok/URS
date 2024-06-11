@@ -6,12 +6,12 @@ import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";
 import UsersPage from "./components/page/UsersPage/UsersPage";
 import CompaniesPage from "./components/page/CompaniesPage/CompaniesPage";
-import SchedulePage from "./components/page/SchedulePage/SchedulePage";
 import CompanyPage from "./components/page/CompanyPage/CompanyPage";
 import UserPage from "./components/page/UserPage/UserPage";
 import HomePage from "./components/page/HomePage/HomePage";
 import CommonSchedulePage from "./components/page/CommonSchedulePage/CommonSchedulePage";
-import {AnimatePresence} from 'framer-motion';
+import CertificationSchemePage from "./components/page/CertificationSchemePage/CertificationSchemePage";
+import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
 
 const App = () => {
     const user = index.getUser();
@@ -21,17 +21,16 @@ const App = () => {
             <Router>
                 <SideBarMenu user={user} className="sidebar"/>
                 <div className="content">
-                    <AnimatePresence>
-                        <Routes>
-                            <Route path='/' exact element={<HomePage user={user}/>}/>
-                            <Route path='/users' element={<UsersPage user={user}/>}/>
-                            <Route path='/companies' element={<CompaniesPage user={user}/>}/>
-                            <Route path='/schedule' element={<SchedulePage user={user}/>}/>
-                            <Route path='/common' element={<CommonSchedulePage user={user}/>}/>
-                            <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
-                            <Route path='/user/:userId' element={<UserPage user={user}/>}/>
-                        </Routes>
-                    </AnimatePresence>
+                    <Routes>
+                        <Route path='/' exact element={<HomePage user={user}/>}/>
+                        <Route path='/certification_scheme' element={<CertificationSchemePage user={user}/>}/>
+                        <Route path='/stats' element={<StatisticsPage user={user}/>}/>
+                        <Route path='/users' element={<UsersPage user={user}/>}/>
+                        <Route path='/companies' element={<CompaniesPage user={user}/>}/>
+                        <Route path='/schedule' element={<CommonSchedulePage user={user}/>}/>
+                        <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
+                        <Route path='/user/:userId' element={<UserPage user={user}/>}/>
+                    </Routes>
                 </div>
             </Router>
         </div>

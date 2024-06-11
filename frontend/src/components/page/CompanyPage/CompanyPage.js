@@ -3,7 +3,7 @@ import {useParams} from "react-router-dom";
 import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
-import {CertificateTypes} from "../../../data/storage";
+import {AuditCriterion} from "../../../data/storage";
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
@@ -77,10 +77,10 @@ const CompanyPage = ({user}) => {
                             id: "russianCertificationScope"
                         },
                         {
-                            label: "Критерий аудита", value: companyById.certificate
-                                ? companyById.certificate.auditCriterion
-                                : ''
-                            , id: "auditCriterion"
+                            label: "Критерий аудита", value: companyById.auditCriterion, id: "auditCriterion"
+                        },
+                        {
+                            label: "Номер сертификата", value: companyById.certificateNumber, id: "certificateNumber"
                         }
                     ]
                 );
@@ -135,7 +135,7 @@ const CompanyPage = ({user}) => {
         company
             ? <div className="usersPageContainer">
                 <div className="companiesPageHeader">
-                    <h1 className="companiesHeader">Компания: {company.englishName}</h1>
+                    <h1 className="companiesHeader">Компания "{company.englishName}"</h1>
                     <div className="companiesAddNewCompanyButton">
                         {isEditing
                             ? <Button onClick={handleSaveClick}>Сохранить</Button>
@@ -164,7 +164,7 @@ const CompanyPage = ({user}) => {
                                     <Select onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
                                             disabled={!isEditing}
                                             value={isEditing ? editedFields[field.id] : field.value}>
-                                        {CertificateTypes.map((type) => (
+                                        {AuditCriterion.map((type) => (
                                             <MenuItem key={type.key} value={type.key}>
                                                 {type.value}
                                             </MenuItem>

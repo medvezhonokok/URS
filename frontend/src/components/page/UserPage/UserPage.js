@@ -2,14 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
 import * as storage from "../../../data/storage";
-import {CertificateTypes} from "../../../data/storage";
+import {AuditCriterion} from "../../../data/storage";
 import "./UserPage.css";
 
 const UserPage = ({user}) => {
     const {userId} = useParams();
     const [userById, setUserById] = useState(null);
     const [userFields, setUserFields] = useState([]);
-    const [userCertificatesList, setUserCertificatesList] = useState([]);
+    const [userAuditCriterionList, setUserAuditCriterionList] = useState([]);
     const [userAudits, setUserAudits] = useState([]);
 
     useEffect(() => {
@@ -17,11 +17,11 @@ const UserPage = ({user}) => {
             try {
                 const userJson = await storage.getUserById(userId);
                 if (userJson) {
-                    const userAvailableCertificates = userJson.certificates.split('#')
-                        .map((cert, index) => cert === "1" ? CertificateTypes[index].value : null)
+                    const userAvailableAuditCriterion = userJson.certificates.split('#')
+                        .map((cert, index) => cert === "1" ? AuditCriterion[index].value : null)
                         .filter(cert => cert !== null);
 
-                    setUserCertificatesList(userAvailableCertificates);
+                    setUserAuditCriterionList(userAvailableAuditCriterion);
 
                     setUserFields([
                         {label: "ФИО", value: userJson.name, id: "name"},
@@ -58,17 +58,17 @@ const UserPage = ({user}) => {
                             <Input id={field.id} value={field.value} disabled/>
                         </FormControl>
                     ))}
-                    <h2>Список доступных сертификатов сотрудника:</h2>
-                    {userCertificatesList && userCertificatesList.length > 0 ? (
+                    <h2>Аккредитация эксперта:</h2>
+                    {userAuditCriterionList && userAuditCriterionList.length > 0 ? (
                         <List>
-                            {userCertificatesList.map((certificate, index) => (
+                            {userAuditCriterionList.map((certificate, index) => (
                                 <ListItem style={{background: "#83d10b"}} key={index}>
                                     {certificate}
                                 </ListItem>
                             ))}
                         </List>
                     ) : (
-                        <p>Нет доступных сертификатов.</p>
+                        <p>Нет доступной аккредитации.</p>
                     )}
                     <h2>Аудиты:</h2>
                     {userAudits && userAudits.length > 0 ? (
@@ -79,10 +79,12 @@ const UserPage = ({user}) => {
                                     <div>Активность: {audit.activity}</div>
                                     <div>Локация: {audit.location}</div>
                                     <div>Договор: {audit.agreement}</div>
-                                    <div>Дата заключительного собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
-                                    <div>Дата истечения сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
+                                    <div>Дата заключительного
+                                        собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
+                                    <div>Дата истечения
+                                        сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
                                     <div className="auditDates">
-                                    <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
+                                        <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
                                         <span>Дата окончания аудита: {new Date(audit.endDate).toLocaleDateString()}</span>
                                     </div>
                                 </ListItem>
