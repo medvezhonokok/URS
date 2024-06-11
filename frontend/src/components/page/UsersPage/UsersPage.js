@@ -10,13 +10,15 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {Button} from "react-bootstrap";
-import {Checkbox} from "@mui/material";
+import {Checkbox, CircularProgress} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const UsersPage = ({user}) => {
     const [users, setUsers] = useState([]);
     const [userCertificates, setUserCertificates] = useState({});
     const [isEditMode, setIsEditMode] = useState(false);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         storage.getUsers().then(usersJson => {
@@ -35,6 +37,7 @@ const UsersPage = ({user}) => {
                 certificatesMap[user.id] = userCertificateMap;
             });
             setUserCertificates(certificatesMap);
+            setLoading(false);
         });
     }, []);
 
@@ -68,40 +71,46 @@ const UsersPage = ({user}) => {
                     <div className="companiesAddNewCompanyButton">
                     </div>
                 </div>
-                <TableContainer component={Paper}>
-                    <Table sx={{minWidth: 650}} aria-label="companies table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>ФИО</TableCell>
-                                {AuditCriterion.map(certificate => (
-                                    <TableCell key={certificate.key}>{certificate.value}</TableCell>
-                                ))}
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {users.map(user => (
-                                <TableRow key={user.id}>
-                                    <TableCell>
-                                        <Link to={`/user/${user.id}`}>
-                                            {user.name}
-                                        </Link>
-                                    </TableCell>
+                {loading ? (
+                    <div className="loadingContainer">
+                        <CircularProgress/>
+                    </div>
+                ) : (
+                    <TableContainer component={Paper}>
+                        <Table sx={{minWidth: 650}} aria-label="companies table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>ФИО</TableCell>
                                     {AuditCriterion.map(certificate => (
-                                        <TableCell key={certificate.key}>
-                                            <Checkbox
-                                                className={`checkbox ${isEditMode ? '' : 'checked'}`}
-                                                checked={userCertificates[user.id] && userCertificates[user.id][certificate.key]}
-                                                onChange={() => handleCertificateToggle(user.id, certificate.key)}
-                                                disabled={!isEditMode}
-                                            />
-                                        </TableCell>
+                                        <TableCell key={certificate.key}>{certificate.value}</TableCell>
                                     ))}
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-                {isEditMode
+                            </TableHead>
+                            <TableBody>
+                                {users.map(user => (
+                                    <TableRow key={user.id}>
+                                        <TableCell>
+                                            <Link to={`/user/${user.id}`}>
+                                                {user.name}
+                                            </Link>
+                                        </TableCell>
+                                        {AuditCriterion.map(certificate => (
+                                            <TableCell key={certificate.key}>
+                                                <Checkbox
+                                                    className={`checkbox ${isEditMode ? '' : 'checked'}`}
+                                                    checked={userCertificates[user.id] && userCertificates[user.id][certificate.key]}
+                                                    onChange={() => handleCertificateToggle(user.id, certificate.key)}
+                                                    disabled={!isEditMode}
+                                                />
+                                            </TableCell>
+                                        ))}
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
+                {loading ? null : isEditMode
                     ? <Button variant="contained" onClick={handleSave} className="saveOrEditButton">Сохранить</Button>
                     :
                     <Button variant="contained" onClick={handleEditToggle}

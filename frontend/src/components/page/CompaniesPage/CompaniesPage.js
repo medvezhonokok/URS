@@ -11,9 +11,8 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography} from "@mui/material";
+import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography, CircularProgress} from "@mui/material";
 import {Link} from "react-router-dom";
-
 
 const formFields = [
     {label: "Название организации [en]", name: "englishName"},
@@ -47,6 +46,7 @@ const CompaniesPage = ({user}) => {
     const [open, setOpen] = useState(false);
     const [companyCredentials, setCompanyCredentials] = useState({});
     const [searchQuery, setSearchQuery] = useState('');
+    const [loading, setLoading] = useState(true);
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -54,7 +54,8 @@ const CompaniesPage = ({user}) => {
     useEffect(() => {
         storage.getCompanies().then(
             companiesJson => {
-                setCompanies(companiesJson)
+                setCompanies(companiesJson);
+                setLoading(false);
             }
         );
     }, []);
@@ -160,39 +161,45 @@ const CompaniesPage = ({user}) => {
                     fullWidth
                     margin="normal"
                 />
-                <TableContainer component={Paper}>
-                    <Table sx={{minWidth: 650}} aria-label="companies table">
-                        <TableHead>
-                            <TableRow>
-                                <TableCell>Название</TableCell>
-                                <TableCell>Страна или штат</TableCell>
-                                <TableCell>ФИО контактного лица</TableCell>
-                                <TableCell>ИНН</TableCell>
-                                <TableCell>Код по ОКВЭД</TableCell>
-                                <TableCell>Аудит</TableCell>
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {(rowsPerPage > 0
-                                    ? filteredCompanies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                                    : filteredCompanies
-                            ).map((company) => (
-                                <TableRow key={company.id}>
-                                    <TableCell>
-                                        <Link to={`/company/${company.id}`}>
-                                            {company.englishName}
-                                        </Link>
-                                    </TableCell>
-                                    <TableCell>{company.countryOrState}</TableCell>
-                                    <TableCell>{company.russianContactPersonName}</TableCell>
-                                    <TableCell>{company.tin}</TableCell>
-                                    <TableCell>{company.okved}</TableCell>
-                                    <TableCell>{company.audit ? "Есть" : "Отсутствует"}</TableCell>
+                {loading ? (
+                    <div className="loadingContainer">
+                        <CircularProgress />
+                    </div>
+                ) : (
+                    <TableContainer component={Paper}>
+                        <Table sx={{minWidth: 650}} aria-label="companies table">
+                            <TableHead>
+                                <TableRow>
+                                    <TableCell>Название</TableCell>
+                                    <TableCell>Страна или штат</TableCell>
+                                    <TableCell>ФИО контактного лица</TableCell>
+                                    <TableCell>ИНН</TableCell>
+                                    <TableCell>Код по ОКВЭД</TableCell>
+                                    <TableCell>Аудит</TableCell>
                                 </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                            </TableHead>
+                            <TableBody>
+                                {(rowsPerPage > 0
+                                        ? filteredCompanies.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                                        : filteredCompanies
+                                ).map((company) => (
+                                    <TableRow key={company.id}>
+                                        <TableCell>
+                                            <Link to={`/company/${company.id}`}>
+                                                {company.englishName}
+                                            </Link>
+                                        </TableCell>
+                                        <TableCell>{company.countryOrState}</TableCell>
+                                        <TableCell>{company.russianContactPersonName}</TableCell>
+                                        <TableCell>{company.tin}</TableCell>
+                                        <TableCell>{company.okved}</TableCell>
+                                        <TableCell>{company.audit ? "Есть" : "Отсутствует"}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                )}
                 <TablePagination
                     rowsPerPageOptions={[10, 25, 100]}
                     component="div"

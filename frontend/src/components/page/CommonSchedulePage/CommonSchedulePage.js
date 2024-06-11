@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import TableContainer from "@mui/material/TableContainer";
 import "./CommonSchedulePage.css";
-import {Box, FormControl, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
+import {Box, CircularProgress, FormControl, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
 import {Button} from "react-bootstrap";
 import {MdAccessTimeFilled} from "react-icons/md";
 import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
@@ -24,6 +24,8 @@ const CommonSchedulePage = ({user}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [loading, setLoading] = useState(true);
+
 
     const yearNames = Array.from({length: 10}, (_, i) => new Date().getFullYear() - i);
 
@@ -37,6 +39,7 @@ const CommonSchedulePage = ({user}) => {
 
             const days = Array.from({length: new Date(selectedYear, selectedMonth, 0).getDate()}, (_, i) => i + 1);
             setDaysInMonth(days);
+            setLoading(false);
         };
 
         fetchData();
@@ -80,8 +83,11 @@ const CommonSchedulePage = ({user}) => {
     const updateUsersAndCompanies = (newUsers, newCompanies) => {
         setUsers(newUsers);
         setCompanies(newCompanies);
-        //huy
     };
+
+    if (loading) {
+        return <div className="loadingContainer"><CircularProgress /></div>;
+    }
 
     return (
         user

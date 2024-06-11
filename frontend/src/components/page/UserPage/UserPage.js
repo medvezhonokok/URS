@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
+import {CircularProgress, FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
 import * as storage from "../../../data/storage";
 import {AuditCriterion} from "../../../data/storage";
 import "./UserPage.css";
@@ -11,6 +11,8 @@ const UserPage = ({user}) => {
     const [userFields, setUserFields] = useState([]);
     const [userAuditCriterionList, setUserAuditCriterionList] = useState([]);
     const [userAudits, setUserAudits] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const getUserAsync = async () => {
@@ -45,6 +47,10 @@ const UserPage = ({user}) => {
 
     if (!user || !userId) {
         return null;
+    }
+
+    if (loading) {
+        return <div className="loadingContainer"><CircularProgress /></div>;
     }
 
     return (

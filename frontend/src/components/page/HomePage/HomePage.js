@@ -1,12 +1,14 @@
 import React, {useEffect, useState} from 'react';
 import './HomePage.css';
 import * as storage from "../../../data/storage";
-import {List, ListItem} from "@mui/material";
+import {CircularProgress, List, ListItem} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const HomePage = ({user}) => {
     const [companiesWithAudit, setCompaniesWithAudit] = useState([]);
     const [companiesWithoutAudit, setCompaniesWithoutAudit] = useState([]);
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         storage.getCompanies().then(companiesJson => {
@@ -19,6 +21,7 @@ const HomePage = ({user}) => {
 
             setCompaniesWithAudit(companiesWithAudit);
             setCompaniesWithoutAudit(companiesWithoutAudit);
+            setLoading(false);
         });
     }, []);
 
@@ -26,28 +29,33 @@ const HomePage = ({user}) => {
         user ? (
             <div className="usersPageContainer">
                 <h1 className="companiesHeader">Главная</h1>
-                <div className="homePageContent">
-                    <List className="auditList">
-                        <h1>Компании с аудитами</h1>
-                        {companiesWithAudit.map(company => (
-                            <ListItem key={company.id} className="auditItem">
-                                <Link to={`/company/${company.id}`}>
-                                    Компания "{company.englishName}"
-                                </Link>
-                                <p>Дата истечения
-                                    сертификата: {new Date(company.audit.certificateExpirationDate).toLocaleDateString()}</p>
-                            </ListItem>
-                        ))}
-                        <h1>Компании без аудитов</h1>
-                        {companiesWithoutAudit.map(company => (
-                            <ListItem key={company.id} className="auditItem">
-                                <Link to={`/company/${company.id}`}>
-                                    Компания "{company.englishName}"
-                                </Link>
-                            </ListItem>
-                        ))}
-                    </List>
-                </div>
+                {loading ? (
+                    <div className="loadingContainer">
+                        <CircularProgress/>
+                    </div>
+                ) : (<div className="homePageContent">
+                        <List className="auditList">
+                            <h1>Компании с аудитами</h1>
+                            {companiesWithAudit.map(company => (
+                                <ListItem key={company.id} className="auditItem">
+                                    <Link to={`/company/${company.id}`}>
+                                        Компания "{company.englishName}"
+                                    </Link>
+                                    <p>Дата истечения
+                                        сертификата: {new Date(company.audit.certificateExpirationDate).toLocaleDateString()}</p>
+                                </ListItem>
+                            ))}
+                            <h1>Компании без аудитов</h1>
+                            {companiesWithoutAudit.map(company => (
+                                <ListItem key={company.id} className="auditItem">
+                                    <Link to={`/company/${company.id}`}>
+                                        Компания "{company.englishName}"
+                                    </Link>
+                                </ListItem>
+                            ))}
+                        </List>
+                    </div>
+                )}
             </div>
         ) : null
     );

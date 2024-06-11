@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
-import {Button, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
+import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
 import {AuditCriterion} from "../../../data/storage";
@@ -12,6 +12,8 @@ const CompanyPage = ({user}) => {
     const [editedFields, setEditedFields] = useState({});
     const [errors, setErrors] = useState({});
     const {companyId} = useParams();
+    const [loading, setLoading] = useState(true);
+
 
     useEffect(() => {
         const getCompanyAsync = async () => {
@@ -84,8 +86,10 @@ const CompanyPage = ({user}) => {
                         }
                     ]
                 );
+                setLoading(false);
             } catch (error) {
                 console.error("Failed to get company:", error);
+                setLoading(false);
             }
         };
 
@@ -129,6 +133,10 @@ const CompanyPage = ({user}) => {
 
     if (!user || !companyId) {
         return null;
+    }
+
+    if (loading) {
+        return <div className="loadingContainer"><CircularProgress /></div>;
     }
 
     return (

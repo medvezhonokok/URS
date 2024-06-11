@@ -78,7 +78,8 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
         setSelectedCompany(selectedCompany);
         setAuditData({
             ...auditData,
-            companyId: companyId
+            companyId: companyId,
+            companyName: selectedCompany.russianName
         });
     };
 
