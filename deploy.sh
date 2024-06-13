@@ -16,7 +16,7 @@ log() {
     local len=$(( (80 - ${#timestamp}) / 2 ))
     local equal_length_separator="${separator:0:$len}"
 
-    echo "$equal_length_separator $timestamp - $message $equal_length_separator" | tee -a $LOG_FILE
+    echo "$equal_length_separator $timestamp - $message" | tee -a $LOG_FILE
 }
 
 rebuild_backend() {
