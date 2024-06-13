@@ -13,7 +13,6 @@ const UserPage = ({user}) => {
     const [userAudits, setUserAudits] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
         const getUserAsync = async () => {
             try {
@@ -32,7 +31,7 @@ const UserPage = ({user}) => {
                     ]);
 
                     setUserAudits(userJson.audits || []);
-
+                    setLoading(false);
                     setUserById(userJson);
                 }
             } catch (error) {
@@ -50,7 +49,7 @@ const UserPage = ({user}) => {
     }
 
     if (loading) {
-        return <div className="loadingContainer"><CircularProgress /></div>;
+        return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
     return (

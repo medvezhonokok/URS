@@ -11,7 +11,18 @@ import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Paper from '@mui/material/Paper';
 import TablePagination from '@mui/material/TablePagination';
-import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography, CircularProgress} from "@mui/material";
+import {
+    Box,
+    CircularProgress,
+    FormControl,
+    Grid,
+    InputLabel,
+    MenuItem,
+    Modal,
+    Select,
+    TextField,
+    Typography
+} from "@mui/material";
 import {Link} from "react-router-dom";
 
 const formFields = [
@@ -163,7 +174,7 @@ const CompaniesPage = ({user}) => {
                 />
                 {loading ? (
                     <div className="loadingContainer">
-                        <CircularProgress />
+                        <CircularProgress/>
                     </div>
                 ) : (
                     <TableContainer component={Paper}>

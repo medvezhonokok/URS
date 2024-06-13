@@ -71,7 +71,7 @@ public class CompanyController {
 
     @PostMapping("/add")
     public ResponseEntity<Company> addNewCompany(@Valid @RequestBody CompanyCredentials credentials,
-                                                BindingResult bindingResult) {
+                                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult.getAllErrors().toString());
         }

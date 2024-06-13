@@ -27,7 +27,4 @@ public class UserCredentials {
     @Size(min = 3, max = 12)
     @Pattern(regexp = "[+]?[0-9]+", message = "Excepted numbers or plus")
     private String phoneNumber;
-
-    @Size(max = 250)
-    private String about;
 }

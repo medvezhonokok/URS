@@ -25,8 +25,6 @@ const CommonSchedulePage = ({user}) => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [loading, setLoading] = useState(true);
-
-
     const yearNames = Array.from({length: 10}, (_, i) => new Date().getFullYear() - i);
 
     useEffect(() => {
@@ -86,7 +84,7 @@ const CommonSchedulePage = ({user}) => {
     };
 
     if (loading) {
-        return <div className="loadingContainer"><CircularProgress /></div>;
+        return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
     return (
@@ -149,7 +147,7 @@ const CommonSchedulePage = ({user}) => {
                                     {daysInMonth.map(day => (
                                         <TableCell
                                             key={`${user.id}-${day}`}
-                                            style={{backgroundColor: hasAudit(user, day) ? 'green' : 'white'}}
+                                            className={hasAudit(user, day) ? 'green' : ''}
                                             onClick={(event) => hasAudit(user, day) && handleCellClick(user, day, event)}
                                         >
                                         </TableCell>

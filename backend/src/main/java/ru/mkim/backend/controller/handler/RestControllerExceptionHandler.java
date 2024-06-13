@@ -14,18 +14,6 @@ import ru.mkim.backend.exception.ValidationException;
 
 @RestControllerAdvice
 public class RestControllerExceptionHandler {
-    @ExceptionHandler(NoSuchResourceException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public void onNoSuchResourceException() {
-        // No operations.
-    }
-
-    @ExceptionHandler(ValidationException.class)
-    public ResponseEntity<Object> onValidationException(ValidationException e) {
-        String errorMessage = getErrorMessage(e.getBindingResult());
-        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
-    }
-
     private static String getErrorMessage(BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             ObjectError objectError = bindingResult.getAllErrors().get(0);
@@ -37,5 +25,17 @@ public class RestControllerExceptionHandler {
         } else {
             return null;
         }
+    }
+
+    @ExceptionHandler(NoSuchResourceException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public void onNoSuchResourceException() {
+        // No operations.
+    }
+
+    @ExceptionHandler(ValidationException.class)
+    public ResponseEntity<Object> onValidationException(ValidationException e) {
+        String errorMessage = getErrorMessage(e.getBindingResult());
+        return new ResponseEntity<>(errorMessage, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 }

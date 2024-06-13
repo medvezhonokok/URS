@@ -17,8 +17,8 @@ public class AuditCredentials {
     private String activity;
 
     @NonNull
-    @NotEmpty(message = "About is required")
-    @Size(max = 100, message = "About must be less than 100 characters")
+    @NotEmpty(message = "Location is required")
+    @Size(max = 100, message = "Location must be less than 100 characters")
     private String location;
 
     @NonNull

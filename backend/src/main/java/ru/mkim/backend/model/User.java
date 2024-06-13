@@ -34,13 +34,8 @@ public class User {
     @Pattern(regexp = "[a-zA-Z]{6,36}")
     private String name;
 
-    @Size(max = 250)
-    private String about;
-
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-
-    private boolean inProcess;
 
     private String certificates;
 

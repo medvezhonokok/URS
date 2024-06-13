@@ -136,7 +136,7 @@ const CompanyPage = ({user}) => {
     }
 
     if (loading) {
-        return <div className="loadingContainer"><CircularProgress /></div>;
+        return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
     return (
