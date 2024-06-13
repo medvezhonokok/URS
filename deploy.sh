@@ -5,11 +5,18 @@ LOG_DIR=$PROJECT_DIR/logs
 LOG_FILE=$LOG_DIR/deploy.log
 
 mkdir -p $LOG_DIR
-: > $LOG_FILE  # Очищаем лог-файл перед началом
+: > $LOG_FILE
 
 log() {
     local message=$1
-    echo "========== $(date +'%Y-%m-%d %H:%M:%S') - $message ==========" | tee -a $LOG_FILE
+    # shellcheck disable=SC2155
+    local timestamp=$(date +'%Y-%m-%d %H:%M:%S')
+    local separator="============================================================================"
+
+    local len=$(( (80 - ${#timestamp}) / 2 ))
+    local equal_length_separator="${separator:0:$len}"
+
+    echo "$equal_length_separator $timestamp - $message $equal_length_separator" | tee -a $LOG_FILE
 }
 
 rebuild_backend() {
