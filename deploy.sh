@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/bash
 
 PROJECT_DIR=~/URS
 
