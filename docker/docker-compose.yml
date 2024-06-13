@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-  # db for main application (backend)
   maria-db:
     image: mariadb:10.11
     container_name: maria-db
@@ -9,14 +8,13 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: 6B3D6E268DCB76E175A7DB3D9E031349AB2C32654C7E57581A851E64DD6214AB
-      MYSQL_DATABASE: urc
+      MYSQL_DATABASE: urs
       MYSQL_USER: root
       MYSQL_PASSWORD: 6B3D6E268DCB76E175A7DB3D9E031349AB2C32654C7E57581A851E64DD6214AB
     volumes:
-      - dbdata:/var/lib/mysql
+      - db_data:/var/lib/mysql
       - ./database/initdb.d:/docker-entrypoint-initdb.d
 
-  # phpMyAdmin just to check db connection (remove if needed)
   pma:
     image: phpmyadmin/phpmyadmin:5.2.1
     restart: always
@@ -30,7 +28,6 @@ services:
       PMA_USER: root
       PMA_PASSWORD: 6B3D6E268DCB76E175A7DB3D9E031349AB2C32654C7E57581A851E64DD6214AB
 
-  # main back application container
   java-backend:
     build:
       context: ./../backend
@@ -43,4 +40,4 @@ services:
       - maria-db
 
 volumes:
-  dbdata:
+  db_data:

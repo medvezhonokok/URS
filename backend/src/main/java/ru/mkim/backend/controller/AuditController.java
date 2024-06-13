@@ -50,6 +50,7 @@ public class AuditController {
             throw new ValidationException(bindingResult.getAllErrors().toString());
         }
 
+        // TODO: check if new audit assigns to company...
         Audit audit = new Audit();
         Company company = companyService.findById(auditCredentials.getCompanyId());
         User user = userService.findById(auditCredentials.getUserId());
