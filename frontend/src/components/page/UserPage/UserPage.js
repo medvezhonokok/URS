@@ -54,8 +54,8 @@ const UserPage = ({user}) => {
 
     return (
         userById
-            ? (<div className="usersPageContainer">
-                <h1 className="companiesHeader">Профиль сотрудника</h1>
+            ? (<div className="commonPageContainer">
+                <h1 className="commonPageHeader">Профиль сотрудника</h1>
                 <div className="userInfo">
                     {userFields.map(field => (
                         <FormControl key={field.id} margin="normal" fullWidth variant="standard">

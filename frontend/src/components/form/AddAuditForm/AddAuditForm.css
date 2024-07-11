@@ -6,7 +6,7 @@
     width: 80vw;
     max-height: 80vh;
     background-color: #ffffff;
-    border: 2px solid #000000;
+    border: 2px solid var(--border-color);
     box-shadow: 0 0 24px rgba(0, 0, 0, 0.15);
     padding: 16px;
     overflow-y: auto;

@@ -26,15 +26,15 @@ const CertificationSchemePage = ({user}) => {
 
     return (
         user ?
-            <div className="usersPageContainer">
-                <h1 className="companiesHeader">Схемы сертификации</h1>
+            <div className="commonPageContainer">
+                <h1 className="commonPageHeader">Схемы сертификации</h1>
                 <div className="certificatesPageContainer">
                     <ul>
                         {AuditCriterion.map((certificateType, index) => (
                             <li key={index} style={{color: "black", textAlign: "left"}}>{certificateType.value}</li>
                         ))}
                     </ul>
-                    <h1 className="companiesHeader">Статистика компаний по схемам сертификации</h1>
+                    <h1 className="commonPageHeader">Статистика компаний по схемам сертификации</h1>
                     <BarChart
                         series={[{data: auditData.map(item => item.value)}]}
                         height={290}

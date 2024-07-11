@@ -49,11 +49,11 @@ const LoginForm = () => {
 
     return (<form className="loginForm" onSubmit={submitLoginForm}>
             <div>
-                <label>Login:</label>
+                <label>login</label>
                 <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
             </div>
             <div>
-                <label>Password:</label>
+                <label>password</label>
                 <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
             {errors && <div className="error">{errors}</div>}

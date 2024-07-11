@@ -81,8 +81,8 @@ const SchedulePage = ({user}) => {
     };
 
     return (user
-        ? <div className="usersPageContainer">
-            <h1 className="companiesHeader">Расписание</h1>
+        ? <div className="commonPageContainer">
+            <h1 className="commonPageHeader">Расписание</h1>
             <Paper>
                 <Scheduler
                     data={data}

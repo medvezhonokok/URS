@@ -27,8 +27,8 @@ const HomePage = ({user}) => {
 
     return (
         user ? (
-            <div className="usersPageContainer">
-                <h1 className="companiesHeader">Главная</h1>
+            <div className="commonPageContainer">
+                <h1 className="commonPageHeader">Главная</h1>
                 {loading ? (
                     <div className="loadingContainer">
                         <CircularProgress/>

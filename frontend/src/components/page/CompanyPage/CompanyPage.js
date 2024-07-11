@@ -141,10 +141,10 @@ const CompanyPage = ({user}) => {
 
     return (
         company
-            ? <div className="usersPageContainer">
-                <div className="companiesPageHeader">
-                    <h1 className="companiesHeader">Компания "{company.englishName}"</h1>
-                    <div className="companiesAddNewCompanyButton">
+            ? <div className="commonPageContainer">
+                <div className="commonPageHeader">
+                    <h1 className="commonPageHeader">Компания "{company.englishName}"</h1>
+                    <div className="headerButtonContainer">
                         {isEditing
                             ? <Button onClick={handleSaveClick}>Сохранить</Button>
                             : <Button onClick={handleEditClick}>Редактировать</Button>
@@ -185,7 +185,7 @@ const CompanyPage = ({user}) => {
                 </div>
                 {company.audit && (
                     <div className="companyAuditInfo">
-                        <h2 className="companiesHeader">АУДИТ</h2>
+                        <h2 className="commonPageHeader">АУДИТ</h2>
                         <p>Ответственный: <a href={`/user/${company.user.id}`}>{company.user.name}</a></p>
                         <p>Локация: {company.audit.location}</p>
                         <p>Активность: {company.audit.activity}</p>

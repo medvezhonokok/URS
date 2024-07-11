@@ -222,10 +222,10 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                 </Grid>
                 {errors && <div className="error">{errors}</div>}
                 <div className="modalFooter">
-                    <Button className="companiesButton" onClick={handleClose}>
+                    <Button className="modalButton" onClick={handleClose}>
                         Отмена
                     </Button>
-                    <Button className="companiesButton" type="submit">
+                    <Button className="modalButton" type="submit">
                         Создать аудит
                     </Button>
                 </div>

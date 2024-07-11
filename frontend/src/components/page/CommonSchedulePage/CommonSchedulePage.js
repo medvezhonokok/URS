@@ -89,11 +89,11 @@ const CommonSchedulePage = ({user}) => {
 
     return (
         user
-            ? <div className="usersPageContainer">
-                <div className="companiesPageHeader">
-                    <h1 className="companiesHeader">Общий график</h1>
-                    <div className="companiesAddNewCompanyButton">
-                        <Button onClick={() => setIsModalOpen(true)}><h1>ДОБАВИТЬ АУДИТ +</h1></Button>
+            ? <div className="commonPageContainer">
+                <div className="commonPageHeader">
+                    <h1 className="commonPageHeader">Общий график</h1>
+                    <div className="headerButtonContainer">
+                        <Button onClick={() => setIsModalOpen(true)}>ДОБАВИТЬ АУДИТ +</Button>
                         <AddAuditForm isOpen={isModalOpen}
                                       handleClose={() => setIsModalOpen(false)}
                                       companies={companies}

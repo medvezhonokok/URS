@@ -24,7 +24,7 @@ const StatisticsPage = ({ user }) => {
 
     return (
         user ?
-            <div className="usersPageContainer">
+            <div className="commonPageContainer">
                 <div className="certificatesPageContainer">
                     <BarChart
                         dataset={auditData}

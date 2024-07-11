@@ -5,7 +5,7 @@ import * as FaIcons from 'react-icons/fa';
 import {MdBusinessCenter} from 'react-icons/md';
 import {NavLink} from 'react-router-dom';
 
-const SideBarData = [
+const SideBarButtons = [
     {
         title: 'Главная',
         path: '/',
@@ -54,7 +54,7 @@ const SideBarMenu = ({user}) => {
         <div className="sidebar">
             <nav className='nav-menu'>
                 <ul className='nav-menu-items'>
-                    {SideBarData.map((item, index) => (
+                    {SideBarButtons.map((item, index) => (
                         <li key={index} className={item.cName}>
                             <NavLink
                                 to={item.path}

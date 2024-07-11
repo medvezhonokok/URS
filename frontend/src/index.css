@@ -4,17 +4,43 @@
     */
     --light-gray: #f1f1f5;
     --medium-gray: #d0d0d4;
-    --light-blue: #4b92ef;
-    --medium-blue: #0f49c6;
+    --light-blue: #3b78c6;
+    --medium-blue: #172c59;
     --border-color: #2e2e7d;
     --error-color: #f60e0e;
-    --default-light-background-color: #a1c2ee;
-    --default-medium-background-color: #78acef;
+    --default-background-color: #f1f1f5;
 
     /*
         Custom application font settings & properties
     */
     font-weight: bold;
+}
+
+.commonPageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.commonPageContainer {
+    background-color: beige;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #0000001a;
+    color: #fff;
+    margin: 0 auto 1rem auto;
+    padding: 20px;
+    width: calc(100% - 2rem);
+}
+
+.commonPageHeader {
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
+    flex-grow: 1;
+    text-align: left;
+    text-decoration: underline;
 }
 
 body {

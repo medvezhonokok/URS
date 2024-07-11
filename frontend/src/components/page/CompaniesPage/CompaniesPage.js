@@ -106,12 +106,12 @@ const CompaniesPage = ({user}) => {
 
     return (
         user
-            ? <div className="usersPageContainer">
-                <div className="companiesPageHeader">
-                    <h1 className="companiesHeader">Клиенты</h1>
+            ? <div className="commonPageContainer">
+                <div className="commonPageHeader">
+                    <h1 className="commonPageHeader">Клиенты</h1>
 
-                    <div className="companiesAddNewCompanyButton">
-                        <Button onClick={handleOpen}><h1>ДОБАВИТЬ +</h1></Button>
+                    <div className="headerButtonContainer">
+                        <Button onClick={handleOpen}>ДОБАВИТЬ +</Button>
                         <Modal
                             open={open}
                             onClose={handleClose}
@@ -153,10 +153,10 @@ const CompaniesPage = ({user}) => {
                                     ))}
                                 </Grid>
                                 <div className="modalFooter">
-                                    <Button className="companiesButton" onClick={handleClose}>
+                                    <Button className="modalButton" onClick={handleClose}>
                                         Отмена
                                     </Button>
-                                    <Button className="companiesButton" type="submit">
+                                    <Button className="modalButton" type="submit">
                                         Создать
                                     </Button>
                                 </div>
