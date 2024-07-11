@@ -3,6 +3,7 @@ package ru.mkim.backend.controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.mkim.backend.exception.ValidationException;
 import ru.mkim.backend.form.AuditCredentials;
 import ru.mkim.backend.form.validator.AuditCredentialsValidator;
 import ru.mkim.backend.model.Audit;
@@ -13,7 +14,6 @@ import ru.mkim.backend.service.CompanyService;
 import ru.mkim.backend.service.UserService;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
 
 @RestController
@@ -44,10 +44,9 @@ public class AuditController {
     }
 
     @PostMapping("/add")
-    public void add(@Valid @RequestBody AuditCredentials auditCredentials,
-                    BindingResult bindingResult) {
+    public void add(@Valid @RequestBody AuditCredentials auditCredentials, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors().toString());
+            throw new ValidationException(bindingResult);
         }
 
         // TODO: check if new audit assigns to company...

@@ -7,7 +7,7 @@ import './LoginForm.css';
 const LoginForm = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] = useState('');
 
     const setLoginOrPasswordValue = (e) => {
         const {name, value} = e.target;
@@ -43,8 +43,7 @@ const LoginForm = () => {
         }).then((response) => {
             authenticateUserByJWT(response.data);
         }).catch((err) => {
-            console.error('Authentication failed:', err);
-            setErrors({authentication: 'Invalid login or password'});
+            setErrors(err.response.data);
         });
     };
 
@@ -57,7 +56,7 @@ const LoginForm = () => {
                 <label>Password:</label>
                 <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
-            {errors.authentication && <div className="error">{errors.authentication}</div>}
+            {errors && <div className="error">{errors}</div>}
             <Button style={{fontWeight: "bold"}} type="submit">Log in</Button>
         </form>
     );

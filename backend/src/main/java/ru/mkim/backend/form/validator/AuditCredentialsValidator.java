@@ -33,24 +33,27 @@ public class AuditCredentialsValidator implements Validator {
             User user = userService.findById(audit.getUserId());
 
             if (user == null) {
-                errors.rejectValue("userId",
-                        "no-such-user",
-                        "No such user");
+                errors.reject("no-such-user", "No such user");
             } else {
                 List<Audit> userAudits = auditService.findAll().stream().filter(
                         a -> a.getUser() != null && a.getUser().getId() == user.getId()).toList();
+
+                LocalDate auditStartDate = audit.getStartDate();
+                LocalDate auditEndDate = audit.getEndDate();
+
+                if (auditStartDate.isAfter(auditEndDate)) {
+                    errors.reject("audit-start-date-after-end-date",
+                            "Некорретные даты начала и конца аудита.");
+                }
 
                 for (Audit userAudit : userAudits) {
                     LocalDate startDate = userAudit.getStartDate();
                     LocalDate endDate = userAudit.getEndDate();
 
-                    LocalDate auditStartDate = audit.getStartDate();
-                    LocalDate auditEndDate = audit.getEndDate();
-
-                    if (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)) {
-                        errors.rejectValue("startDate",
-                                "audit-overlap",
-                                "Данный пользователь уже занят в выбранные даты");
+                    if (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)
+                            || endDate.isEqual(auditStartDate) || startDate.isEqual(auditEndDate)) {
+                        errors.reject("audit-overlap",
+                                "Выбранные даты аудита пересекаются с текущим расписанием аудитора.");
                         break;
                     }
                 }

@@ -27,7 +27,7 @@ const UserPage = ({user}) => {
                     setUserFields([
                         {label: "ФИО", value: userJson.name, id: "name"},
                         {label: "Номер телефона", value: userJson.phoneNumber, id: "phoneNumber"},
-                        // Add more fields as necessary
+                        // TODO: Add more fields
                     ]);
 
                     setUserAudits(userJson.audits || []);
@@ -53,8 +53,8 @@ const UserPage = ({user}) => {
     }
 
     return (
-        userById ? (
-            <div className="usersPageContainer">
+        userById
+            ? (<div className="usersPageContainer">
                 <h1 className="companiesHeader">Профиль сотрудника</h1>
                 <div className="userInfo">
                     {userFields.map(field => (
@@ -64,20 +64,18 @@ const UserPage = ({user}) => {
                         </FormControl>
                     ))}
                     <h2>Аккредитация эксперта:</h2>
-                    {userAuditCriterionList && userAuditCriterionList.length > 0 ? (
-                        <List>
+                    {userAuditCriterionList && userAuditCriterionList.length > 0
+                        ? (<List>
                             {userAuditCriterionList.map((certificate, index) => (
                                 <ListItem style={{background: "#83d10b"}} key={index}>
                                     {certificate}
                                 </ListItem>
                             ))}
-                        </List>
-                    ) : (
-                        <p>Нет доступной аккредитации.</p>
-                    )}
-                    <h2>Аудиты:</h2>
-                    {userAudits && userAudits.length > 0 ? (
-                        <List className="auditList">
+                        </List>)
+                        : (<p>Нет доступной аккредитации.</p>)}
+                    <h2>Аудиты сотрудника:</h2>
+                    {userAudits && userAudits.length > 0
+                        ? (<List className="auditList">
                             {userAudits.map(audit => (
                                 <ListItem key={audit.id} className="auditItem">
                                     <div>Компания: {audit.companyName}</div>
@@ -94,15 +92,11 @@ const UserPage = ({user}) => {
                                     </div>
                                 </ListItem>
                             ))}
-                        </List>
-                    ) : (
-                        <p>Нет доступных аудитов.</p>
-                    )}
+                        </List>)
+                        : (<p>Нет доступных аудитов.</p>)}
                 </div>
-            </div>
-        ) : (
-            <div>No such user</div>
-        )
+            </div>)
+            : (<div>No such user</div>)
     );
 };
 
