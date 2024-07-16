@@ -16,7 +16,8 @@ export const getCompanyById = async (companyId) => {
 
 export const getUserById = async (userId) => {
     try {
-        const response = await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}`)
+        const response = await axios.get(constants.BACKEND_JAVA_URL + `/1/users/${userId}?jwt=${jwtToken}`)
+
         return response.data;
     } catch (err) {
         console.log("Failed to get user by id: " + err)
@@ -24,7 +25,7 @@ export const getUserById = async (userId) => {
 }
 
 export const updateUserAuditCriterionMap = async (auditCriterionMap) => {
-    await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map`, auditCriterionMap, {
+    await axios.post(constants.BACKEND_JAVA_URL + `/1/users/update_certificate_map?jwt=${jwtToken}`, auditCriterionMap, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -34,7 +35,7 @@ export const updateUserAuditCriterionMap = async (auditCriterionMap) => {
 }
 
 export const addNewCompany = (newCompanyJson) => {
-    return axios.post(constants.BACKEND_JAVA_URL + '/company/add', newCompanyJson, {
+    return axios.post(constants.BACKEND_JAVA_URL + `/company/add?jwt=${jwtToken}`, newCompanyJson, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -47,8 +48,7 @@ export const addNewCompany = (newCompanyJson) => {
 
 export const getCompanies = async () => {
     try {
-        const response = await axios.get(constants.BACKEND_JAVA_URL
-            + '/company/all?jwt=' + jwtToken);
+        const response = await axios.get(constants.BACKEND_JAVA_URL + `/company/all?jwt=${jwtToken}`);
         return response.data;
     } catch (err) {
         console.error("Failed to get companies: " + err);
@@ -57,7 +57,7 @@ export const getCompanies = async () => {
 }
 
 export const updateCompany = async (companyId, updatedCompany) => {
-    await axios.put(constants.BACKEND_JAVA_URL + `/company/update/${companyId}`, updatedCompany, {
+    await axios.put(constants.BACKEND_JAVA_URL + `/company/update/${companyId}?jwt=${jwtToken}`, updatedCompany, {
         headers: {
             'Content-Type': 'application/json'
         }
@@ -68,21 +68,11 @@ export const updateCompany = async (companyId, updatedCompany) => {
     })
 }
 
-export const getAudits = async () => {
-    try {
-        const response = await axios.get(constants.BACKEND_JAVA_URL
-            + '/audit/all');
-        return response.data;
-    } catch (err) {
-        console.error("Failed to get audits: " + err);
-        return [];
-    }
-}
 
 export const getUsers = async () => {
     try {
         const response = await axios.get(constants.BACKEND_JAVA_URL
-            + '/1/users/all?jwt=' + jwtToken);
+            + `/1/users/all?jwt=${jwtToken}`);
 
         return response.data;
     } catch (err) {

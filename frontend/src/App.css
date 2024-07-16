@@ -14,5 +14,6 @@ body {
     background-color: var(--default-background-color);
     height: 100vh;
     overflow-y: auto;
+    overflow-x: hidden;
     width: calc(100% - 250px);
 }

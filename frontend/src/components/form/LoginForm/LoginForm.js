@@ -21,19 +21,6 @@ const LoginForm = () => {
         }
     };
 
-    const authenticateUserByJWT = (jwtToken) => {
-        localStorage.setItem('jwtToken', jwtToken);
-
-        axios.get(constants.BACKEND_JAVA_URL + `/1/users/auth?jwt=${jwtToken}`)
-            .then((response) => {
-                const user = JSON.stringify(response.data);
-                localStorage.setItem('user', user);
-                window.location.reload();
-            }).catch((err) => {
-            console.error('Failed to fetch user information:', err);
-        });
-    };
-
     const submitLoginForm = (e) => {
         e.preventDefault();
 
@@ -41,7 +28,8 @@ const LoginForm = () => {
             login,
             password,
         }).then((response) => {
-            authenticateUserByJWT(response.data);
+            localStorage.setItem('jwtToken', response.data);
+            window.location.reload();
         }).catch((err) => {
             setErrors(err.response.data);
         });

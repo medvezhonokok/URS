@@ -24,7 +24,9 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post(constants.BACKEND_JAVA_URL + '/audit/add', auditData, {
+        const jwtToken = localStorage.getItem('jwtToken');
+
+        axios.post(constants.BACKEND_JAVA_URL + `/audit/add?jwt=${jwtToken}`, auditData, {
             headers: {
                 'Content-Type': 'application/json'
             }

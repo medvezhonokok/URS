@@ -19,7 +19,7 @@ public class CompanyService {
         return companyRepository.findAll();
     }
 
-    public Company findById(Long companyId) {
+    public Company findById(long companyId) {
         return companyRepository.findById(companyId).orElse(null);
     }
 
@@ -31,7 +31,7 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public void update(Long companyId, CompanyCredentials credentials) {
+    public void update(long companyId, CompanyCredentials credentials) {
         copyCredentialsFieldToCompany(findById(companyId), credentials);
     }
 

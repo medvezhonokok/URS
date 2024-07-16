@@ -1,7 +1,7 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import LoginForm from "./components/form/LoginForm/LoginForm";
-import * as index from "./index";
+import * as constants from "./constants/constants";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";
 import UsersPage from "./components/page/UsersPage/UsersPage";
@@ -12,9 +12,23 @@ import HomePage from "./components/page/HomePage/HomePage";
 import CommonSchedulePage from "./components/page/CommonSchedulePage/CommonSchedulePage";
 import CertificationSchemePage from "./components/page/CertificationSchemePage/CertificationSchemePage";
 import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
+import axios from "axios";
 
 const App = () => {
-    const user = index.getUser();
+    const [user, setUser] = useState(null);
+    const jwtToken = localStorage.getItem('jwtToken');
+
+    useEffect(() => {
+        if (jwtToken && !user) {
+            axios.get(constants.BACKEND_JAVA_URL + `/1/users/auth?jwt=${jwtToken}`)
+                .then(response => {
+                    setUser(response.data);
+                })
+                .catch(err => {
+                    console.error('Failed to fetch user information:', err);
+                });
+        }
+    }, [jwtToken, user]);
 
     return user ? (
         <div className="app-container">
@@ -34,7 +48,7 @@ const App = () => {
                 </div>
             </Router>
         </div>
-    ) : <LoginForm/>;
+    ) : <LoginForm setUser={setUser}/>;
 };
 
 export default App;

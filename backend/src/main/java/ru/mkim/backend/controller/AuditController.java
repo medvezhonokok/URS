@@ -3,6 +3,7 @@ package ru.mkim.backend.controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.mkim.backend.annotation.RequireJwtParam;
 import ru.mkim.backend.exception.ValidationException;
 import ru.mkim.backend.form.AuditCredentials;
 import ru.mkim.backend.form.validator.AuditCredentialsValidator;
@@ -38,18 +39,19 @@ public class AuditController {
         binder.addValidators(auditCredentialsValidator);
     }
 
+    @RequireJwtParam
     @GetMapping("/all")
     public List<Audit> all() {
         return auditService.findAll();
     }
 
+    @RequireJwtParam
     @PostMapping("/add")
     public void add(@Valid @RequestBody AuditCredentials auditCredentials, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
 
-        // TODO: check if new audit assigns to company...
         Audit audit = new Audit();
         Company company = companyService.findById(auditCredentials.getCompanyId());
         User user = userService.findById(auditCredentials.getUserId());

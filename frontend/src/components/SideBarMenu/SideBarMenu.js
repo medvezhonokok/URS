@@ -46,7 +46,7 @@ const SideBarButtons = [
 
 const SideBarMenu = ({user}) => {
     const logout = () => {
-        localStorage.removeItem('user');
+        localStorage.removeItem('jwtToken');
         window.location.href = "/";
     }
 

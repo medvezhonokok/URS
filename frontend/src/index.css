@@ -16,13 +16,6 @@
     font-weight: bold;
 }
 
-.commonPageHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-
 .commonPageContainer {
     background-color: beige;
     border-radius: 10px;
@@ -34,12 +27,11 @@
 }
 
 .commonPageHeader {
+    display: flex;
     margin-bottom: 20px;
     color: black;
-    font-weight: bold;
     font-size: 24px;
     flex-grow: 1;
-    text-align: left;
     text-decoration: underline;
 }
 

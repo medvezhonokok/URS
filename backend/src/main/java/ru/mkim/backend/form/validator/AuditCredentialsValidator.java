@@ -5,8 +5,10 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import ru.mkim.backend.form.AuditCredentials;
 import ru.mkim.backend.model.Audit;
+import ru.mkim.backend.model.Company;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.AuditService;
+import ru.mkim.backend.service.CompanyService;
 import ru.mkim.backend.service.UserService;
 
 import java.time.LocalDate;
@@ -17,10 +19,13 @@ import java.util.List;
 public class AuditCredentialsValidator implements Validator {
     private final UserService userService;
     private final AuditService auditService;
+    private final CompanyService companyService;
 
-    public AuditCredentialsValidator(UserService userService, AuditService auditService) {
+    public AuditCredentialsValidator(UserService userService, AuditService auditService,
+                                     CompanyService companyService) {
         this.userService = userService;
         this.auditService = auditService;
+        this.companyService = companyService;
     }
 
     public boolean supports(Class<?> clazz) {
@@ -30,10 +35,14 @@ public class AuditCredentialsValidator implements Validator {
     public void validate(Object target, Errors errors) {
         if (!errors.hasErrors()) {
             AuditCredentials audit = (AuditCredentials) target;
-            User user = userService.findById(audit.getUserId());
 
-            if (user == null) {
-                errors.reject("no-such-user", "No such user");
+            User user = userService.findById(audit.getUserId());
+            Company company = companyService.findById(audit.getCompanyId());
+
+            if (company == null) {
+                errors.reject("no-such-company", "Выбранной компании не существует.");
+            } else if (user == null) {
+                errors.reject("no-such-user", "Выбранного аудитора не существует.");
             } else {
                 List<Audit> userAudits = auditService.findAll().stream().filter(
                         a -> a.getUser() != null && a.getUser().getId() == user.getId()).toList();

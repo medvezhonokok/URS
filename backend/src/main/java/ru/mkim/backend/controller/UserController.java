@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.mkim.backend.annotation.RequireJwtParam;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
 import ru.mkim.backend.model.AuditCriterion;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;
-import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
@@ -38,6 +38,7 @@ public class UserController {
         binder.addValidators(userCredentialsRegisterValidator);
     }
 
+    @RequireJwtParam
     @GetMapping("/{userId}")
     public User findById(@PathVariable Long userId) {
         return userService.findById(userId);
@@ -48,6 +49,7 @@ public class UserController {
         return jwtService.findUserByJWT(jwt);
     }
 
+    @RequireJwtParam
     @PostMapping
     public UserCredentials register(@RequestBody @Valid UserCredentials credentials,
                                     BindingResult bindingResult) {
@@ -58,15 +60,13 @@ public class UserController {
         return credentials;
     }
 
+    @RequireJwtParam
     @GetMapping("/all")
-    public ResponseEntity<List<User>> findAll(@RequestParam String jwt) {
-        if (StringUtil.isNotNullOrEmpty(jwt)) {
-            return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
-        }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    public ResponseEntity<List<User>> findAll() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
+    @RequireJwtParam
     @PostMapping("/update_certificate_map")
     public ResponseEntity<String> updateCertificateMap(@RequestBody Map<String, Map<String, Boolean>> userCertificateMap) {
         for (Map.Entry<String, Map<String, Boolean>> entry : userCertificateMap.entrySet()) {

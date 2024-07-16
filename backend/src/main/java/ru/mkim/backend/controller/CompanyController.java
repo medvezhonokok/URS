@@ -6,30 +6,24 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import ru.mkim.backend.annotation.RequireJwtParam;
 import ru.mkim.backend.form.CompanyCredentials;
 import ru.mkim.backend.form.validator.CompanyCredentialsValidator;
 import ru.mkim.backend.model.Company;
-import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.CompanyService;
-import ru.mkim.backend.service.JwtService;
-import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.Valid;
 import javax.validation.ValidationException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/company")
 public class CompanyController {
     private final CompanyService companyService;
-    private final JwtService jwtService;
     private final CompanyCredentialsValidator companyCredentialsValidator;
 
-    public CompanyController(CompanyService companyService, JwtService jwtService,
-                             CompanyCredentialsValidator companyCredentialsValidator) {
+    public CompanyController(CompanyService companyService, CompanyCredentialsValidator companyCredentialsValidator) {
         this.companyService = companyService;
-        this.jwtService = jwtService;
         this.companyCredentialsValidator = companyCredentialsValidator;
     }
 
@@ -38,37 +32,24 @@ public class CompanyController {
         binder.addValidators(companyCredentialsValidator);
     }
 
+    @RequireJwtParam
     @GetMapping("/all")
-    public List<Company> getAll(@RequestParam String jwt) {
-        if (StringUtil.isNotNullOrEmpty(jwt)) {
-            User user = jwtService.findUserByJWT(jwt);
-
-            if (user != null) {
-                return companyService.findAll();
-            }
-        }
-
-        return new ArrayList<>();
+    public List<Company> getAll() {
+        return companyService.findAll();
     }
 
+    @RequireJwtParam
     @GetMapping("/get_by_id")
-    public ResponseEntity<Company> getCompanyByCompanyId(@RequestParam String companyId, @RequestParam String jwt) {
+    public ResponseEntity<Company> getCompanyByCompanyId(@RequestParam String companyId) {
         try {
-            Long id = Long.parseLong(companyId);
-            if (StringUtil.isNotNullOrEmpty(jwt)) {
-                User user = jwtService.findUserByJWT(jwt);
-
-                if (user != null) {
-                    return new ResponseEntity<>(companyService.findById(id), HttpStatusCode.valueOf(200));
-                }
-            }
-        } catch (Exception ignored) {
-            // No operations.
+            long id = Long.parseLong(companyId);
+            return new ResponseEntity<>(companyService.findById(id), HttpStatusCode.valueOf(200));
+        } catch (NumberFormatException ignored) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @RequireJwtParam
     @PostMapping("/add")
     public ResponseEntity<Company> addNewCompany(@Valid @RequestBody CompanyCredentials credentials,
                                                  BindingResult bindingResult) {
@@ -79,6 +60,7 @@ public class CompanyController {
         return new ResponseEntity<>(companyService.register(credentials), HttpStatus.OK);
     }
 
+    @RequireJwtParam
     @PutMapping("/update/{companyId}")
     public void updateCompany(@PathVariable Long companyId, @Valid @RequestBody CompanyCredentials credentials,
                               BindingResult bindingResult) {
