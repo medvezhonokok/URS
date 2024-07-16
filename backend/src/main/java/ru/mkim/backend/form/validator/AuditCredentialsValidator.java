@@ -44,6 +44,11 @@ public class AuditCredentialsValidator implements Validator {
             } else if (user == null) {
                 errors.reject("no-such-user", "Выбранного аудитора не существует.");
             } else {
+                if (!user.competentByAuditCriterion(company.getAuditCriterion())) {
+                    errors.reject("no-such-user-competent", "Данный аудитор некомпетентен по критерию: " + company.getAuditCriterion());
+                    return;
+                }
+
                 List<Audit> userAudits = auditService.findAll().stream().filter(
                         a -> a.getUser() != null && a.getUser().getId() == user.getId()).toList();
 

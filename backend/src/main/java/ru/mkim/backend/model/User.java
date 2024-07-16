@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
@@ -45,4 +46,22 @@ public class User {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Company> companies;
+
+    public boolean competentByAuditCriterion(AuditCriterion auditCriterion) {
+        if (StringUtil.isNullOrEmpty(certificates)) {
+            return false;
+        }
+
+        int criterionIndex = 0;
+
+        for (AuditCriterion criterion : AuditCriterion.values()) {
+            if (criterion == auditCriterion) {
+                break;
+            }
+
+            criterionIndex++;
+        }
+
+        return certificates.split("#")[criterionIndex].equals("1");
+    }
 }
