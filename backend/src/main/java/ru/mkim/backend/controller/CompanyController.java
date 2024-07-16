@@ -39,8 +39,8 @@ public class CompanyController {
     }
 
     @RequireJwtParam
-    @GetMapping("/get_by_id")
-    public ResponseEntity<Company> getCompanyByCompanyId(@RequestParam String companyId) {
+    @GetMapping("/{companyId}")
+    public ResponseEntity<Company> findById(@PathVariable String companyId) {
         try {
             long id = Long.parseLong(companyId);
             return new ResponseEntity<>(companyService.findById(id), HttpStatusCode.valueOf(200));

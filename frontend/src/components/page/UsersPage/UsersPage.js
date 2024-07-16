@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import * as storage from "../../../data/storage";
-import {AuditCriterion, updateUserAuditCriterionMap} from "../../../data/storage";
+import {updateUserAuditCriterionMap} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 import './UsersPage.css';
 import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
@@ -12,14 +13,12 @@ import TableBody from "@mui/material/TableBody";
 import {Button} from "react-bootstrap";
 import {Checkbox, CircularProgress} from "@mui/material";
 import {Link} from "react-router-dom";
-import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
 
 const UsersPage = ({user}) => {
     const [users, setUsers] = useState([]);
     const [userCertificates, setUserCertificates] = useState({});
     const [isEditMode, setIsEditMode] = useState(false);
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         storage.getUsers().then(usersJson => {
@@ -77,7 +76,8 @@ const UsersPage = ({user}) => {
                     <h1 className="commonPageHeader">Сотрудники</h1>
                     <div className="headerButtonContainer">
                         {isEditMode
-                            ? <Button variant="contained" onClick={handleSave} className="saveOrEditButton">СОХРАНИТЬ</Button>
+                            ?
+                            <Button variant="contained" onClick={handleSave} className="saveOrEditButton">СОХРАНИТЬ</Button>
                             : <Button variant="contained" onClick={handleEditToggle}
                                       className="saveOrEditButton">РЕДАКТИРОВАТЬ</Button>
                         }

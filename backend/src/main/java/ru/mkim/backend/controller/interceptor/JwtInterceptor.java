@@ -28,7 +28,14 @@ public class JwtInterceptor implements HandlerInterceptor {
                     handlerMethod.getMethod(), RequireJwtParam.class);
 
             if (methodAnnotation != null) {
-                String jwtToken = request.getParameter("jwt");
+                String authorizationHeader = request.getHeader("Authorization");
+
+                if (StringUtil.isNullOrEmpty(authorizationHeader) || !authorizationHeader.startsWith("Bearer ")) {
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Missing JWT token in request headers.");
+                    return false;
+                }
+
+                String jwtToken = authorizationHeader.substring(7);
 
                 if (StringUtil.isNullOrEmpty(jwtToken) || jwtService.findUserByJWT(jwtToken) == null) {
                     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token.");

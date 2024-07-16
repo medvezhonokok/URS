@@ -2,7 +2,8 @@ import './CompaniesPage.css';
 import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
 import * as storage from "../../../data/storage";
-import {addNewCompany, AuditCriterion} from "../../../data/storage";
+import {addNewCompany} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
 import TableHead from '@mui/material/TableHead';
@@ -109,7 +110,6 @@ const CompaniesPage = ({user}) => {
             ? <div className="commonPageContainer">
                 <div className="commonPageHeader">
                     <h1 className="commonPageHeader">Клиенты</h1>
-
                     <div className="headerButtonContainer">
                         <Button onClick={handleOpen}>ДОБАВИТЬ +</Button>
                         <Modal

@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
+import * as storage from "./data/storage";
 import LoginForm from "./components/form/LoginForm/LoginForm";
-import * as constants from "./constants/constants";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";
 import UsersPage from "./components/page/UsersPage/UsersPage";
@@ -12,23 +12,26 @@ import HomePage from "./components/page/HomePage/HomePage";
 import CommonSchedulePage from "./components/page/CommonSchedulePage/CommonSchedulePage";
 import CertificationSchemePage from "./components/page/CertificationSchemePage/CertificationSchemePage";
 import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
-import axios from "axios";
+import {CircularProgress} from "@mui/material";
+import AdminPage from "./components/page/AdminPage/AdminPage";
 
 const App = () => {
     const [user, setUser] = useState(null);
     const jwtToken = localStorage.getItem('jwtToken');
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (jwtToken && !user) {
-            axios.get(constants.BACKEND_JAVA_URL + `/1/users/auth?jwt=${jwtToken}`)
-                .then(response => {
-                    setUser(response.data);
-                })
-                .catch(err => {
-                    console.error('Failed to fetch user information:', err);
-                });
+            storage.getUserByJWT(jwtToken).then((user) => {
+                setLoading(false);
+                setUser(user);
+            })
         }
     }, [jwtToken, user]);
+
+    if (loading && user) {
+        return <div className="loadingContainer"><CircularProgress/></div>;
+    }
 
     return user ? (
         <div className="app-container">
@@ -44,6 +47,7 @@ const App = () => {
                         <Route path='/schedule' element={<CommonSchedulePage user={user}/>}/>
                         <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
                         <Route path='/user/:userId' element={<UserPage user={user}/>}/>
+                        <Route path='/admin' element={<AdminPage user={user}/>}/>
                     </Routes>
                 </div>
             </Router>

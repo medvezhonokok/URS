@@ -1,0 +1,30 @@
+.deviceList {
+    margin-top: 20px;
+}
+
+.deviceList table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.deviceList th, .deviceList td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.deviceList th {
+    background-color: #f2f2f2;
+}
+
+.deviceList button {
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.deviceList button:hover {
+    background-color: #ff1a1a;
+}

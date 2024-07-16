@@ -36,7 +36,7 @@ public class User {
     private String name;
 
     @Enumerated(EnumType.STRING)
-    private UserRole userRole;
+    private UserRole role;
 
     private String certificates;
 

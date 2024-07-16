@@ -12,6 +12,7 @@ import {Box, CircularProgress, FormControl, InputLabel, MenuItem, Popover, Selec
 import {Button} from "react-bootstrap";
 import {MdAccessTimeFilled} from "react-icons/md";
 import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
+import {monthNames} from "../../../constants/constants";
 
 const CommonSchedulePage = ({user}) => {
     const [users, setUsers] = useState([]);
@@ -111,7 +112,7 @@ const CommonSchedulePage = ({user}) => {
                             value={selectedMonth}
                             onChange={handleMonthChange}
                         >
-                            {storage.monthNames.map(month => (
+                            {monthNames.map(month => (
                                 <MenuItem key={month.value} value={month.value}>{month.label}</MenuItem>
                             ))}
                         </Select>

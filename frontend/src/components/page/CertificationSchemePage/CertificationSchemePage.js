@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './CertificationSchemePage.css';
-import {AuditCriterion} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 import {BarChart} from "@mui/x-charts/BarChart";
 import * as storage from "../../../data/storage";
 
@@ -9,7 +9,7 @@ const CertificationSchemePage = ({user}) => {
 
     useEffect(() => {
         storage.getCompanies().then(companiesJson => {
-            const criteriaCount = storage.AuditCriterion.reduce((acc, criterion) => {
+            const criteriaCount = AuditCriterion.reduce((acc, criterion) => {
                 acc[criterion.value] = companiesJson.filter(company => company.auditCriterion === criterion.key).length;
                 return acc;
             }, {});

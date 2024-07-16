@@ -4,7 +4,7 @@ import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
 import axios from "axios";
 import * as constants from "../../../constants/constants";
-import {AuditCriterion} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 
 const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
     const [errors, setErrors] = useState('');

@@ -1,8 +1,7 @@
 import React, {useState} from 'react';
-import axios from 'axios';
-import * as constants from '../../../constants/constants';
 import {Button} from 'react-bootstrap';
 import './LoginForm.css';
+import * as storage from "./../../../data/storage";
 
 const LoginForm = () => {
     const [login, setLogin] = useState('');
@@ -24,15 +23,12 @@ const LoginForm = () => {
     const submitLoginForm = (e) => {
         e.preventDefault();
 
-        axios.post(constants.BACKEND_JAVA_URL + '/1/jwt', {
-            login,
-            password,
-        }).then((response) => {
-            localStorage.setItem('jwtToken', response.data);
+        storage.getJWTByUserCredentials(login, password).then((jwtToken) => {
+            localStorage.setItem('jwtToken', jwtToken);
             window.location.reload();
-        }).catch((err) => {
-            setErrors(err.response.data);
-        });
+        }).catch(err => {
+            setErrors(err);
+        })
     };
 
     return (<form className="loginForm" onSubmit={submitLoginForm}>

@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {CircularProgress, FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
 import * as storage from "../../../data/storage";
-import {AuditCriterion} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 import "./UserPage.css";
 
 const UserPage = ({user}) => {

@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as storage from "../../../data/storage";
-import {AuditCriterion} from "../../../data/storage";
+import {AuditCriterion} from "../../../constants/constants";
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
@@ -13,7 +13,6 @@ const CompanyPage = ({user}) => {
     const [errors, setErrors] = useState({});
     const {companyId} = useParams();
     const [loading, setLoading] = useState(true);
-
 
     useEffect(() => {
         const getCompanyAsync = async () => {
@@ -186,7 +185,7 @@ const CompanyPage = ({user}) => {
                 {company.audit && (
                     <div className="companyAuditInfo">
                         <h2 className="commonPageHeader">АУДИТ</h2>
-                        <p>Ответственный: <a href={`/user/${company.user.id}`}>{company.user.name}</a></p>
+                        <p>Ответственный: <Link to={`/user/${company.user.id}`}>{company.user.name}</Link></p>
                         <p>Локация: {company.audit.location}</p>
                         <p>Активность: {company.audit.activity}</p>
                         <p>Договор: {company.audit.agreement}</p>
