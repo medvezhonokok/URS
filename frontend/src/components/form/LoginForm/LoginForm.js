@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import {Button} from 'react-bootstrap';
 import './LoginForm.css';
 import * as storage from "./../../../data/storage";
+import Starfield from 'react-starfield';
 
 const LoginForm = () => {
     const [login, setLogin] = useState('');
@@ -32,9 +33,15 @@ const LoginForm = () => {
     };
 
     return (<form className="loginForm" onSubmit={submitLoginForm}>
+            <Starfield
+                starCount={1000}
+                starColor={[255, 255, 255]}
+                speedFactor={0.05}
+                backgroundColor="black"
+            />
             <div>
                 <label>login</label>
-                <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue}/>
+                <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue} autoFocus={true}/>
             </div>
             <div>
                 <label>password</label>

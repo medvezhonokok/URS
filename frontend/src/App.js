@@ -36,7 +36,7 @@ const App = () => {
     return user ? (
         <div className="app-container">
             <Router>
-                <SideBarMenu user={user} className="sidebar"/>
+                <SideBarMenu user={user}/>
                 <div className="content">
                     <Routes>
                         <Route path='/' exact element={<HomePage user={user}/>}/>

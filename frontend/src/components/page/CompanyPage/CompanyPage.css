@@ -20,7 +20,7 @@
 
 button {
     padding: 10px 20px;
-    background-color: var(--medium-blue);
+    background-color: var(--medium-green);
     color: #fff;
     border: none;
     cursor: pointer;
@@ -29,5 +29,5 @@ button {
 }
 
 button:hover {
-    background-color: var(--light-blue);
+    background-color: var(--light-green);
 }

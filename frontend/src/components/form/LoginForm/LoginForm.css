@@ -4,6 +4,7 @@
 }
 
 .loginForm label {
+    color: white;
     margin-bottom: 5px;
 }
 
@@ -19,7 +20,7 @@
 .loginForm input[type="text"]:focus,
 .loginForm input[type="password"]:focus {
     outline: none;
-    border-color: var(--light-blue);
+    border-color: var(--light-green);
 }
 
 .error {
@@ -29,7 +30,7 @@
 }
 
 .loginForm button {
-    background-color: var(--light-blue);
+    background-color: var(--light-green);
     border: var(--border-color) 0.1rem solid;
     border-radius: 0.5rem;
     display: flex;
@@ -40,5 +41,5 @@
 }
 
 .loginForm button:hover {
-    background-color: var(--medium-blue);
+    background-color: var(--medium-green);
 }
