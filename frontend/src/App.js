@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import * as storage from "./data/storage";
 import LoginForm from "./components/form/LoginForm/LoginForm";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import SideBarMenu from "./components/SideBarMenu/SideBarMenu";
@@ -14,6 +13,7 @@ import CertificationSchemePage from "./components/page/CertificationSchemePage/C
 import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
 import {CircularProgress} from "@mui/material";
 import AdminPage from "./components/page/AdminPage/AdminPage";
+import * as client from "./data/client";
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -22,18 +22,18 @@ const App = () => {
 
     useEffect(() => {
         if (jwtToken && !user) {
-            storage.getUserByJWT(jwtToken).then((user) => {
+            client.getUserByJWT(jwtToken).then((user) => {
                 setLoading(false);
                 setUser(user);
             })
         }
     }, [jwtToken, user]);
 
-    if (loading && user) {
+    if (loading) {
         return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
-    return user ? (
+    return user && !loading ? (
         <div className="app-container">
             <Router>
                 <SideBarMenu user={user}/>

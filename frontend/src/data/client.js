@@ -21,14 +21,9 @@ axiosInstance.interceptors.request.use(config => {
     return Promise.reject(error);
 });
 
-export const getCompanyById = (companyId) => {
-    return axiosInstance.get(`/company/${companyId}`)
-        .then(response => response.data)
-        .catch(error => {
-            console.error("Failed to get company:", error);
-            throw error;
-        });
-};
+/*
+ *      User entity client utils.
+ */
 
 export const getUserByJWT = (jwtToken) => {
     return axiosInstance.get(`/1/users/auth?jwt=${jwtToken}`)
@@ -70,6 +65,19 @@ export const updateUserAuditCriterionMap = (auditCriterionMap) => {
         });
 };
 
+export const getUsers = () => {
+    return axiosInstance.get(`/1/users/all`)
+        .then(response => response.data)
+        .catch(error => {
+            console.error("Failed to get users: " + error);
+            return [];
+        });
+};
+
+/*
+ *      Company entity client utils.
+ */
+
 export const addNewCompany = (newCompanyJson) => {
     return axiosInstance.post(`/company/add`, newCompanyJson)
         .then(response => response.data)
@@ -98,11 +106,26 @@ export const updateCompany = (companyId, updatedCompany) => {
         });
 };
 
-export const getUsers = () => {
-    return axiosInstance.get(`/1/users/all`)
+export const getCompanyById = (companyId) => {
+    return axiosInstance.get(`/company/${companyId}`)
         .then(response => response.data)
         .catch(error => {
-            console.error("Failed to get users: " + error);
-            return [];
+            console.error("Failed to get company:", error);
+            throw error;
+        });
+};
+
+/*
+ *      Audit entity client utils.
+ */
+export const addAudit = (auditData) => {
+    return axiosInstance.post( `/audit/add`, auditData, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(response => response.data)
+        .catch(error => {
+            console.error("Failed to add audit:", error);
+            throw error;
         });
 };

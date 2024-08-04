@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import {CircularProgress, FormControl, Input, InputLabel, List, ListItem} from "@mui/material";
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 import {AuditCriterion} from "../../../constants/constants";
 import "./UserPage.css";
 
@@ -16,7 +16,7 @@ const UserPage = ({user}) => {
     useEffect(() => {
         const getUserAsync = async () => {
             try {
-                const userJson = await storage.getUserById(userId);
+                const userJson = await client.getUserById(userId);
                 if (userJson) {
                     const userAvailableAuditCriterion = userJson.certificates.split('#')
                         .map((cert, index) => cert === "1" ? AuditCriterion[index].value : null)

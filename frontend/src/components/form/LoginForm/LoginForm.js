@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {Button} from 'react-bootstrap';
 import './LoginForm.css';
-import * as storage from "./../../../data/storage";
+import * as client from "../../../data/client";
 import Starfield from 'react-starfield';
 
 const LoginForm = () => {
@@ -24,7 +24,7 @@ const LoginForm = () => {
     const submitLoginForm = (e) => {
         e.preventDefault();
 
-        storage.getJWTByUserCredentials(login, password).then((jwtToken) => {
+        client.getJWTByUserCredentials(login, password).then((jwtToken) => {
             localStorage.setItem('jwtToken', jwtToken);
             window.location.reload();
         }).catch(err => {

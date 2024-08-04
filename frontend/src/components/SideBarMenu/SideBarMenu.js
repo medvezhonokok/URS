@@ -50,6 +50,12 @@ const SideBarMenu = ({user}) => {
             icon: <FaIcons.FaArtstation/>,
             cName: 'nav-text'
         },
+        {
+            title: 'Личный кабинет',
+            path: `/user/${user.id}`,
+            icon: <FaIcons.FaArtstation/>,
+            cName: 'nav-text'
+        },
         user.role === "ADMIN" && {
             title: 'Администрирование',
             path: '/admin',

@@ -2,9 +2,8 @@ import React, {useState} from 'react';
 import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
 import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
-import axios from "axios";
-import * as constants from "../../../constants/constants";
 import {AuditCriterion} from "../../../constants/constants";
+import * as client from "../../../data/client";
 
 const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
     const [errors, setErrors] = useState('');
@@ -23,47 +22,43 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        localStorage.getItem('jwtToken');
+        client.addAudit(auditData)
+            .then((ignored) => {
+                const updatedUsers = users.map(user => {
+                    if (user.id === auditData.userId) {
+                        user.audits.push(auditData);
+                    }
+                    return user;
+                });
 
-        const jwtToken = localStorage.getItem('jwtToken');
+                const updatedCompanies = companies.map(company => {
+                    if (company.id === auditData.companyId) {
+                        company.audit = auditData;
+                    }
 
-        axios.post(constants.BACKEND_JAVA_URL + `/audit/add?jwt=${jwtToken}`, auditData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((ignored) => {
-            const updatedUsers = users.map(user => {
-                if (user.id === auditData.userId) {
-                    user.audits.push(auditData);
-                }
-                return user;
-            });
+                    return company;
+                })
 
-            const updatedCompanies = companies.map(company => {
-                if (company.id === auditData.companyId) {
-                    company.audit = auditData;
-                }
+                updateUsersAndCompanies(updatedUsers, updatedCompanies);
 
-                return company;
+                alert("Аудит был добавлен");
+                setAuditData({
+                    location: "",
+                    activity: "",
+                    agreement: "",
+                    closingMeetingDate: null,
+                    certificateExpirationDate: null,
+                    startDate: null,
+                    endDate: null,
+                    companyId: "",
+                    userId: ""
+                });
+                handleClose();
             })
-
-            updateUsersAndCompanies(updatedUsers, updatedCompanies);
-
-            alert("Аудит был добавлен");
-            setAuditData({
-                location: "",
-                activity: "",
-                agreement: "",
-                closingMeetingDate: null,
-                certificateExpirationDate: null,
-                startDate: null,
-                endDate: null,
-                companyId: "",
-                userId: ""
+            .catch((err) => {
+                setErrors(err.response.data);
             });
-            handleClose();
-        }).catch((err) => {
-            setErrors(err.response.data);
-        });
     };
 
     const handleInputChange = (event) => {

@@ -1,8 +1,8 @@
 import './CompaniesPage.css';
 import React, {useEffect, useState} from "react";
 import {Button} from "react-bootstrap";
-import * as storage from "../../../data/storage";
-import {addNewCompany} from "../../../data/storage";
+import * as client from "../../../data/client";
+import {addNewCompany} from "../../../data/client";
 import {AuditCriterion} from "../../../constants/constants";
 import TableContainer from '@mui/material/TableContainer';
 import Table from '@mui/material/Table';
@@ -64,7 +64,7 @@ const CompaniesPage = ({user}) => {
     const handleClose = () => setOpen(false);
 
     useEffect(() => {
-        storage.getCompanies().then(
+        client.getCompanies().then(
             companiesJson => {
                 setCompanies(companiesJson);
                 setLoading(false);

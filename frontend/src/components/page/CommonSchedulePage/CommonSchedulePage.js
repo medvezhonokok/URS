@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -30,8 +30,8 @@ const CommonSchedulePage = ({user}) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const usersData = await storage.getUsers();
-            const companiesData = await storage.getCompanies();
+            const usersData = await client.getUsers();
+            const companiesData = await client.getCompanies();
 
             setUsers(usersData);
             setCompanies(companiesData);

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import * as storage from "../../../data/storage";
-import {updateUserAuditCriterionMap} from "../../../data/storage";
+import * as client from "../../../data/client";
+import {updateUserAuditCriterionMap} from "../../../data/client";
 import {AuditCriterion} from "../../../constants/constants";
 import './UsersPage.css';
 import TableContainer from "@mui/material/TableContainer";
@@ -21,7 +21,7 @@ const UsersPage = ({user}) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        storage.getUsers().then(usersJson => {
+        client.getUsers().then(usersJson => {
             setUsers(usersJson);
             const certificatesMap = {};
             usersJson.forEach(user => {

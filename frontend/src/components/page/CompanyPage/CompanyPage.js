@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Link, useParams} from "react-router-dom";
 import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 import {AuditCriterion} from "../../../constants/constants";
 
 const CompanyPage = ({user}) => {
@@ -17,7 +17,7 @@ const CompanyPage = ({user}) => {
     useEffect(() => {
         const getCompanyAsync = async () => {
             try {
-                const companyById = await storage.getCompanyById(companyId);
+                const companyById = await client.getCompanyById(companyId);
                 setCompany(companyById);
                 setCompanyFields(
                     [
@@ -95,7 +95,7 @@ const CompanyPage = ({user}) => {
         if (companyId && !company) {
             getCompanyAsync();
         }
-    }, [companyId]);
+    }, [company, companyId]);
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -105,7 +105,7 @@ const CompanyPage = ({user}) => {
     const handleSaveClick = async () => {
         if (validateFields()) {
             try {
-                await storage.updateCompany(companyId, JSON.stringify(editedFields));
+                await client.updateCompany(companyId, JSON.stringify(editedFields));
                 setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.id]})));
                 setIsEditing(false);
             } catch (error) {

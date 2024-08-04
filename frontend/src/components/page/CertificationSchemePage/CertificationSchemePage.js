@@ -2,13 +2,13 @@ import React, {useEffect, useState} from 'react';
 import './CertificationSchemePage.css';
 import {AuditCriterion} from "../../../constants/constants";
 import {BarChart} from "@mui/x-charts/BarChart";
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 
 const CertificationSchemePage = ({user}) => {
     const [auditData, setAuditData] = useState([]);
 
     useEffect(() => {
-        storage.getCompanies().then(companiesJson => {
+        client.getCompanies().then(companiesJson => {
             const criteriaCount = AuditCriterion.reduce((acc, criterion) => {
                 acc[criterion.value] = companiesJson.filter(company => company.auditCriterion === criterion.key).length;
                 return acc;

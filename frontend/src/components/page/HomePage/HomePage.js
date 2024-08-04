@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './HomePage.css';
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 import {CircularProgress, List, ListItem} from "@mui/material";
 import {Link} from "react-router-dom";
 
@@ -11,7 +11,7 @@ const HomePage = ({user}) => {
 
 
     useEffect(() => {
-        storage.getCompanies().then(companiesJson => {
+        client.getCompanies().then(companiesJson => {
             const companiesWithAudit = companiesJson
                 .filter(company => company.audit && company.audit.certificateExpirationDate)
                 .sort((a, b) => new Date(a.audit.certificateExpirationDate) - new Date(b.audit.certificateExpirationDate));

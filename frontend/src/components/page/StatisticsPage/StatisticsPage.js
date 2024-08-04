@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './StatisticsPage.css';
-import * as storage from "../../../data/storage";
+import * as client from "../../../data/client";
 import {BarChart} from '@mui/x-charts/BarChart';
 import {AuditCriterion} from "../../../constants/constants";
 
@@ -8,7 +8,7 @@ const StatisticsPage = ({user}) => {
     const [auditData, setAuditData] = useState([]);
 
     useEffect(() => {
-        storage.getCompanies().then(companiesJson => {
+        client.getCompanies().then(companiesJson => {
             const criteriaCount = AuditCriterion.reduce((acc, criterion) => {
                 acc[criterion.value] = companiesJson.filter(company => company.auditCriterion === criterion.key).length;
                 return acc;
