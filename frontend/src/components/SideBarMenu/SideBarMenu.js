@@ -1,93 +1,46 @@
 import React from 'react';
-import './SideBarMenu.css';
-import * as AiIcons from 'react-icons/ai';
-import * as FaIcons from 'react-icons/fa';
-import {GrUserAdmin} from "react-icons/gr";
+import {Menu, MenuItem, Sidebar, SubMenu} from 'react-pro-sidebar';
+import {AiFillHome} from 'react-icons/ai';
+import {FaArtstation, FaCalendarAlt, FaRegCalendarAlt, FaUsers} from 'react-icons/fa';
+import {GrUserAdmin} from 'react-icons/gr';
 import {MdBusinessCenter} from 'react-icons/md';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
+import './SideBarMenu.css';
+import {IoIosLogOut, IoIosSettings} from "react-icons/io";
+import {CiViewTable} from "react-icons/ci";
+import {FaPersonCircleQuestion} from "react-icons/fa6";
 
-
-const SideBarMenu = ({user}) => {
+const SideBarMenu = ({user, setLoading}) => {
     const logout = () => {
         localStorage.removeItem('jwtToken');
-        window.location.href = "/";
-    }
-
-    const SideBarButtons = [
-        {
-            title: 'Главная',
-            path: '/',
-            icon: <AiIcons.AiFillHome/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'Схемы сертификации',
-            path: '/certification_scheme',
-            icon: <FaIcons.FaRegCalendarAlt/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'Сотрудники',
-            path: '/users',
-            icon: <FaIcons.FaUsers/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'Клиенты',
-            path: '/companies',
-            icon: <MdBusinessCenter/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'План работ',
-            path: '/schedule',
-            icon: <FaIcons.FaRegCalendarAlt/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'Статистика',
-            path: '/stats',
-            icon: <FaIcons.FaArtstation/>,
-            cName: 'nav-text'
-        },
-        {
-            title: 'Личный кабинет',
-            path: `/user/${user.id}`,
-            icon: <FaIcons.FaArtstation/>,
-            cName: 'nav-text'
-        },
-        user.role === "ADMIN" && {
-            title: 'Администрирование',
-            path: '/admin',
-            icon: <GrUserAdmin/>,
-            cName: 'nav-text'
-        }
-    ];
+        window.location.href = '/';
+        setLoading(false);
+    };
 
     return (
-        <div className="sidebar">
-            <nav className='nav-menu'>
-                <ul className='nav-menu-items'>
-                    {SideBarButtons.map((item, index) => (
-                        <li key={index} className={item.cName}>
-                            <NavLink
-                                to={item.path}
-                                className={({isActive}) => isActive ? 'nav-text active' : 'nav-text'}
-                            >
-                                {item.icon}
-                                <span>{item.title}</span>
-                            </NavLink>
-                        </li>
-                    ))}
-                </ul>
-                <div className='user-info'>
-                    <span>{user.role} | {user.name}</span>
-                    <button className='logout-button' onClick={logout}>
-                        Выйти из системы
-                    </button>
-                </div>
-            </nav>
-        </div>
+        <Sidebar>
+            <Menu>
+                <MenuItem icon={<AiFillHome/>} component={<Link to="/"/>}>Главная</MenuItem>
+                <SubMenu icon={<FaCalendarAlt/>} label={'Планирование'}>
+                    <MenuItem icon={<CiViewTable/>} component={<Link to="/certification_scheme"/>}>Схемы</MenuItem>
+                    <MenuItem icon={<FaUsers/>} component={<Link to="/users"/>}>Сотрудники</MenuItem>
+                    <MenuItem icon={<MdBusinessCenter/>} component={<Link to="/companies"/>}>Клиенты</MenuItem>
+                    <MenuItem icon={<FaRegCalendarAlt/>} component={<Link to="/schedule"/>}>План работ</MenuItem>
+                    <MenuItem icon={<FaArtstation/>} component={<Link to="/stats"/>}>Статистика</MenuItem>
+                </SubMenu>
+                {user.role === 'ADMIN' && (
+                    <MenuItem icon={<GrUserAdmin/>} component={<Link to="/admin"/>}>Администрирование</MenuItem>
+                )}
+                <SubMenu label="Личное" icon={<FaPersonCircleQuestion/>}>
+                    <MenuItem icon={<IoIosSettings/>} component={<Link to={`/settings`}/>}>Настройки</MenuItem>
+                    <MenuItem icon={<FaArtstation/>} component={<Link to={`/user/${user.id}`}/>}>Личный
+                        кабинет</MenuItem>
+                    <MenuItem icon={<IoIosLogOut/>} className="logout-menu-button" onClick={logout}>
+                        Выйти
+                    </MenuItem>
+                </SubMenu>
+            </Menu>
+        </Sidebar>
     );
 };
 

@@ -9,7 +9,6 @@ body {
 
 .content {
     text-align: center;
-    margin-left: 250px;
     padding: 20px;
     background-color: var(--default-background-color);
     height: 100vh;

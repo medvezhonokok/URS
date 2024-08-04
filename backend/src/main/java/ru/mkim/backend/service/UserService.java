@@ -49,4 +49,13 @@ public class UserService {
     public void updateCertificates(long userId, String certificates) {
         userRepository.updateCertificates(userId, certificates);
     }
+
+    public void update(Long userId, UserCredentials credentials) {
+        User user = findById(userId);
+
+        user.setName(credentials.getName());
+        user.setPhoneNumber(credentials.getPhoneNumber());
+
+        userRepository.save(user);
+    }
 }

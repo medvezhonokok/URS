@@ -44,3 +44,77 @@ export const monthNames = [
     {value: 11, label: 'Ноябрь'},
     {value: 12, label: 'Декабрь'},
 ];
+
+export const COMPANY_FIELDS = (company) => {
+    return [
+        {label: "Название (английский)", value: company.englishName, id: "englishName"},
+        {label: "Название (русский)", value: company.russianName, id: "russianName"},
+        {label: "Адрес (английский)", value: company.englishAddress, id: "englishAddress"},
+        {label: "Адрес (русский)", value: company.russianAddress, id: "russianAddress"},
+        {label: "Почтовый/Почтовый индекс", value: company.postalOrZipCode, id: "postalOrZipCode"},
+        {label: "Страна/Штат", value: company.countryOrState, id: "countryOrState"},
+        {
+            label: "ФИО руководителя (английский)",
+            value: company.englishManagerName,
+            id: "englishManagerName"
+        },
+        {
+            label: "ФИО руководителя (русский)",
+            value: company.russianManagerName,
+            id: "russianManagerName"
+        },
+        {label: "Должность руководителя", value: company.managerPosition, id: "managerPosition"},
+        {
+            label: "Телефон руководителя",
+            value: company.managerPhoneNumber,
+            id: "managerPhoneNumber"
+        },
+        {label: "E-mail руководителя", value: company.managerEmail, id: "managerEmail"},
+        {label: "Web сайт", value: company.webSite, id: "webSite"},
+        {
+            label: "ФИО контактного лица (английский)",
+            value: company.englishContactPersonName,
+            id: "englishContactPersonName"
+        },
+        {
+            label: "ФИО контактного лица (русский)",
+            value: company.russianContactPersonName,
+            id: "russianContactPersonName"
+        },
+        {
+            label: "Должность контактного лица",
+            value: company.contactPersonPosition,
+            id: "contactPersonPosition"
+        },
+        {
+            label: "E-mail контактного лица",
+            value: company.contactPersonEmail,
+            id: "contactPersonEmail"
+        },
+        {label: "ИНН", value: company.tin, id: "tin"},
+        {label: "ОКВЭД", value: company.okved, id: "okved"},
+        {
+            label: "Область сертификации (английский)",
+            value: company.englishCertificationScope,
+            id: "englishCertificationScope"
+        },
+        {
+            label: "Область сертификации (русский)",
+            value: company.russianCertificationScope,
+            id: "russianCertificationScope"
+        },
+        {
+            label: "Критерий аудита", value: company.auditCriterion, id: "auditCriterion"
+        },
+        {
+            label: "Номер сертификата", value: company.certificateNumber, id: "certificateNumber"
+        }
+    ]
+}
+
+export const USER_FIELDS = (user) => {
+    return [
+        {label: 'ФИО', value: user.name, id: 'name'},
+        {label: 'Номер телефона', value: user.phoneNumber, id: 'phoneNumber'},
+    ]
+}

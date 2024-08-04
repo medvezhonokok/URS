@@ -74,6 +74,16 @@ export const getUsers = () => {
         });
 };
 
+export const updateUser = (userId, updatedUser) => {
+    return axiosInstance.post(`1/users/update/${userId}`, updatedUser)
+        .then(response => response.data)
+        .catch(err => {
+            console.log("Failed to update user: " + err);
+            throw err;
+        });
+}
+
+
 /*
  *      Company entity client utils.
  */
@@ -119,7 +129,7 @@ export const getCompanyById = (companyId) => {
  *      Audit entity client utils.
  */
 export const addAudit = (auditData) => {
-    return axiosInstance.post( `/audit/add`, auditData, {
+    return axiosInstance.post(`/audit/add`, auditData, {
         headers: {
             'Content-Type': 'application/json'
         }

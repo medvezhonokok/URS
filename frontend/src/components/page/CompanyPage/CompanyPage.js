@@ -3,7 +3,8 @@ import {Link, useParams} from "react-router-dom";
 import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as client from "../../../data/client";
-import {AuditCriterion} from "../../../constants/constants";
+import {AuditCriterion, COMPANY_FIELDS} from "../../../constants/constants";
+
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
@@ -19,72 +20,7 @@ const CompanyPage = ({user}) => {
             try {
                 const companyById = await client.getCompanyById(companyId);
                 setCompany(companyById);
-                setCompanyFields(
-                    [
-                        {label: "Название (английский)", value: companyById.englishName, id: "englishName"},
-                        {label: "Название (русский)", value: companyById.russianName, id: "russianName"},
-                        {label: "Адрес (английский)", value: companyById.englishAddress, id: "englishAddress"},
-                        {label: "Адрес (русский)", value: companyById.russianAddress, id: "russianAddress"},
-                        {label: "Почтовый/Почтовый индекс", value: companyById.postalOrZipCode, id: "postalOrZipCode"},
-                        {label: "Страна/Штат", value: companyById.countryOrState, id: "countryOrState"},
-                        {
-                            label: "ФИО руководителя (английский)",
-                            value: companyById.englishManagerName,
-                            id: "englishManagerName"
-                        },
-                        {
-                            label: "ФИО руководителя (русский)",
-                            value: companyById.russianManagerName,
-                            id: "russianManagerName"
-                        },
-                        {label: "Должность руководителя", value: companyById.managerPosition, id: "managerPosition"},
-                        {
-                            label: "Телефон руководителя",
-                            value: companyById.managerPhoneNumber,
-                            id: "managerPhoneNumber"
-                        },
-                        {label: "E-mail руководителя", value: companyById.managerEmail, id: "managerEmail"},
-                        {label: "Web сайт", value: companyById.webSite, id: "webSite"},
-                        {
-                            label: "ФИО контактного лица (английский)",
-                            value: companyById.englishContactPersonName,
-                            id: "englishContactPersonName"
-                        },
-                        {
-                            label: "ФИО контактного лица (русский)",
-                            value: companyById.russianContactPersonName,
-                            id: "russianContactPersonName"
-                        },
-                        {
-                            label: "Должность контактного лица",
-                            value: companyById.contactPersonPosition,
-                            id: "contactPersonPosition"
-                        },
-                        {
-                            label: "E-mail контактного лица",
-                            value: companyById.contactPersonEmail,
-                            id: "contactPersonEmail"
-                        },
-                        {label: "ИНН", value: companyById.tin, id: "tin"},
-                        {label: "ОКВЭД", value: companyById.okved, id: "okved"},
-                        {
-                            label: "Область сертификации (английский)",
-                            value: companyById.englishCertificationScope,
-                            id: "englishCertificationScope"
-                        },
-                        {
-                            label: "Область сертификации (русский)",
-                            value: companyById.russianCertificationScope,
-                            id: "russianCertificationScope"
-                        },
-                        {
-                            label: "Критерий аудита", value: companyById.auditCriterion, id: "auditCriterion"
-                        },
-                        {
-                            label: "Номер сертификата", value: companyById.certificateNumber, id: "certificateNumber"
-                        }
-                    ]
-                );
+                setCompanyFields(COMPANY_FIELDS(companyById));
                 setLoading(false);
             } catch (error) {
                 console.error("Failed to get company:", error);

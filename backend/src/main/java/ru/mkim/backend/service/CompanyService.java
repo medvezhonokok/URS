@@ -36,7 +36,6 @@ public class CompanyService {
     }
 
     private Company copyCredentialsFieldToCompany(Company company, CompanyCredentials credentials) {
-
         company.setEnglishName(credentials.getEnglishName());
         company.setRussianName(credentials.getRussianName());
         company.setEnglishAddress(credentials.getEnglishAddress());

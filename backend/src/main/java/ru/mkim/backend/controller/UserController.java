@@ -85,4 +85,15 @@ public class UserController {
 
         return new ResponseEntity<>("OK", HttpStatus.OK);
     }
+
+    @RequireJwtParam
+    @PostMapping("/update/{userId}")
+    public void updateUser(@PathVariable Long userId, @Valid @RequestBody UserCredentials credentials,
+                           BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException(bindingResult.getAllErrors().toString());
+        }
+
+        userService.update(userId, credentials);
+    }
 }

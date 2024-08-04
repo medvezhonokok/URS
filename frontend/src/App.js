@@ -23,10 +23,11 @@ const App = () => {
     useEffect(() => {
         if (jwtToken && !user) {
             client.getUserByJWT(jwtToken).then((user) => {
-                setLoading(false);
                 setUser(user);
             })
         }
+
+        setLoading(false);
     }, [jwtToken, user]);
 
     if (loading) {
@@ -36,7 +37,7 @@ const App = () => {
     return user && !loading ? (
         <div className="app-container">
             <Router>
-                <SideBarMenu user={user}/>
+                <SideBarMenu user={user} setLoading={setLoading}/>
                 <div className="content">
                     <Routes>
                         <Route path='/' exact element={<HomePage user={user}/>}/>
