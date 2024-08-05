@@ -2,10 +2,11 @@
     /*
         Custom application constant colors
     */
-    --light-gray: #f1f1f5;
-    --medium-gray: #d0d0d4;
-    --light-green: #43732b;
-    --medium-green: #204f17;
+    --light-gray: #f7f7fa;
+    --medium-gray: #d2d2d3;
+    --light-green: #305022;
+    --medium-green: #243d20;
+    --dark-green: #1e331c;
     --border-color: #2a531f;
     --error-color: #f60e0e;
     --default-background-color: #f1f1f5;

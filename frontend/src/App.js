@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './App.css';
 import LoginForm from "./components/form/LoginForm/LoginForm";
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
@@ -14,31 +14,38 @@ import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
 import {CircularProgress} from "@mui/material";
 import AdminPage from "./components/page/AdminPage/AdminPage";
 import * as client from "./data/client";
+import SettingsPage from "./components/page/SettingsPage/SettingsPage";
+import {ThemeContext} from "./utils/ThemeContext";
 
 const App = () => {
     const [user, setUser] = useState(null);
     const jwtToken = localStorage.getItem('jwtToken');
     const [loading, setLoading] = useState(true);
+    const [collapsed, setCollapsed] = useState(false);
+    const {theme} = useContext(ThemeContext);
 
     useEffect(() => {
         if (jwtToken && !user) {
             client.getUserByJWT(jwtToken).then((user) => {
                 setUser(user);
+                setLoading(false);
+            }).catch(err => {
+                setLoading(true);
+                console.log(err);
             })
         }
 
-        setLoading(false);
     }, [jwtToken, user]);
 
-    if (loading) {
+    if (loading && jwtToken) {
         return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
-    return user && !loading ? (
+    return user && !loading && jwtToken ? (
         <div className="app-container">
             <Router>
-                <SideBarMenu user={user} setLoading={setLoading}/>
-                <div className="content">
+                <SideBarMenu user={user} setLoading={setLoading} collapsed={collapsed}/>
+                <div className={`content ${theme}`}>
                     <Routes>
                         <Route path='/' exact element={<HomePage user={user}/>}/>
                         <Route path='/certification_scheme' element={<CertificationSchemePage user={user}/>}/>
@@ -49,6 +56,8 @@ const App = () => {
                         <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
                         <Route path='/user/:userId' element={<UserPage user={user}/>}/>
                         <Route path='/admin' element={<AdminPage user={user}/>}/>
+                        <Route path='/settings'
+                               element={<SettingsPage collapsed={collapsed} setCollapsed={setCollapsed}/>}/>
                     </Routes>
                 </div>
             </Router>

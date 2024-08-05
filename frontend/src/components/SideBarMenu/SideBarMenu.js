@@ -1,16 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Menu, MenuItem, Sidebar, SubMenu} from 'react-pro-sidebar';
+import {Link} from 'react-router-dom';
 import {AiFillHome} from 'react-icons/ai';
 import {FaArtstation, FaCalendarAlt, FaRegCalendarAlt, FaUsers} from 'react-icons/fa';
 import {GrUserAdmin} from 'react-icons/gr';
 import {MdBusinessCenter} from 'react-icons/md';
-import {Link} from 'react-router-dom';
+import {IoIosLogOut, IoIosSettings} from 'react-icons/io';
+import {CiViewTable} from 'react-icons/ci';
+import {FaPersonCircleQuestion} from 'react-icons/fa6';
+import {ThemeContext} from '../../utils/ThemeContext';
 import './SideBarMenu.css';
-import {IoIosLogOut, IoIosSettings} from "react-icons/io";
-import {CiViewTable} from "react-icons/ci";
-import {FaPersonCircleQuestion} from "react-icons/fa6";
 
-const SideBarMenu = ({user, setLoading}) => {
+const SideBarMenu = ({user, setLoading, collapsed}) => {
+    const {theme} = useContext(ThemeContext);
+
     const logout = () => {
         localStorage.removeItem('jwtToken');
         window.location.href = '/';
@@ -18,24 +21,65 @@ const SideBarMenu = ({user, setLoading}) => {
     };
 
     return (
-        <Sidebar>
-            <Menu>
-                <MenuItem icon={<AiFillHome/>} component={<Link to="/"/>}>Главная</MenuItem>
+        <Sidebar
+            style={{
+                overflowY: 'auto',
+                height: '100vh',
+                color: theme === 'dark' ? 'var(--light-gray)' : 'white',
+                fontSize: '14px',
+                backgroundColor: theme === 'dark' ? 'var(--dark-green)' : 'var(--medium-green)',
+            }}
+            collapsed={collapsed}
+        >
+            <Menu menuItemStyles={{
+                root: {
+                    height: '100%',
+                    fontSize: '14px',
+                    fontWeight: 'bold',
+                    backgroundColor: theme === 'dark' ? 'var(--dark-green)' : 'var(--medium-green)',
+                    color: theme === 'dark' ? 'var(--medium-gray)' : 'var(--light-gray)'
+                },
+                button: {
+                    '&:hover': {
+                        backgroundColor: theme === 'dark' ? 'var(--medium-green)' : 'var(--light-green)'
+                    },
+                },
+            }}>
+                <MenuItem icon={<AiFillHome/>} component={<Link to="/" className="ps-menuitem-root"/>}>
+                    Главная
+                </MenuItem>
                 <SubMenu icon={<FaCalendarAlt/>} label={'Планирование'}>
-                    <MenuItem icon={<CiViewTable/>} component={<Link to="/certification_scheme"/>}>Схемы</MenuItem>
-                    <MenuItem icon={<FaUsers/>} component={<Link to="/users"/>}>Сотрудники</MenuItem>
-                    <MenuItem icon={<MdBusinessCenter/>} component={<Link to="/companies"/>}>Клиенты</MenuItem>
-                    <MenuItem icon={<FaRegCalendarAlt/>} component={<Link to="/schedule"/>}>План работ</MenuItem>
-                    <MenuItem icon={<FaArtstation/>} component={<Link to="/stats"/>}>Статистика</MenuItem>
+                    <MenuItem icon={<CiViewTable/>}
+                              component={<Link to="/certification_scheme" className="ps-menuitem-root"/>}>
+                        Схемы
+                    </MenuItem>
+                    <MenuItem icon={<FaUsers/>} component={<Link to="/users" className="ps-menuitem-root"/>}>
+                        Сотрудники
+                    </MenuItem>
+                    <MenuItem icon={<MdBusinessCenter/>}
+                              component={<Link className="ps-menuitem-root" to="/companies"/>}>
+                        Клиенты
+                    </MenuItem>
+                    <MenuItem icon={<FaRegCalendarAlt/>}
+                              component={<Link to="/schedule" className="ps-menuitem-root"/>}>
+                        План работ
+                    </MenuItem>
+                    <MenuItem icon={<FaArtstation/>} component={<Link to="/stats"/>}>
+                        Статистика
+                    </MenuItem>
                 </SubMenu>
-                {user.role === 'ADMIN' && (
-                    <MenuItem icon={<GrUserAdmin/>} component={<Link to="/admin"/>}>Администрирование</MenuItem>
-                )}
+                {user.role === 'ADMIN' &&
+                    (<MenuItem icon={<GrUserAdmin/>} component={<Link to="/admin" className="ps-menuitem-root"/>}>
+                        Администрирование
+                    </MenuItem>)}
                 <SubMenu label="Личное" icon={<FaPersonCircleQuestion/>}>
-                    <MenuItem icon={<IoIosSettings/>} component={<Link to={`/settings`}/>}>Настройки</MenuItem>
-                    <MenuItem icon={<FaArtstation/>} component={<Link to={`/user/${user.id}`}/>}>Личный
-                        кабинет</MenuItem>
-                    <MenuItem icon={<IoIosLogOut/>} className="logout-menu-button" onClick={logout}>
+                    <MenuItem icon={<IoIosSettings/>} component={<Link to={`/settings`}/>}>
+                        Настройки
+                    </MenuItem>
+                    <MenuItem icon={<FaArtstation/>} component={<Link to={`/user/${user.id}`}/>}>
+                        Личный кабинет
+                    </MenuItem>
+                    <MenuItem icon={<IoIosLogOut/>} className="logout-menu-button ps-menuitem-root" onClick={logout}>
                         Выйти
                     </MenuItem>
                 </SubMenu>

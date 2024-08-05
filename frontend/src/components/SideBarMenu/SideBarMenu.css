@@ -1,13 +1,4 @@
-.ps-menu-root {
-    overflow-y: auto;
-    height: 100vh;
-    color: white;
-    background: var(--medium-green);
-    font-size: 14px;
-}
-
-.ps-menuitem-root {
-    color: white;
-    background: var(--medium-green);
-    font-size: 14px;
+.ps-sidebar-container {
+    height: auto !important;
+    overflow-y: auto!important;
 }

@@ -4,10 +4,15 @@ import './index.css';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
+import {ThemeProvider} from './utils/ThemeContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
-root.render(<App/>);
+root.render(
+    <ThemeProvider>
+        <App/>
+    </ThemeProvider>
+);
 
 serviceWorkerRegistration.unregister();
 

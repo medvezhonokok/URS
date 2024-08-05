@@ -10,9 +10,16 @@ body {
 .content {
     text-align: center;
     padding: 20px;
-    background-color: var(--default-background-color);
     height: 100vh;
     overflow-y: auto;
     overflow-x: hidden;
     width: 100%;
+}
+
+.light {
+    background-color: var(--light-gray);
+}
+
+.dark {
+    background-color: var(--medium-gray);
 }
