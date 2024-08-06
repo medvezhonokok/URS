@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class AuditCredentials {
+    private Long id;
 
     @NonNull
     @NotEmpty(message = "Activity is required")

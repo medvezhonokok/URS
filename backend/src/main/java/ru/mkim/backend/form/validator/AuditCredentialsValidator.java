@@ -63,9 +63,10 @@ public class AuditCredentialsValidator implements Validator {
                 for (Audit userAudit : userAudits) {
                     LocalDate startDate = userAudit.getStartDate();
                     LocalDate endDate = userAudit.getEndDate();
+                    long id = userAudit.getId();
 
-                    if (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)
-                            || endDate.isEqual(auditStartDate) || startDate.isEqual(auditEndDate)) {
+                    if ((id != audit.getId()) && (endDate.isAfter(auditStartDate) && startDate.isBefore(auditEndDate)
+                            || endDate.isEqual(auditStartDate) || startDate.isEqual(auditEndDate))) {
                         errors.reject("audit-overlap",
                                 "Выбранные даты аудита пересекаются с текущим расписанием аудитора.");
                         break;

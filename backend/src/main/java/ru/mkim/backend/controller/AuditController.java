@@ -72,4 +72,14 @@ public class AuditController {
 
         auditService.save(audit);
     }
+
+    @RequireJwtParam
+    @PutMapping("/update/{auditId}")
+    public void update(@PathVariable Long auditId, @Valid @RequestBody AuditCredentials auditCredentials, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            throw new javax.validation.ValidationException(bindingResult.getAllErrors().toString());
+        }
+        System.out.println("jdaljdad");
+        auditService.update(auditId, auditCredentials);
+    }
 }
