@@ -129,3 +129,13 @@ export const addAudit = (auditData) => {
             throw error;
         });
 };
+
+export const updateAudit = (auditId, updatedAudit) => {
+    return axiosInstance.put( `/audit/update/${auditId}`, updatedAudit)
+        .then(() =>{
+        })
+        .catch(error => {
+            console.error("Failed to update audit:", error);
+            throw error;
+        });
+};
