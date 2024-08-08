@@ -66,33 +66,18 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
 
             client.updateAudit(audit.id, {...auditData, companyId: companyId, userId: userId})
                 .then((ignored) => {
-                    const updatedUsers = users.map(user => {
-                        const updatedAudits = user.audits.map(audit => {
-                            if (audit.id === auditData.id) {
-                                return {
-                                    ...audit,
-                                    ...auditData
-                                };
-                            }
-                            return audit;
-                        });
-                        return {
-                            ...user,
-                            audits: updatedAudits
-                        };
-                    });
-                    const updatedCompanies = companies.map(company => {
-                        if (company.audit && company.audit.id === auditData.id) {
-                            return {
-                                ...company,
-                                audit: {
-                                    ...company.audit,
-                                    ...auditData
-                                }
-                            };
-                        }
-                        return company;
-                    });
+                    const updatedUsers = users.map(user => ({
+                        ...user,
+                        audits: user.audits.map(audit =>
+                            audit.id === auditData.id ? { ...audit, ...auditData } : audit
+                        )
+                    }));
+
+                    const updatedCompanies = companies.map(company =>
+                        company.audit && company.audit.id === auditData.id
+                            ? { ...company, audit: { ...company.audit, ...auditData } }
+                            : company
+                    );
                     updateUsersAndCompanies(updatedUsers, updatedCompanies);
                     alert("Аудит был обновлен");
                     handleClose();
@@ -103,20 +88,13 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
         } else {
             client.addAudit(auditData)
                 .then((ignored) => {
-                    const updatedUsers = users.map(user => {
-                        if (user.id === auditData.userId) {
-                            user.audits.push(auditData);
-                        }
-                        return user;
-                    });
+                    const updatedUsers = users.map(user =>
+                        user.id === auditData.userId ? { ...user, audits: [...user.audits, auditData] } : user
+                    );
 
-                    const updatedCompanies = companies.map(company => {
-                        if (company.id === auditData.companyId) {
-                            company.audit = auditData;
-                        }
-
-                        return company;
-                    })
+                    const updatedCompanies = companies.map(company =>
+                        company.id === auditData.companyId ? { ...company, audit: auditData } : company
+                    );
 
                     updateUsersAndCompanies(updatedUsers, updatedCompanies);
 
@@ -290,7 +268,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                         </Grid>
                     )}
                 </Grid>
-                {/*{errors && <div className="error">{errors}</div>}*/}
+                {errors && <div className="error">{errors}</div>}
                 <div className="modalFooter">
                     <Button className="modalButton" onClick={handleClose}>
                         Отмена
