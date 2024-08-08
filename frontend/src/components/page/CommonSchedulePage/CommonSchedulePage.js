@@ -24,6 +24,7 @@ const CommonSchedulePage = ({user}) => {
     const [selectedAudit, setSelectedAudit] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false); // Для модального окна редактирования
     const [anchorEl, setAnchorEl] = useState(null);
     const [loading, setLoading] = useState(true);
     const yearNames = Array.from({length: 10}, (_, i) => new Date().getFullYear() - i);
@@ -82,6 +83,35 @@ const CommonSchedulePage = ({user}) => {
     const updateUsersAndCompanies = (newUsers, newCompanies) => {
         setUsers(newUsers);
         setCompanies(newCompanies);
+    };
+
+    const handleEditClick = () => {
+        setIsPopoverOpen(false);
+        setIsEditModalOpen(true);
+    };
+    const handleDeleteClick = () => {
+        if (!selectedAudit) return;
+
+        client.deleteAudit(selectedAudit.id)
+            .then(() => {
+                const updatedUsers = users.map(user => ({
+                    ...user,
+                    audits: user.audits.filter(audit => audit.id !== selectedAudit.id)
+                }));
+
+                const updatedCompanies = companies.map(company => {
+                    if (company.audit && company.audit.id === selectedAudit.id) {
+                        return { ...company, audit: null };
+                    }
+                    return company;
+                });
+
+                updateUsersAndCompanies(updatedUsers, updatedCompanies);
+                alert("Аудит был удален");
+                setIsPopoverOpen(false);
+            })
+            .catch(err => {
+            });
     };
 
     if (loading) {
@@ -196,17 +226,15 @@ const CommonSchedulePage = ({user}) => {
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon"/>
+                                    {/*<MdAccessTimeFilled className="dateTimeIcon"/>*/}
                                     <Typography>
-                                        <span
-                                            className="label">Заключительная встреча:</span> {selectedAudit.closingMeetingDate ? new Date(selectedAudit.closingMeetingDate).toLocaleDateString() : 'Не указана'}
+                                        <span className="label">Заключительная встреча:</span> {selectedAudit.closingMeetingDate ? new Date(selectedAudit.closingMeetingDate).toLocaleDateString() : 'Не указана'}
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon"/>
+                                    {/*<MdAccessTimeFilled className="dateTimeIcon"/>*/}
                                     <Typography>
-                                        <span
-                                            className="label">Срок действия сертификата:</span> {selectedAudit.certificateExpirationDate ? new Date(selectedAudit.certificateExpirationDate).toLocaleDateString() : 'Не указана'}
+                                        <span className="label">Срок действия сертификата:</span> {selectedAudit.certificateExpirationDate ? new Date(selectedAudit.certificateExpirationDate).toLocaleDateString() : 'Не указана'}
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
@@ -216,10 +244,25 @@ const CommonSchedulePage = ({user}) => {
                                     </Typography>
                                 </Box>
                             </Box>
+                            <Box display="flex" justifyContent="flex-end" marginTop="1rem">
+                                <Button variant="primary" onClick={handleEditClick} style={{ marginRight: '10px' }}>
+                                    Редактировать
+                                </Button>
+                                <Button variant="contained" color="red" onClick={handleDeleteClick}>
+                                    Удалить
+                                </Button>
+                            </Box>
                         </Box>
                     </Popover>
                 )}
-
+                <AddAuditForm
+                    isOpen={isEditModalOpen}
+                    handleClose={() => setIsEditModalOpen(false)}
+                    companies={companies}
+                    users={users}
+                    updateUsersAndCompanies={updateUsersAndCompanies}
+                    audit={selectedAudit}
+                />
             </div>
             : null
     );

@@ -1,14 +1,16 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
 import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
 import {AuditCriterion} from "../../../constants/constants";
 import * as client from "../../../data/client";
 
-const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
+const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies, audit}) => {
     const [errors, setErrors] = useState('');
     const [selectedCompany, setSelectedCompany] = useState(null);
+    const isEditMode = !!audit;
     const [auditData, setAuditData] = useState({
+        id: null,
         location: "",
         activity: "",
         agreement: "",
@@ -17,48 +19,92 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
         startDate: null,
         endDate: null,
         companyId: "",
-        userId: ""
+        userId: "",
     });
+
+    useEffect(() => {
+        if (audit) {
+            setAuditData({
+                id: audit.id || null,
+                location: audit.location || "",
+                activity: audit.activity || "",
+                agreement: audit.agreement || "",
+                closingMeetingDate: audit.closingMeetingDate || null,
+                certificateExpirationDate: audit.certificateExpirationDate || null,
+                startDate: audit.startDate || null,
+                endDate: audit.endDate || null,
+                companyId: audit.companyId || "",
+                userId: audit.userId || "",
+            });
+        }
+    }, [audit]);
+
+    useEffect(() => {
+        console.log("Updated auditData:", auditData);
+    }, [auditData]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        localStorage.getItem('jwtToken');
-        client.addAudit(auditData)
-            .then((ignored) => {
-                const updatedUsers = users.map(user => {
-                    if (user.id === auditData.userId) {
-                        user.audits.push(auditData);
+
+        if (audit) {
+            let companyId;
+            let userId;
+
+            users.forEach(user => {
+                user.audits.forEach(audit => {
+                    if (audit.id === auditData.id) {
+                        userId = user.id;
                     }
-                    return user;
                 });
-
-                const updatedCompanies = companies.map(company => {
-                    if (company.id === auditData.companyId) {
-                        company.audit = auditData;
-                    }
-
-                    return company;
-                })
-
-                updateUsersAndCompanies(updatedUsers, updatedCompanies);
-
-                alert("Аудит был добавлен");
-                setAuditData({
-                    location: "",
-                    activity: "",
-                    agreement: "",
-                    closingMeetingDate: null,
-                    certificateExpirationDate: null,
-                    startDate: null,
-                    endDate: null,
-                    companyId: "",
-                    userId: ""
-                });
-                handleClose();
-            })
-            .catch((err) => {
-                setErrors(err.response.data);
             });
+
+            companies.forEach(company => {
+                if (company.audit && company.audit.id === auditData.id) {
+                    companyId = company.id
+                }
+            });
+
+            client.updateAudit(audit.id, {...auditData, companyId: companyId, userId: userId})
+                .then((ignored) => {
+                    const updatedUsers = users.map(user => ({
+                        ...user,
+                        audits: user.audits.map(audit =>
+                            audit.id === auditData.id ? { ...audit, ...auditData } : audit
+                        )
+                    }));
+
+                    const updatedCompanies = companies.map(company =>
+                        company.audit && company.audit.id === auditData.id
+                            ? { ...company, audit: { ...company.audit, ...auditData } }
+                            : company
+                    );
+                    updateUsersAndCompanies(updatedUsers, updatedCompanies);
+                    alert("Аудит был обновлен");
+                    handleClose();
+                })
+                .catch((err) => {
+                    setErrors(err.response.data);
+                });
+        } else {
+            client.addAudit(auditData)
+                .then((ignored) => {
+                    const updatedUsers = users.map(user =>
+                        user.id === auditData.userId ? { ...user, audits: [...user.audits, auditData] } : user
+                    );
+
+                    const updatedCompanies = companies.map(company =>
+                        company.id === auditData.companyId ? { ...company, audit: auditData } : company
+                    );
+
+                    updateUsersAndCompanies(updatedUsers, updatedCompanies);
+
+                    alert("Аудит был добавлен");
+                    handleClose();
+                })
+                .catch((err) => {
+                    setErrors(err.response.data);
+                });
+        }
     };
 
     const handleInputChange = (event) => {
@@ -105,26 +151,28 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                aria-describedby="modal-modal-description">
             <Box className="addAuditFormContainer" component="form" onSubmit={handleSubmit}>
                 <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Добавление нового аудита
+                    {audit ? "Редактирование аудита" : "Добавление нового аудита"}
                 </Typography>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel id="company-select-label">Клиент</InputLabel>
-                            <Select required={true}
-                                    labelId="company-select-label"
-                                    id="company-select"
-                                    name="companyId"
-                                    value={auditData.companyId}
-                                    onChange={handleCompanyChange}>
-                                {companies.filter(company => company.audit === null).map(company => (
-                                    <MenuItem key={company.id} value={company.id}>
-                                        {company.englishName + `\t(${company.auditCriterion})`}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
+                    {!audit && (
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="company-select-label">Клиент</InputLabel>
+                                <Select required={true}
+                                        labelId="company-select-label"
+                                        id="company-select"
+                                        name="companyId"
+                                        value={auditData.companyId}
+                                        onChange={handleCompanyChange}>
+                                    {companies.filter(company => company.audit === null).map(company => (
+                                        <MenuItem key={company.id} value={company.id}>
+                                            {company.englishName + `\t(${company.auditCriterion})`}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    )}
                     <Grid item xs={12}>
                         <TextField fullWidth
                                    label="Локация"
@@ -198,24 +246,27 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                                        shrink: true,
                                    }}/>
                     </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel id="user-select-label">Сотрудник</InputLabel>
-                            <Select required={true}
-                                    labelId="user-select-label"
-                                    id="user-select"
-                                    name="userId"
-                                    value={auditData.userId}
-                                    onChange={handleInputChange}>
-                                {users.filter(user => competentByAuditCriterion(user))
-                                    .map(user => (
-                                        <MenuItem key={user.id} value={user.id}>
-                                            {user.name}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
+                    {!audit && (
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="user-select-label">Сотрудник</InputLabel>
+                                <Select required={true}
+                                        labelId="user-select-label"
+                                        id="user-select"
+                                        name="userId"
+                                        value={auditData.userId}
+                                        onChange={handleInputChange}
+                                >
+                                    {users.filter(user => competentByAuditCriterion(user))
+                                        .map(user => (
+                                            <MenuItem key={user.id} value={user.id}>
+                                                {user.name}
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                    )}
                 </Grid>
                 {errors && <div className="error">{errors}</div>}
                 <div className="modalFooter">
@@ -223,7 +274,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                         Отмена
                     </Button>
                     <Button className="modalButton" type="submit">
-                        Создать аудит
+                        {audit ? "Сохранить изменения" : "Создать аудит"}
                     </Button>
                 </div>
             </Box>

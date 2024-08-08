@@ -139,3 +139,23 @@ export const addAudit = (auditData) => {
             throw error;
         });
 };
+
+export const updateAudit = (auditId, updatedAudit) => {
+    return axiosInstance.put( `/audit/update/${auditId}`, updatedAudit)
+        .then(() =>{
+        })
+        .catch(error => {
+            console.error("Failed to update audit:", error);
+            throw error;
+        });
+};
+
+export const deleteAudit = (auditId) => {
+    return axiosInstance.delete( `/audit/delete/${auditId}`)
+        .then(() =>{
+        })
+        .catch(error => {
+            console.error("Failed to delete audit:", error);
+            throw error;
+        });
+};
