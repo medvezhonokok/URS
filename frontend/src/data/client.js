@@ -74,8 +74,8 @@ export const getUsers = () => {
         });
 };
 
-export const updateUser = (userId, updatedUser) => {
-    return axiosInstance.post(`1/users/update/${userId}`, updatedUser)
+export const updateUser = (userId, user) => {
+    return axiosInstance.post(`1/users/update/${userId}`, user)
         .then(response => response.data)
         .catch(err => {
             console.log("Failed to update user: " + err);
@@ -88,8 +88,8 @@ export const updateUser = (userId, updatedUser) => {
  *      Company entity client utils.
  */
 
-export const addNewCompany = (newCompanyJson) => {
-    return axiosInstance.post(`/company/add`, newCompanyJson)
+export const addCompany = (company) => {
+    return axiosInstance.post(`/company/add`, company)
         .then(response => response.data)
         .catch(error => {
             console.log("Failed to add company: " + error);
@@ -106,8 +106,8 @@ export const getCompanies = () => {
         });
 };
 
-export const updateCompany = (companyId, updatedCompany) => {
-    return axiosInstance.put(`/company/update/${companyId}`, updatedCompany)
+export const updateCompany = (companyId, company) => {
+    return axiosInstance.put(`/company/update/${companyId}`, company)
         .then(() => {
         })
         .catch(error => {
@@ -128,8 +128,8 @@ export const getCompanyById = (companyId) => {
 /*
  *      Audit entity client utils.
  */
-export const addAudit = (auditData) => {
-    return axiosInstance.post(`/audit/add`, auditData, {
+export const addAudit = (audit) => {
+    return axiosInstance.post(`/audit/add`, audit, {
         headers: {
             'Content-Type': 'application/json'
         }

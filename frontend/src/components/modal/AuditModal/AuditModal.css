@@ -1,0 +1,23 @@
+.auditInfoContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auditInfo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.popover-content {
+    padding: 20px;
+}
+
+.dateTimeIcon {
+    color: gray;
+}
+
+.label {
+    font-weight: bold;
+}

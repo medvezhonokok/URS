@@ -55,7 +55,10 @@ public class AuditCredentialsValidator implements Validator {
                 LocalDate auditStartDate = audit.getStartDate();
                 LocalDate auditEndDate = audit.getEndDate();
 
-                if (auditStartDate.isAfter(auditEndDate)) {
+                LocalDate auditInformalStartDate = audit.getInformalStartDate();
+                LocalDate auditInformalEndDate = audit.getInformalEndDate();
+
+                if (auditStartDate.isAfter(auditEndDate) || auditInformalStartDate.isAfter(auditInformalEndDate)) {
                     errors.reject("audit-start-date-after-end-date",
                             "Некорретные даты начала и конца аудита.");
                 }

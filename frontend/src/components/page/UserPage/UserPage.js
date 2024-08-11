@@ -78,72 +78,75 @@ const UserPage = ({user}) => {
         return <div className="loadingContainer"><CircularProgress/></div>;
     }
 
-    return (
-        userById
-            ? (<div className="commonPageContainer">
-                <div className="commonPageHeader">
-                    <h1 className="commonPageHeader">{user.id === parseInt(userId)
-                        ? "Личный кабинет"
-                        : "Профиль сотрудника"}</h1>
-                    {user.id === parseInt(userId) && (
-                        <div className="headerButtonContainer">
-                            {isEditing
-                                ? <Button onClick={handleSaveClick}>Сохранить</Button>
-                                : <Button onClick={handleEditClick}>Редактировать</Button>
-                            }
-                        </div>
-                    )}
-                </div>
-                <div className="userInfo">
-                    {userFields.map(field => (
-                        <FormControl key={field.id} margin="normal" fullWidth variant="standard">
-                            <TextField
-                                fullWidth
-                                label={field.label}
-                                name={field.label}
-                                value={isEditing ? editedFields[field.id] : field.value}
-                                required
-                                onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
-                                disabled={!isEditing}
-                                error={!!errors[field.id]}
-                                helperText={errors[field.id]}
-                            />
-                        </FormControl>
-                    ))}
-                    <h2>Аккредитация эксперта:</h2>
-                    {userAuditCriterionList && userAuditCriterionList.length > 0
-                        ? (<List>
-                            {userAuditCriterionList.map((certificate, index) => (
-                                <ListItem style={{background: '#83d10b'}} key={index}>
-                                    {certificate}
-                                </ListItem>
-                            ))}
-                        </List>)
-                        : (<p>Нет доступной аккредитации.</p>)}
-                    <h2>Аудиты сотрудника:</h2>
-                    {userAudits && userAudits.length > 0
-                        ? (<List className="auditList">
-                            {userAudits.map(audit => (
-                                <ListItem key={audit.id} className="auditItem">
-                                    <div>Компания: {audit.companyName}</div>
-                                    <div>Активность: {audit.activity}</div>
-                                    <div>Локация: {audit.location}</div>
-                                    <div>Договор: {audit.agreement}</div>
-                                    <div>Дата заключительного
-                                        собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
-                                    <div>Дата истечения
-                                        сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
-                                    <div className="auditDates">
-                                        <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
-                                        <span>Дата окончания аудита: {new Date(audit.endDate).toLocaleDateString()}</span>
-                                    </div>
-                                </ListItem>
-                            ))}
-                        </List>)
-                        : (<p>Нет доступных аудитов.</p>)}
-                </div>
-            </div>)
-            : (<div>No such user</div>)
+    if (!userById) {
+        return <div>
+            No such user.
+        </div>
+    }
+
+    return (<div>
+            <div className="commonPageHeader">
+                <h1 className="commonPageHeader">{user.id === parseInt(userId)
+                    ? "Личный кабинет"
+                    : "Профиль сотрудника"}</h1>
+                {user.id === parseInt(userId) && (
+                    <div className="headerButtonContainer">
+                        {isEditing
+                            ? <Button onClick={handleSaveClick}>Сохранить</Button>
+                            : <Button onClick={handleEditClick}>Редактировать</Button>
+                        }
+                    </div>
+                )}
+            </div>
+            <div className="userInfo">
+                {userFields.map(field => (
+                    <FormControl key={field.id} margin="normal" fullWidth variant="standard">
+                        <TextField
+                            fullWidth
+                            label={field.label}
+                            name={field.label}
+                            value={isEditing ? editedFields[field.id] : field.value}
+                            required
+                            onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                            disabled={!isEditing}
+                            error={!!errors[field.id]}
+                            helperText={errors[field.id]}
+                        />
+                    </FormControl>
+                ))}
+                <h2>Аккредитация эксперта:</h2>
+                {userAuditCriterionList && userAuditCriterionList.length > 0
+                    ? (<List>
+                        {userAuditCriterionList.map((certificate, index) => (
+                            <ListItem style={{background: '#83d10b'}} key={index}>
+                                {certificate}
+                            </ListItem>
+                        ))}
+                    </List>)
+                    : (<p>Нет доступной аккредитации.</p>)}
+                <h2>Аудиты сотрудника:</h2>
+                {userAudits && userAudits.length > 0
+                    ? (<List className="auditList">
+                        {userAudits.map(audit => (
+                            <ListItem key={audit.id} className="auditItem">
+                                <div>Компания: {audit.companyName}</div>
+                                <div>Активность: {audit.activity}</div>
+                                <div>Локация: {audit.location}</div>
+                                <div>Договор: {audit.agreement}</div>
+                                <div>Дата заключительного
+                                    собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
+                                <div>Дата истечения
+                                    сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
+                                <div className="auditDates">
+                                    <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
+                                    <span>Дата окончания аудита: {new Date(audit.endDate).toLocaleDateString()}</span>
+                                </div>
+                            </ListItem>
+                        ))}
+                    </List>)
+                    : (<p>Нет доступных аудитов.</p>)}
+            </div>
+        </div>
     );
 };
 

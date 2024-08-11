@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Button } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Button} from 'react-bootstrap';
 import './LoginForm.css';
 import * as client from "../../../data/client";
 import Starfield from 'react-starfield';
@@ -13,7 +13,7 @@ const LoginForm = () => {
     const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const setLoginOrPasswordValue = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
 
         if (name === 'login') {
             setLogin(value);
@@ -59,20 +59,20 @@ const LoginForm = () => {
             />
             <div>
                 <label>login</label>
-                <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue} autoFocus={true} />
+                <input type="text" name="login" value={login} onChange={setLoginOrPasswordValue} autoFocus={true}/>
             </div>
             <div>
                 <label>password</label>
-                <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue} />
+                <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
             <div className="captcha-container">
                 <ReCAPTCHA sitekey={constants.SITE_SECRET_KEY}
-                           onChange={onCaptchaChange} />
+                           onChange={onCaptchaChange}/>
             </div>
 
             {errors && <div className="error">{errors}</div>}
             {captchaVerified && (
-                <Button style={{ fontWeight: "bold" }}
+                <Button style={{fontWeight: "bold"}}
                         type="submit">
                     Log in
                 </Button>

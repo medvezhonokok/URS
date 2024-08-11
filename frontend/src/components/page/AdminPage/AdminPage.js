@@ -21,7 +21,7 @@ const AdminPage = ({user}) => {
     };
 
     return user && user.role === "ADMIN" ? (
-        <div className="commonPageContainer">
+        <div>
             <div className="commonPageHeader">Администрирование</div>
             <div className="deviceList">
                 <h2>Устройства и IP-адреса</h2>

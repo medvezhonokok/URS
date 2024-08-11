@@ -9,7 +9,7 @@ import CompanyPage from "./components/page/CompanyPage/CompanyPage";
 import UserPage from "./components/page/UserPage/UserPage";
 import HomePage from "./components/page/HomePage/HomePage";
 import OfficialSchedulePage from "./components/page/OfficialSchedulePage/OfficialSchedulePage";
-import CertificationSchemePage from "./components/page/CertificationSchemePage/CertificationSchemePage";
+import CertificationSchemesPage from "./components/page/CertificationSchemesPage/CertificationSchemesPage";
 import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
 import {CircularProgress} from "@mui/material";
 import AdminPage from "./components/page/AdminPage/AdminPage";
@@ -47,20 +47,22 @@ const App = () => {
             <Router>
                 <SideBarMenu user={user} setLoading={setLoading} collapsed={collapsed}/>
                 <div className={`content ${theme}`}>
-                    <Routes>
-                        <Route path='/' exact element={<HomePage user={user}/>}/>
-                        <Route path='/certification_scheme' element={<CertificationSchemePage user={user}/>}/>
-                        <Route path='/stats' element={<StatisticsPage user={user}/>}/>
-                        <Route path='/users' element={<UsersPage user={user}/>}/>
-                        <Route path='/companies' element={<CompaniesPage user={user}/>}/>
-                        <Route path='/official_schedule' element={<OfficialSchedulePage user={user}/>}/>
-                        <Route path='/informal_schedule' element={<InformalSchedulePage user={user}/>}/>
-                        <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
-                        <Route path='/user/:userId' element={<UserPage user={user}/>}/>
-                        <Route path='/admin' element={<AdminPage user={user}/>}/>
-                        <Route path='/settings'
-                               element={<SettingsPage collapsed={collapsed} setCollapsed={setCollapsed}/>}/>
-                    </Routes>
+                    <div className="commonPageContainer">
+                        <Routes>
+                            <Route path='/' exact element={<HomePage user={user}/>}/>
+                            <Route path='/schemes' element={<CertificationSchemesPage user={user}/>}/>
+                            <Route path='/stats' element={<StatisticsPage user={user}/>}/>
+                            <Route path='/users' element={<UsersPage user={user}/>}/>
+                            <Route path='/companies' element={<CompaniesPage user={user}/>}/>
+                            <Route path='/official_schedule' element={<OfficialSchedulePage user={user}/>}/>
+                            <Route path='/informal_schedule' element={<InformalSchedulePage user={user}/>}/>
+                            <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
+                            <Route path='/user/:userId' element={<UserPage user={user}/>}/>
+                            <Route path='/admin' element={<AdminPage user={user}/>}/>
+                            <Route path='/settings'
+                                   element={<SettingsPage collapsed={collapsed} setCollapsed={setCollapsed}/>}/>
+                        </Routes>
+                    </div>
                 </div>
             </Router>
         </div>

@@ -26,7 +26,7 @@ const HomePage = ({user}) => {
 
     return (
         user ? (
-            <div className="commonPageContainer">
+            <div>
                 <h1 className="commonPageHeader">Главная</h1>
                 {loading ? (
                     <div className="loadingContainer">

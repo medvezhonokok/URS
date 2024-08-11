@@ -1,12 +1,11 @@
-import React, { useContext } from 'react';
-import { FormControlLabel, Switch } from "@mui/material";
-import { ThemeContext } from '../../../utils/ThemeContext';
+import React, {useContext} from 'react';
+import {FormControlLabel, Switch} from "@mui/material";
+import {ThemeContext} from '../../../utils/ThemeContext';
 
-const SettingsPage = ({ collapsed, setCollapsed }) => {
-    const { theme, toggleTheme } = useContext(ThemeContext);
+const SettingsPage = ({collapsed, setCollapsed}) => {
+    const {theme, toggleTheme} = useContext(ThemeContext);
 
-    return (
-        <div className="commonPageContainer">
+    return (<div>
             <div className="commonPageHeader">
                 <h1 className="commonPageHeader">Настройки системы</h1>
             </div>
@@ -15,13 +14,13 @@ const SettingsPage = ({ collapsed, setCollapsed }) => {
                 onChange={() => {
                     setCollapsed(!collapsed);
                 }}
-                control={<Switch checked={!collapsed} />}
+                control={<Switch checked={!collapsed}/>}
                 label="Сжать боковое меню"
             />
             <FormControlLabel
                 labelPlacement="start"
                 onChange={toggleTheme}
-                control={<Switch checked={theme === 'dark'} />}
+                control={<Switch checked={theme === 'dark'}/>}
                 label="Темная тема"
             />
         </div>

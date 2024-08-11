@@ -45,27 +45,28 @@ const SideBarMenu = ({user, setLoading, collapsed}) => {
                     },
                 },
             }}>
-                <MenuItem icon={<AiFillHome/>} component={<Link to="/" className="ps-menuitem-root"/>}>
+                <MenuItem icon={<AiFillHome/>} component={<Link to="/"/>}>
                     Главная
                 </MenuItem>
                 <SubMenu icon={<FaCalendarAlt/>} label={'Планирование'}>
                     <MenuItem icon={<CiViewTable/>}
-                              component={<Link to="/certification_scheme" className="ps-menuitem-root"/>}>
+                              component={<Link to="/schemes"/>}>
                         Схемы
                     </MenuItem>
-                    <MenuItem icon={<FaUsers/>} component={<Link to="/users" className="ps-menuitem-root"/>}>
+                    <MenuItem icon={<FaUsers/>}
+                              component={<Link to="/users"/>}>
                         Сотрудники
                     </MenuItem>
                     <MenuItem icon={<MdBusinessCenter/>}
-                              component={<Link className="ps-menuitem-root" to="/companies"/>}>
+                              component={<Link to="/companies"/>}>
                         Клиенты
                     </MenuItem>
                     <MenuItem icon={<FaRegCalendarAlt/>}
-                              component={<Link to="/official_schedule" className="ps-menuitem-root"/>}>
+                              component={<Link to="/official_schedule"/>}>
                         Оф. план работ
                     </MenuItem>
                     <MenuItem icon={<FaRegCalendarAlt/>}
-                              component={<Link to="/informal_schedule" className="ps-menuitem-root"/>}>
+                              component={<Link to="/informal_schedule"/>}>
                         Неоф. план работ
                     </MenuItem>
                     <MenuItem icon={<FaArtstation/>} component={<Link to="/stats"/>}>
@@ -73,7 +74,7 @@ const SideBarMenu = ({user, setLoading, collapsed}) => {
                     </MenuItem>
                 </SubMenu>
                 {user.role === 'ADMIN' &&
-                    (<MenuItem icon={<GrUserAdmin/>} component={<Link to="/admin" className="ps-menuitem-root"/>}>
+                    (<MenuItem icon={<GrUserAdmin/>} component={<Link to="/admin"/>}>
                         Администрирование
                     </MenuItem>)}
                 <SubMenu label="Личное" icon={<FaPersonCircleQuestion/>}>
@@ -83,7 +84,7 @@ const SideBarMenu = ({user, setLoading, collapsed}) => {
                     <MenuItem icon={<FaArtstation/>} component={<Link to={`/user/${user.id}`}/>}>
                         Личный кабинет
                     </MenuItem>
-                    <MenuItem icon={<IoIosLogOut/>} className="logout-menu-button ps-menuitem-root" onClick={logout}>
+                    <MenuItem icon={<IoIosLogOut/>} onClick={logout}>
                         Выйти
                     </MenuItem>
                 </SubMenu>
