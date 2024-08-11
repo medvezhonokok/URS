@@ -27,6 +27,10 @@ const SchedulePage = ({user, informal}) => {
             setUsers(usersJson);
         });
 
+        client.getCompanies().then(companiesJson => {
+            setCompanies(companiesJson);
+        });
+
         const days = Array.from({
             length: new Date(selectedYear, selectedMonth, 0).getDate()
         }, (_, i) => i + 1);
