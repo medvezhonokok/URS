@@ -65,7 +65,9 @@ public class AuditController {
         audit.setCompany(company);
         audit.setUser(user);
         audit.setStartDate(auditCredentials.getStartDate());
+        audit.setInformalStartDate(auditCredentials.getInformalStartDate());
         audit.setEndDate(auditCredentials.getEndDate());
+        audit.setInformalEndDate(auditCredentials.getInformalEndDate());
         audit.setClosingMeetingDate(auditCredentials.getClosingMeetingDate());
         audit.setCertificateExpirationDate(auditCredentials.getCertificateExpirationDate());
         audit.setCompanyName(company.getEnglishName());

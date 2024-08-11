@@ -9,7 +9,6 @@ const HomePage = ({user}) => {
     const [companiesWithoutAudit, setCompaniesWithoutAudit] = useState([]);
     const [loading, setLoading] = useState(true);
 
-
     useEffect(() => {
         client.getCompanies().then(companiesJson => {
             const companiesWithAudit = companiesJson

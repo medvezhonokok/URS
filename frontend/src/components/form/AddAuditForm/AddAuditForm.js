@@ -15,7 +15,9 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
         closingMeetingDate: null,
         certificateExpirationDate: null,
         startDate: null,
+        informalStartDate: null,
         endDate: null,
+        informalEndDate: null,
         companyId: "",
         userId: ""
     });
@@ -50,7 +52,9 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                     closingMeetingDate: null,
                     certificateExpirationDate: null,
                     startDate: null,
+                    informalStartDate: null,
                     endDate: null,
+                    informalEndDate: null,
                     companyId: "",
                     userId: ""
                 });
@@ -193,6 +197,30 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                                    label="Конец аудита"
                                    name="endDate"
                                    value={auditData.endDate}
+                                   onChange={handleInputChange}
+                                   InputLabelProps={{
+                                       shrink: true,
+                                   }}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth
+                                   required={true}
+                                   type="date"
+                                   label="Неофициальное начало аудита"
+                                   name="informalStartDate"
+                                   value={auditData.informalStartDate}
+                                   onChange={handleInputChange}
+                                   InputLabelProps={{
+                                       shrink: true,
+                                   }}/>
+                    </Grid>
+                    <Grid item xs={12}>
+                        <TextField fullWidth
+                                   required={true}
+                                   type="date"
+                                   label="Неофициальный конец аудита"
+                                   name="informalEndDate"
+                                   value={auditData.informalEndDate}
                                    onChange={handleInputChange}
                                    InputLabelProps={{
                                        shrink: true,

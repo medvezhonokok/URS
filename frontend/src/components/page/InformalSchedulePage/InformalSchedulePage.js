@@ -1,28 +1,25 @@
-import React, {useEffect, useState} from 'react';
+import './InformalSchedulePage.css';
+import React, {useEffect, useState} from "react";
 import * as client from "../../../data/client";
+import {Box, CircularProgress, FormControl, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
+
+import {monthNames} from "../../../constants/constants";
+import TableContainer from "@mui/material/TableContainer";
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
-import TableContainer from "@mui/material/TableContainer";
-import "./CommonSchedulePage.css";
-import {Box, CircularProgress, FormControl, InputLabel, MenuItem, Popover, Select, Typography} from "@mui/material";
-import {Button} from "react-bootstrap";
 import {MdAccessTimeFilled} from "react-icons/md";
-import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
-import {monthNames} from "../../../constants/constants";
 
-const CommonSchedulePage = ({user}) => {
+const InformalSchedulePage = ({user}) => {
     const [users, setUsers] = useState([]);
-    const [companies, setCompanies] = useState([]);
 
     const [daysInMonth, setDaysInMonth] = useState([]);
     const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
     const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
     const [selectedAudit, setSelectedAudit] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -31,10 +28,7 @@ const CommonSchedulePage = ({user}) => {
     useEffect(() => {
         const fetchData = async () => {
             const usersData = await client.getUsers();
-            const companiesData = await client.getCompanies();
-
             setUsers(usersData);
-            setCompanies(companiesData);
 
             const days = Array.from({length: new Date(selectedYear, selectedMonth, 0).getDate()}, (_, i) => i + 1);
             setDaysInMonth(days);
@@ -55,8 +49,8 @@ const CommonSchedulePage = ({user}) => {
     const hasAudit = (currentUser, date) => {
         const auditDate = new Date(selectedYear, selectedMonth - 1, date).setHours(0, 0, 0, 0);
         return currentUser.audits.some(audit => {
-            const auditStartDate = new Date(audit.startDate).setHours(0, 0, 0, 0);
-            const auditEndDate = new Date(audit.endDate).setHours(0, 0, 0, 0);
+            const auditStartDate = new Date(audit.informalStartDate).setHours(0, 0, 0, 0);
+            const auditEndDate = new Date(audit.informalEndDate).setHours(0, 0, 0, 0);
             return auditStartDate <= auditDate && auditDate <= auditEndDate;
         });
     };
@@ -66,8 +60,8 @@ const CommonSchedulePage = ({user}) => {
         selectedDate.setHours(0, 0, 0, 0);
 
         const selectedAudit = user.audits.find(audit => {
-            const auditStartDate = new Date(audit.startDate);
-            const auditEndDate = new Date(audit.endDate);
+            const auditStartDate = new Date(audit.informalStartDate);
+            const auditEndDate = new Date(audit.informalEndDate);
             auditStartDate.setHours(0, 0, 0, 0);
             auditEndDate.setHours(0, 0, 0, 0);
 
@@ -79,11 +73,6 @@ const CommonSchedulePage = ({user}) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const updateUsersAndCompanies = (newUsers, newCompanies) => {
-        setUsers(newUsers);
-        setCompanies(newCompanies);
-    };
-
     if (loading) {
         return <div className="loadingContainer"><CircularProgress/></div>;
     }
@@ -92,16 +81,7 @@ const CommonSchedulePage = ({user}) => {
         user
             ? <div className="commonPageContainer">
                 <div className="commonPageHeader">
-                    <h1 className="commonPageHeader">Общий график</h1>
-                    <div className="headerButtonContainer">
-                        <Button onClick={() => setIsModalOpen(true)}>ДОБАВИТЬ АУДИТ +</Button>
-                        <AddAuditForm isOpen={isModalOpen}
-                                      handleClose={() => setIsModalOpen(false)}
-                                      companies={companies}
-                                      users={users}
-                                      updateUsersAndCompanies={updateUsersAndCompanies}
-                        />
-                    </div>
+                    <h1 className="commonPageHeader">Неофициальный общий график</h1>
                 </div>
                 <div className="selectContainer">
                     <FormControl>
@@ -212,17 +192,17 @@ const CommonSchedulePage = ({user}) => {
                                 <Box className="auditInfo">
                                     <MdAccessTimeFilled className="dateTimeIcon"/>
                                     <Typography>
-                                        {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
+                                        {new Date(selectedAudit.informalStartDate).toLocaleDateString()} - {new Date(selectedAudit.informalEndDate).toLocaleDateString()}
                                     </Typography>
                                 </Box>
                             </Box>
                         </Box>
                     </Popover>
                 )}
-
             </div>
             : null
     );
 };
 
-export default CommonSchedulePage;
+
+export default InformalSchedulePage;

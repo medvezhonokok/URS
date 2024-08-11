@@ -38,6 +38,10 @@ public class Audit {
 
     private LocalDate endDate;
 
+    private LocalDate informalStartDate;
+
+    private LocalDate informalEndDate;
+
     @OneToOne
     @JsonIgnore
     @JoinColumn(name = "company_id")

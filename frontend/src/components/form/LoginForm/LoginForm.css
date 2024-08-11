@@ -1,45 +1,85 @@
 .loginForm {
-    max-width: 300px;
+    max-width: 360px;
     margin: 10rem auto;
+    padding: 2rem;
+    background-color: var(--default-background-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .loginForm label {
-    color: white;
-    margin-bottom: 5px;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
 .loginForm input[type="text"],
 .loginForm input[type="password"] {
     width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
+    padding: 10px 15px;
+    margin-bottom: 20px;
     border: 1px solid var(--border-color);
     border-radius: 4px;
+    background-color: var(--light-gray);
+    color: var(--dark-green);
+    font-size: 1rem;
+    box-sizing: border-box;
+    display: block;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .loginForm input[type="text"]:focus,
 .loginForm input[type="password"]:focus {
     outline: none;
     border-color: var(--light-green);
+    box-shadow: 0 0 6px rgba(48, 80, 34, 0.5);
 }
 
 .error {
     text-align: center;
     color: var(--error-color);
     margin: 0.5rem auto 1rem auto;
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
 .loginForm button {
+    width: 100%;
+    padding: 12px;
+    margin: 20px 0 0 0;
     background-color: var(--light-green);
-    border: var(--border-color) 0.1rem solid;
-    border-radius: 0.5rem;
-    display: flex;
-    height: 3rem;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
+    border: none;
+    border-radius: 4px;
+    color: var(--light-gray);
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: block;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 .loginForm button:hover {
     background-color: var(--medium-green);
+    transform: translateY(-2px);
+}
+
+.loginForm button:active {
+    background-color: var(--dark-green);
+    transform: translateY(0);
+}
+
+.loginForm button:disabled {
+    background-color: var(--medium-gray);
+    color: var(--dark-green);
+    cursor: not-allowed;
+}
+
+.captcha-container {
+    margin-left: 1.8rem;
 }

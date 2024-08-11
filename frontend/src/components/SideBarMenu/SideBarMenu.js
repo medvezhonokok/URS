@@ -61,8 +61,12 @@ const SideBarMenu = ({user, setLoading, collapsed}) => {
                         Клиенты
                     </MenuItem>
                     <MenuItem icon={<FaRegCalendarAlt/>}
-                              component={<Link to="/schedule" className="ps-menuitem-root"/>}>
-                        План работ
+                              component={<Link to="/official_schedule" className="ps-menuitem-root"/>}>
+                        Оф. план работ
+                    </MenuItem>
+                    <MenuItem icon={<FaRegCalendarAlt/>}
+                              component={<Link to="/informal_schedule" className="ps-menuitem-root"/>}>
+                        Неоф. план работ
                     </MenuItem>
                     <MenuItem icon={<FaArtstation/>} component={<Link to="/stats"/>}>
                         Статистика

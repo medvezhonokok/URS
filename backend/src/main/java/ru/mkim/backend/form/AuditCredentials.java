@@ -40,6 +40,15 @@ public class AuditCredentials {
     @Future(message = "End date must be in the future")
     private LocalDate endDate;
 
+    @NotNull(message = "Informal start date is required")
+    @FutureOrPresent(message = "Informal start date must be in the present or future")
+
+    private LocalDate informalStartDate;
+
+    @NotNull(message = "Informal end date is required")
+    @Future(message = "Informal end date must be in the future")
+    private LocalDate informalEndDate;
+
     @NotNull(message = "Closing meeting date is required")
     @FutureOrPresent(message = "Closing meeting date must be in the present or future")
     private LocalDate closingMeetingDate;
