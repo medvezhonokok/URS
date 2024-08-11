@@ -17,7 +17,7 @@ import * as client from "../../../data/client";
 import AddCompanyForm from '../../form/AddCompanyForm/AddCompanyForm';
 import {Link} from "react-router-dom";
 
-const CompaniesPage = ({user}) => {
+const CompaniesPage = ({user, withAudit}) => {
     const [companies, setCompanies] = useState([]);
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -29,7 +29,7 @@ const CompaniesPage = ({user}) => {
     useEffect(() => {
         client.getCompanies().then(
             companiesJson => {
-                setCompanies(companiesJson);
+                setCompanies(companiesJson)
                 setLoading(false);
             }
         );
@@ -51,36 +51,48 @@ const CompaniesPage = ({user}) => {
         setOpen(false);
     };
 
-    const filteredCompanies = companies.filter((company) =>
-        company.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        company.russianName.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    const filteredCompanies = companies
+        .filter((company) => {
+            if (withAudit) {
+                return company.audit;
+            } else {
+                return !company.audit;
+            }
+        })
+        .filter((company) =>
+            company.englishName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            company.russianName.toLowerCase().includes(searchQuery.toLowerCase())
+        );
 
     if (!user) {
         return null;
     }
 
     if (loading) {
-        return (<div className="loadingContainer">
-            <CircularProgress/>
-        </div>);
+        return (
+            <div className="loadingContainer">
+                <CircularProgress/>
+            </div>
+        );
     }
 
     return (
         <div>
             <div className="commonPageHeader">
-                <h1 className="commonPageHeader">Клиенты</h1>
-                <div className="headerButtonContainer">
-                    <Button onClick={() => setOpen(true)}>ДОБАВИТЬ +</Button>
-                    <AddCompanyForm open={open}
-                                    handleClose={() => setOpen(false)}
-                                    handleSubmit={addCompany}
-                                    handleChange={handleChange}
-                                    companyCredentials={companyCredentials}/>
-                </div>
+                <h1 className="commonPageHeader">{withAudit ? "Клиенты" : "Заявки"}</h1>
+                {!withAudit && (
+                    <div className="headerButtonContainer">
+                        <Button onClick={() => setOpen(true)}>ДОБАВИТЬ +</Button>
+                        <AddCompanyForm open={open}
+                                        handleClose={() => setOpen(false)}
+                                        handleSubmit={addCompany}
+                                        handleChange={handleChange}
+                                        companyCredentials={companyCredentials}/>
+                    </div>
+                )}
             </div>
             <TextField
-                label="Поиск по названию компании"
+                label={"Поиск по названию " + (withAudit ? "компании..." : "заявки...")}
                 variant="outlined"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}

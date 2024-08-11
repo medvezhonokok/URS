@@ -1,6 +1,6 @@
-.companyCard {
-    background: var(--default-background-color);
-    width: 40%;
-    margin: 4rem auto;
-    border: 0.3rem var(--border-color) solid;
+.selectContainer {
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    margin-bottom: 20px;
 }

@@ -25,7 +25,7 @@ const CertificationSchemesPage = ({user}) => {
 
             setCompaniesByAuditCriterionMap(map);
         });
-    }, []);
+    }, [companiesByAuditCriterionMap]);
 
     if (!user) {
         return null;

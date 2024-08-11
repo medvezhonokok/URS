@@ -7,3 +7,9 @@ button {
     font-size: 16px;
     padding: 10px 20px;
 }
+
+.modalFooter {
+    justify-content: center;
+    display: flex;
+    padding: 10px;
+}

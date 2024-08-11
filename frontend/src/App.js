@@ -8,7 +8,7 @@ import CompaniesPage from "./components/page/CompaniesPage/CompaniesPage";
 import CompanyPage from "./components/page/CompanyPage/CompanyPage";
 import UserPage from "./components/page/UserPage/UserPage";
 import HomePage from "./components/page/HomePage/HomePage";
-import OfficialSchedulePage from "./components/page/OfficialSchedulePage/OfficialSchedulePage";
+import SchedulePage from "./components/page/SchedulePage/SchedulePage";
 import CertificationSchemesPage from "./components/page/CertificationSchemesPage/CertificationSchemesPage";
 import StatisticsPage from "./components/page/StatisticsPage/StatisticsPage";
 import {CircularProgress} from "@mui/material";
@@ -16,7 +16,6 @@ import AdminPage from "./components/page/AdminPage/AdminPage";
 import * as client from "./data/client";
 import SettingsPage from "./components/page/SettingsPage/SettingsPage";
 import {ThemeContext} from "./utils/ThemeContext";
-import InformalSchedulePage from "./components/page/InformalSchedulePage/InformalSchedulePage";
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -35,7 +34,6 @@ const App = () => {
                 console.log(err);
             })
         }
-
     }, [jwtToken, user]);
 
     if (loading && jwtToken) {
@@ -53,9 +51,10 @@ const App = () => {
                             <Route path='/schemes' element={<CertificationSchemesPage user={user}/>}/>
                             <Route path='/stats' element={<StatisticsPage user={user}/>}/>
                             <Route path='/users' element={<UsersPage user={user}/>}/>
-                            <Route path='/companies' element={<CompaniesPage user={user}/>}/>
-                            <Route path='/official_schedule' element={<OfficialSchedulePage user={user}/>}/>
-                            <Route path='/informal_schedule' element={<InformalSchedulePage user={user}/>}/>
+                            <Route path='/companies' element={<CompaniesPage user={user} withAudit={true}/>}/>
+                            <Route path='/applications' element={<CompaniesPage user={user} withAudit={false}/>}/>
+                            <Route path='/schedule' element={<SchedulePage user={user} informal={false}/>}/>
+                            <Route path='/informal_schedule' element={<SchedulePage user={user} informal={true}/>}/>
                             <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
                             <Route path='/user/:userId' element={<UserPage user={user}/>}/>
                             <Route path='/admin' element={<AdminPage user={user}/>}/>
