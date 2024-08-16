@@ -8,10 +8,8 @@ import lombok.NonNull;
 import lombok.Setter;
 import ru.mkim.backend.model.AuditCriterion;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -124,4 +122,12 @@ public class CompanyCredentials {
 
     @Size(max = 255, message = "Russian certification scope must be less than 255 characters")
     private String certificateNumber;
+
+    @NotNull(message = "Closing meeting date is required")
+    @FutureOrPresent(message = "Closing meeting date must be in the present or future")
+    private LocalDate closingMeetingDate;
+
+    @NotNull(message = "Certificate expiration date is required")
+    @FutureOrPresent(message = "Certificate expiration date must be in the present or future")
+    private LocalDate certificateExpirationDate;
 }

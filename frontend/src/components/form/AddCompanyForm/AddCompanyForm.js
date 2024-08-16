@@ -26,6 +26,8 @@ const formFields = [
     {label: "Область сертифицирования [en]", name: "englishCertificationScope"},
     {label: "Область сертифицирования [ru]", name: "russianCertificationScope"},
     {label: "Критерий аудита", name: "auditCriterion"},
+    {label: "Дата заключительного собрания", name: "closingMeetingDate"},
+    {label: "Дата истечения сертификата", name: "certificateExpirationDate"},
 ];
 
 const AddCompanyForm = ({open, handleClose, handleSubmit, handleChange, companyCredentials}) => {

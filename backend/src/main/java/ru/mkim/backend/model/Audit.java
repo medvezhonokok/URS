@@ -30,10 +30,6 @@ public class Audit {
     @Size(max = 100)
     private String agreement;
 
-    private LocalDate closingMeetingDate;
-
-    private LocalDate certificateExpirationDate;
-
     private LocalDate startDate;
 
     private LocalDate endDate;

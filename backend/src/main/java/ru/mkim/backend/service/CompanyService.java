@@ -58,6 +58,8 @@ public class CompanyService {
         company.setRussianCertificationScope(credentials.getRussianCertificationScope());
         company.setCertificateNumber(credentials.getCertificateNumber());
         company.setAuditCriterion(credentials.getAuditCriterion());
+        company.setClosingMeetingDate(credentials.getClosingMeetingDate());
+        company.setCertificateExpirationDate(credentials.getCertificateExpirationDate());
 
         return companyRepository.save(company);
     }

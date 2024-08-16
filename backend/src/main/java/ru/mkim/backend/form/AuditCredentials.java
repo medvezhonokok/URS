@@ -48,12 +48,4 @@ public class AuditCredentials {
     @NotNull(message = "Informal end date is required")
     @Future(message = "Informal end date must be in the future")
     private LocalDate informalEndDate;
-
-    @NotNull(message = "Closing meeting date is required")
-    @FutureOrPresent(message = "Closing meeting date must be in the present or future")
-    private LocalDate closingMeetingDate;
-
-    @NotNull(message = "Certificate expiration date is required")
-    @FutureOrPresent(message = "Certificate expiration date must be in the present or future")
-    private LocalDate certificateExpirationDate;
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.annotation.Nullable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -95,4 +96,10 @@ public class Company {
 
     @Nullable
     private String certificateNumber;
+
+    @Nullable
+    private LocalDate closingMeetingDate;
+
+    @Nullable
+    private LocalDate certificateExpirationDate;
 }

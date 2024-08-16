@@ -12,8 +12,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
         location: "",
         activity: "",
         agreement: "",
-        closingMeetingDate: null,
-        certificateExpirationDate: null,
         startDate: null,
         informalStartDate: null,
         endDate: null,
@@ -49,8 +47,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                     location: "",
                     activity: "",
                     agreement: "",
-                    closingMeetingDate: null,
-                    certificateExpirationDate: null,
                     startDate: null,
                     informalStartDate: null,
                     endDate: null,
@@ -153,30 +149,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                                    required={true}
                                    onChange={handleInputChange}
                         />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Заключительное совещание"
-                                   name="closingMeetingDate"
-                                   value={auditData.closingMeetingDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Сертификат действителен до:"
-                                   name="certificateExpirationDate"
-                                   value={auditData.certificateExpirationDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth
