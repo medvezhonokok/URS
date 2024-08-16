@@ -6,18 +6,17 @@ import {Button} from "react-bootstrap";
 import * as client from "../../../data/client";
 
 const CertificationSchemesPage = ({user}) => {
-    const [companiesByAuditCriterionMap, setCompaniesByAuditCriterionMap] = useState(
-        AuditCriterion.reduce((map, {key}) => {
-            map[key] = [];
-            return map;
-        }, {}));
+    const [companiesByAuditCriterionMap, setCompaniesByAuditCriterionMap] = useState({});
 
     const [selectedCriterion, setSelectedCriterion] = useState(null);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         client.getCompanies().then(companiesJson => {
-            const map = companiesByAuditCriterionMap;
+            const map = AuditCriterion.reduce((map, {key}) => {
+                map[key] = [];
+                return map;
+            }, {});
 
             for (const company of companiesJson) {
                 map[company.auditCriterion].push(company);
@@ -41,7 +40,7 @@ const CertificationSchemesPage = ({user}) => {
         setSelectedCriterion(null);
     };
 
-    function getAuditCriterionTitle(criterion, companies) {
+    const getAuditCriterionTitle = (criterion, companies) => {
         const auditCriterion = AuditCriterion.find(item => item.key === criterion).value;
 
         return (auditCriterion.length > 10
