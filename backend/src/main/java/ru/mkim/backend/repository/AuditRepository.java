@@ -6,5 +6,4 @@ import ru.mkim.backend.model.Audit;
 
 @Repository
 public interface AuditRepository extends JpaRepository<Audit, Long> {
-
 }

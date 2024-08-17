@@ -86,6 +86,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                     setErrors(err.response.data);
                 });
         } else {
+            console.log(auditData)
             client.addAudit(auditData)
                 .then((ignored) => {
                     const updatedUsers = users.map(user =>

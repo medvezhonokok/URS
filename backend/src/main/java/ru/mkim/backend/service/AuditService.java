@@ -35,6 +35,9 @@ public class AuditService {
         User user = userService.findById(auditCredentials.getUserId());
         company.setUser(user);
         companyService.save(company);
+        audit.setCompany(company);
+        audit.setCompanyName(company.getEnglishName());
+        audit.setUser(user);
 
         copyCredentialsFieldsToAudit(audit, auditCredentials);
     }
@@ -57,6 +60,19 @@ public class AuditService {
     }
 
     public void delete(Long auditId) {
-        auditRepository.deleteById(auditId);
+        Audit audit = findById(auditId);
+        Company company = audit.getCompany();
+        User user = audit.getUser();
+
+        if (company != null) {
+            company.setAudit(null);
+            company.setUser(null);
+            companyService.save(company);
+            if (user != null && user.getCompanies().contains(company)) {
+                user.getCompanies().remove(company);
+                userService.save(user);
+            }
+        }
+        auditRepository.delete(audit);
     }
 }

@@ -91,23 +91,26 @@ const CommonSchedulePage = ({user}) => {
     };
     const handleDeleteClick = () => {
         if (!selectedAudit) return;
-
+        console.log(selectedAudit.id)
         client.deleteAudit(selectedAudit.id)
             .then(() => {
                 const updatedUsers = users.map(user => ({
                     ...user,
+                    companies: companies.filter(company => company.id !== selectedAudit.companyId),
                     audits: user.audits.filter(audit => audit.id !== selectedAudit.id)
                 }));
 
                 const updatedCompanies = companies.map(company => {
                     if (company.audit && company.audit.id === selectedAudit.id) {
-                        return { ...company, audit: null };
+                        return { ...company, user: null, audit: null };
                     }
                     return company;
                 });
-
+                console.log(companies)
                 updateUsersAndCompanies(updatedUsers, updatedCompanies);
                 alert("Аудит был удален");
+                console.log(updatedCompanies)
+                console.log(selectedAudit.companyId)
                 setIsPopoverOpen(false);
             })
             .catch(err => {
@@ -238,7 +241,6 @@ const CommonSchedulePage = ({user}) => {
                                     </Typography>
                                 </Box>
                                 <Box className="auditInfo">
-                                    <MdAccessTimeFilled className="dateTimeIcon"/>
                                     <Typography>
                                         {new Date(selectedAudit.startDate).toLocaleDateString()} - {new Date(selectedAudit.endDate).toLocaleDateString()}
                                     </Typography>

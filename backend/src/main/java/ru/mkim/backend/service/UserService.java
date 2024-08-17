@@ -49,4 +49,8 @@ public class UserService {
     public void updateCertificates(long userId, String certificates) {
         userRepository.updateCertificates(userId, certificates);
     }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
 }
