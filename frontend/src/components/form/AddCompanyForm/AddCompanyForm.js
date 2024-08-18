@@ -1,36 +1,40 @@
 import React from 'react';
 import {Button} from "react-bootstrap";
 import {Box, FormControl, Grid, InputLabel, MenuItem, Modal, Select, TextField, Typography} from '@mui/material';
-import {AuditCriterion} from "../../../constants/constants";
+import {AuditCriterion, COMPANY_FIELDS} from "../../../constants/constants";
 import './AddCompanyForm.css';
 
-const formFields = [
-    {label: "Название организации [en]", name: "englishName"},
-    {label: "Название организации [ru]", name: "russianName"},
-    {label: "Фактический адрес организации [en]", name: "englishAddress"},
-    {label: "Фактический адрес организации [ru]", name: "russianAddress"},
-    {label: "Postal/Zip Code", name: "postalOrZipCode"},
-    {label: "Country/State", name: "countryOrState"},
-    {label: "ФИО руководителя (без сокращений) [en]", name: "englishManagerName"},
-    {label: "ФИО руководителя (без сокращений) [ru]", name: "russianManagerName"},
-    {label: "Должность руководителя", name: "managerPosition"},
-    {label: "Телефон руководителя", name: "managerPhoneNumber"},
-    {label: "E-mail руководителя", name: "managerEmail"},
-    {label: "Web site", name: "webSite"},
-    {label: "ФИО контактного лица [en]", name: "englishContactPersonName"},
-    {label: "ФИО контактного лица [ru]", name: "russianContactPersonName"},
-    {label: "Должность контактного лица", name: "contactPersonPosition"},
-    {label: "E-mail контактного лица", name: "contactPersonEmail"},
-    {label: "ИНН", name: "tin"},
-    {label: "ОКВЭД", name: "okved"},
-    {label: "Область сертифицирования [en]", name: "englishCertificationScope"},
-    {label: "Область сертифицирования [ru]", name: "russianCertificationScope"},
-    {label: "Критерий аудита", name: "auditCriterion"},
-    {label: "Дата заключительного собрания", name: "closingMeetingDate"},
-    {label: "Дата истечения сертификата", name: "certificateExpirationDate"},
-];
-
 const AddCompanyForm = ({open, handleClose, handleSubmit, handleChange, companyCredentials}) => {
+    const emptyCompanyFields = COMPANY_FIELDS({
+        englishName: '',
+        russianName: '',
+        englishAddress: '',
+        russianAddress: '',
+        postalOrZipCode: '',
+        countryOrState: '',
+        englishManagerName: '',
+        russianManagerName: '',
+        managerPosition: '',
+        managerPhoneNumber: '',
+        managerEmail: '',
+        webSite: '',
+        englishContactPersonName: '',
+        russianContactPersonName: '',
+        contactPersonPosition: '',
+        contactPersonEmail: '',
+        tin: '',
+        okved: '',
+        activity: '',
+        location: '',
+        agreement: '',
+        englishCertificationScope: '',
+        russianCertificationScope: '',
+        auditCriterion: '',
+        certificateNumber: '',
+        closingMeetingDate: '',
+        certificateExpirationDate: '',
+    });
+
     return (
         <Modal
             open={open}
@@ -43,7 +47,7 @@ const AddCompanyForm = ({open, handleClose, handleSubmit, handleChange, companyC
                     Добавление нового клиента
                 </Typography>
                 <Grid container spacing={2}>
-                    {formFields.map((field, index) => (
+                    {emptyCompanyFields.map((field, index) => (
                         <Grid item xs={12} key={index}>
                             {field.name === "auditCriterion" ? (
                                 <FormControl fullWidth variant="outlined" required>
@@ -62,6 +66,7 @@ const AddCompanyForm = ({open, handleClose, handleSubmit, handleChange, companyC
                                 </FormControl>
                             ) : (
                                 <TextField
+                                    type={field.type ? field.type : 'text'}
                                     fullWidth
                                     label={field.label}
                                     variant="outlined"

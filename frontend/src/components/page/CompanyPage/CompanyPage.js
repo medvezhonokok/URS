@@ -35,14 +35,14 @@ const CompanyPage = ({user}) => {
 
     const handleEditClick = () => {
         setIsEditing(true);
-        setEditedFields(companyFields.reduce((acc, field) => ({...acc, [field.id]: field.value}), {}));
+        setEditedFields(companyFields.reduce((acc, field) => ({...acc, [field.name]: field.value}), {}));
     };
 
     const handleSaveClick = async () => {
         if (validateFields()) {
             try {
                 await client.updateCompany(companyId, JSON.stringify(editedFields));
-                setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.id]})));
+                setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.name]})));
                 setIsEditing(false);
             } catch (error) {
                 console.error("Failed to save company:", error);
@@ -59,8 +59,8 @@ const CompanyPage = ({user}) => {
     const validateFields = () => {
         const newErrors = {};
         companyFields.forEach(field => {
-            if (!editedFields[field.id]) {
-                newErrors[field.id] = "Поле не может быть пустым";
+            if (!editedFields[field.name]) {
+                newErrors[field.name] = "Поле не может быть пустым";
             }
         });
         setErrors(newErrors);
@@ -92,26 +92,26 @@ const CompanyPage = ({user}) => {
         </div>
         <div className="companyInfo">
             {companyFields.map(field => (
-                <FormControl key={field.id} margin="normal" fullWidth variant="standard">
-                    {field.id !== "auditCriterion"
+                <FormControl key={field.name} margin="normal" fullWidth variant="standard">
+                    {field.name !== "auditCriterion"
                         ? <TextField
                             type={field.type ? field.type : 'text'}
                             fullWidth
                             label={field.label}
                             name={field.label}
-                            value={isEditing ? editedFields[field.id] : field.value}
+                            value={isEditing ? editedFields[field.name] : field.value}
                             required
-                            onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                            onChange={isEditing && ((e) => handleFieldChange(field.name, e.target.value))}
                             disabled={!isEditing}
-                            error={!!errors[field.id]}
-                            helperText={errors[field.id]}
+                            error={!!errors[field.name]}
+                            helperText={errors[field.name]}
                         />
                         :
                         <>
                             <InputLabel>{field.label}</InputLabel>
-                            <Select onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
+                            <Select onChange={isEditing && ((e) => handleFieldChange(field.name, e.target.value))}
                                     disabled={!isEditing}
-                                    value={isEditing ? editedFields[field.id] : field.value}>
+                                    value={isEditing ? editedFields[field.name] : field.value}>
                                 {AuditCriterion.map((type) => (
                                     <MenuItem key={type.key} value={type.key}>
                                         {type.value}

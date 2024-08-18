@@ -9,9 +9,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
     const [errors, setErrors] = useState('');
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [auditData, setAuditData] = useState({
-        location: "",
-        activity: "",
-        agreement: "",
         startDate: null,
         informalStartDate: null,
         endDate: null,
@@ -44,9 +41,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
 
                 alert("Аудит был добавлен");
                 setAuditData({
-                    location: "",
-                    activity: "",
-                    agreement: "",
                     startDate: null,
                     informalStartDate: null,
                     endDate: null,
@@ -124,31 +118,6 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                                 ))}
                             </Select>
                         </FormControl>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   label="Локация"
-                                   name="location"
-                                   value={auditData.location}
-                                   required={true}
-                                   onChange={handleInputChange}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   label="Активность"
-                                   name="activity"
-                                   value={auditData.activity}
-                                   required={true}
-                                   onChange={handleInputChange}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   label="Договор"
-                                   name="agreement"
-                                   value={auditData.agreement}
-                                   required={true}
-                                   onChange={handleInputChange}
-                        />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField fullWidth
