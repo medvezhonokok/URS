@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Menu, MenuItem, Sidebar, SubMenu} from 'react-pro-sidebar';
 import {Link} from 'react-router-dom';
 import {AiFillHome} from 'react-icons/ai';
-import {FaArtstation, FaCalendarAlt, FaRegCalendarAlt, FaUsers} from 'react-icons/fa';
+import {FaArtstation, FaBars, FaCalendarAlt, FaRegCalendarAlt, FaUsers} from 'react-icons/fa';
 import {GrUserAdmin} from 'react-icons/gr';
 import {MdBusinessCenter} from 'react-icons/md';
 import {IoIosLogOut, IoIosSettings} from 'react-icons/io';
@@ -86,7 +86,13 @@ const SideBarMenu = ({user, setLoading, collapsed}) => {
                         Настройки
                     </MenuItem>
                     <MenuItem icon={<FaArtstation/>} component={<Link to={`/user/${user.id}`}/>}>
-                        Личный кабинет
+                        Профиль
+                    </MenuItem>
+                    <MenuItem icon={<FaBars/>} component={<Link to={`/audits`}/>}>
+                        Аудиты
+                    </MenuItem>
+                    <MenuItem icon={<FaBars/>} component={<Link to={`/accreditation`}/>}>
+                        Моя аккредитация
                     </MenuItem>
                     <MenuItem icon={<IoIosLogOut/>} onClick={logout}>
                         Выйти

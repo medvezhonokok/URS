@@ -27,4 +27,9 @@ public class UserCredentials {
     @Size(min = 3, max = 12)
     @Pattern(regexp = "[+]?[0-9]+", message = "Excepted numbers or plus")
     private String phoneNumber;
+
+    @NotEmpty
+    @Size(max = 100)
+    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$")
+    private String email;
 }

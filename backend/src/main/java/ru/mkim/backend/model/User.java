@@ -26,6 +26,11 @@ public class User {
     private String phoneNumber;
 
     @NotEmpty
+    @Size(max = 100)
+    @Pattern(regexp = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$")
+    private String email;
+
+    @NotEmpty
     @Size(min = 2, max = 24)
     @Pattern(regexp = "[a-zA-Z]{2,24}")
     private String login;

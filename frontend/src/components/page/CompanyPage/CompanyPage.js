@@ -4,6 +4,7 @@ import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, Tex
 import './CompanyPage.css';
 import * as client from "../../../data/client";
 import {AuditCriterion, COMPANY_FIELDS} from "../../../constants/constants";
+import {FaCalendarAlt} from "react-icons/fa";
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
@@ -49,6 +50,12 @@ const CompanyPage = ({user}) => {
         }
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = {year: 'numeric', month: 'long', day: 'numeric'};
+        return date.toLocaleDateString('ru-RU', options);
+    };
+
     const validateFields = () => {
         const newErrors = {};
         companyFields.forEach(field => {
@@ -88,6 +95,7 @@ const CompanyPage = ({user}) => {
                 <FormControl key={field.id} margin="normal" fullWidth variant="standard">
                     {field.id !== "auditCriterion"
                         ? <TextField
+                            type={field.type ? field.type : 'text'}
                             fullWidth
                             label={field.label}
                             name={field.label}
@@ -116,16 +124,24 @@ const CompanyPage = ({user}) => {
             ))}
         </div>
         {company.audit && (
-            <div className="companyAuditInfo">
+            <div className="audit-card">
                 <h2 className="commonPageHeader">АУДИТ</h2>
-                <p>Ответственный: <Link to={`/user/${company.user.id}`}>{company.user.name}</Link></p>
-                <p>Локация: {company.audit.location}</p>
-                <p>Активность: {company.audit.activity}</p>
-                <p>Договор: {company.audit.agreement}</p>
-                <p>Дата заключительного собрания: {company.audit.closingMeetingDate}</p>
-                <p>Дата истечения сертификата: {company.audit.certificateExpirationDate}</p>
-                <p>Дата начала аудита: {company.audit.startDate}</p>
-                <p>Дата окончания аудита: {company.audit.endDate}</p>
+                <h3 className="company-name">{company.audit.companyName}</h3>
+                <div className="audit-info">
+                    <p>Активность: {company.audit.activity}</p>
+                    <p>Договор: {company.audit.agreement}</p>
+                    <p>Локация: {company.audit.location}</p>
+                    <p>Ответственный: <Link to={`/user/${company.user.id}`}> {company.user.name}</Link></p>
+                    <p><FaCalendarAlt className="icon"/><strong> Дата начала
+                        аудита: </strong> {formatDate(company.audit.startDate)}</p>
+                    <p><FaCalendarAlt className="icon"/><strong> Дата конца
+                        аудита: </strong> {formatDate(company.audit.endDate)}
+                    </p>
+                    <p><FaCalendarAlt className="icon"/><strong> Неофициальная дата начала
+                        аудита: </strong> {formatDate(company.audit.informalStartDate)}</p>
+                    <p><FaCalendarAlt className="icon"/><strong> Неофициальная дата окончания
+                        аудита: </strong> {formatDate(company.audit.informalEndDate)}</p>
+                </div>
             </div>
         )}
     </div>);

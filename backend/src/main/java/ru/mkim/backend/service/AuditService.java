@@ -47,4 +47,8 @@ public class AuditService {
 
         auditRepository.save(audit);
     }
+
+    public List<Audit> findUserAudits(Long userId) {
+        return auditRepository.findAllByUserId(userId);
+    }
 }

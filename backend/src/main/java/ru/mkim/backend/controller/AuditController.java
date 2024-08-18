@@ -12,6 +12,7 @@ import ru.mkim.backend.service.AuditService;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/audit")
@@ -44,5 +45,12 @@ public class AuditController {
         }
 
         auditService.register(auditCredentials);
+    }
+
+    @RequireJwtParam
+    @PostMapping("/my")
+    public List<Audit> audits(@RequestBody Map<String, Object> requestBody) {
+        Long userId = Long.parseLong(String.valueOf(requestBody.get("userId")));
+        return auditService.findUserAudits(userId);
     }
 }

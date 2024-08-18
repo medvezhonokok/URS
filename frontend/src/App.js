@@ -16,6 +16,8 @@ import AdminPage from "./components/page/AdminPage/AdminPage";
 import * as client from "./data/client";
 import SettingsPage from "./components/page/SettingsPage/SettingsPage";
 import {ThemeContext} from "./utils/ThemeContext";
+import AuditsPage from "./components/page/AuditsPage/AuditsPage";
+import AccreditationPage from "./components/page/AccreditationPage/AccreditationPage";
 
 const App = () => {
     const [user, setUser] = useState(null);
@@ -58,6 +60,8 @@ const App = () => {
                             <Route path='/company/:companyId' element={<CompanyPage user={user}/>}/>
                             <Route path='/user/:userId' element={<UserPage user={user}/>}/>
                             <Route path='/admin' element={<AdminPage user={user}/>}/>
+                            <Route path='/audits' element={<AuditsPage user={user}/>}/>
+                            <Route path='/accreditation' element={<AccreditationPage user={user}/>}/>
                             <Route path='/settings'
                                    element={<SettingsPage collapsed={collapsed} setCollapsed={setCollapsed}/>}/>
                         </Routes>

@@ -40,7 +40,7 @@ const AuditModal = ({open, anchorEl, onClose, audit}) => {
                     </Box>
                     <Box className="auditInfo">
                         <Typography>
-                            <span className="label">Соглашение:</span> {audit.agreement}
+                            <span className="label">Договор:</span> {audit.agreement}
                         </Typography>
                     </Box>
                     <Box className="auditInfo">

@@ -129,13 +129,19 @@ export const getCompanyById = (companyId) => {
  *      Audit entity client utils.
  */
 export const addAudit = (audit) => {
-    return axiosInstance.post(`/audit/add`, audit, {
-        headers: {
-            'Content-Type': 'application/json'
-        }
-    }).then(response => response.data)
+    return axiosInstance.post(`/audit/add`, audit)
+        .then(response => response.data)
         .catch(error => {
             console.error("Failed to add audit:", error);
             throw error;
         });
 };
+
+export const getAuditsById = (userId) => {
+    return axiosInstance.post(`/audit/my`, {userId})
+        .then(response => response.data)
+        .catch(error => {
+            console.error("Failed to add audit:", error);
+            throw error;
+        });
+}

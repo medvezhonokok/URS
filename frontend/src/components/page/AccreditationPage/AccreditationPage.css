@@ -1,0 +1,107 @@
+.accreditation-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.accreditation-item {
+    background-color: var(--light-gray);
+    color: var(--light-green);
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 2px solid var(--medium-gray);
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.request-button-wrapper {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.accreditation-item:hover {
+    background-color: var(--medium-green);
+    color: var(--light-gray);
+    transform: translateY(-3px);
+    border-color: var(--border-color);
+}
+
+.accreditation-item:not(:last-child) {
+    margin-bottom: 15px;
+}
+
+.missing-criteria-container {
+    margin-top: 20px;
+    width: 100%;
+}
+
+.missing-criteria-container h2 {
+    margin-bottom: 10px;
+    color: var(--dark-green);
+}
+
+.missing-criteria-item {
+    background-color: var(--light-gray);
+    color: var(--light-green);
+    margin: 10px 0;
+    padding: 15px 20px;
+    border-radius: 8px;
+    border: 2px solid var(--medium-gray);
+    font-size: 16px;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+.missing-criteria-item:hover {
+    background-color: var(--medium-green);
+    color: var(--light-gray);
+    transform: translateY(-3px);
+    border-color: var(--border-color);
+}
+
+.request-button {
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.request-button:hover {
+    background-color: var(--medium-green);
+    transform: translateY(-2px);
+}
+
+.request-button:active {
+    background-color: var(--medium-green);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.request-button:disabled {
+    background-color: var(--light-gray);
+    color: var(--medium-gray);
+    cursor: not-allowed;
+    box-shadow: none;
+}

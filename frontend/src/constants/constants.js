@@ -109,7 +109,16 @@ export const COMPANY_FIELDS = (company) => {
         },
         {
             label: "Номер сертификата", value: company.certificateNumber, id: "certificateNumber"
-        }
+        },
+        {
+            label: "Дата заключительного собрания", value: company.closingMeetingDate, id: "closingMeetingDate", type: 'date'
+        },
+        {
+            label: "Дата истечения сертификата",
+            value: company.certificateExpirationDate,
+            id: "certificateExpirationDate",
+            type: 'date'
+        },
     ]
 }
 
@@ -117,5 +126,6 @@ export const USER_FIELDS = (user) => {
     return [
         {label: 'ФИО', value: user.name, id: 'name'},
         {label: 'Номер телефона', value: user.phoneNumber, id: 'phoneNumber'},
+        {label: 'Email', value: user.email, id: 'email'},
     ]
 }

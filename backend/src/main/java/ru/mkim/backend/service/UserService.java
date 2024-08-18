@@ -55,6 +55,7 @@ public class UserService {
 
         user.setName(credentials.getName());
         user.setPhoneNumber(credentials.getPhoneNumber());
+        user.setEmail(credentials.getEmail());
 
         userRepository.save(user);
     }

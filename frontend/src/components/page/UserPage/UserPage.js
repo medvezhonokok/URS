@@ -4,6 +4,7 @@ import {Button, CircularProgress, FormControl, List, ListItem, TextField} from '
 import * as client from '../../../data/client';
 import {AuditCriterion, USER_FIELDS} from '../../../constants/constants';
 import './UserPage.css';
+import {FaCalendarAlt} from "react-icons/fa";
 
 const UserPage = ({user}) => {
     const {userId} = useParams();
@@ -74,6 +75,12 @@ const UserPage = ({user}) => {
         setErrors(prevState => ({...prevState, [id]: !value ? 'Поле не может быть пустым' : ''}));
     };
 
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        const options = {year: 'numeric', month: 'long', day: 'numeric'};
+        return date.toLocaleDateString('ru-RU', options);
+    };
+
     if (loading) {
         return <div className="loadingContainer"><CircularProgress/></div>;
     }
@@ -114,37 +121,41 @@ const UserPage = ({user}) => {
                         />
                     </FormControl>
                 ))}
-                <h2>Аккредитация эксперта:</h2>
-                {userAuditCriterionList && userAuditCriterionList.length > 0
-                    ? (<List>
-                        {userAuditCriterionList.map((certificate, index) => (
-                            <ListItem style={{background: '#83d10b'}} key={index}>
-                                {certificate}
-                            </ListItem>
-                        ))}
-                    </List>)
-                    : (<p>Нет доступной аккредитации.</p>)}
-                <h2>Аудиты сотрудника:</h2>
-                {userAudits && userAudits.length > 0
-                    ? (<List className="auditList">
-                        {userAudits.map(audit => (
-                            <ListItem key={audit.id} className="auditItem">
-                                <div>Компания: {audit.companyName}</div>
-                                <div>Активность: {audit.activity}</div>
-                                <div>Локация: {audit.location}</div>
-                                <div>Договор: {audit.agreement}</div>
-                                <div>Дата заключительного
-                                    собрания: {new Date(audit.closingMeetingDate).toLocaleDateString()}</div>
-                                <div>Дата истечения
-                                    сертификата: {new Date(audit.certificateExpirationDate).toLocaleDateString()}</div>
-                                <div className="auditDates">
-                                    <span>Дата начала аудита: {new Date(audit.startDate).toLocaleDateString()}</span>
-                                    <span>Дата окончания аудита: {new Date(audit.endDate).toLocaleDateString()}</span>
+                {user.id !== parseInt(userId) && (userAuditCriterionList && userAuditCriterionList.length > 0
+                    ? (<>
+                        <h2>Аккредитация эксперта:</h2>
+                        <List>
+                            {userAuditCriterionList.map((certificate, index) => (
+                                <ListItem style={{background: '#83d10b'}} key={index}>
+                                    {certificate}
+                                </ListItem>
+                            ))}
+                        </List>
+                    </>)
+                    : (<p>Нет доступной аккредитации.</p>))}
+                {user.id !== parseInt(userId) && (userAudits && userAudits.length > 0
+                    ? (<>
+                        <h2>Аудиты сотрудника:</h2>
+                        <List className="auditList">
+                            {userAudits.map(audit => (
+                                <div key={audit.id} className="audit-card">
+                                    <h3 className="company-name">{audit.companyName}</h3>
+                                    <div className="audit-info">
+                                        <p><FaCalendarAlt className="icon"/><strong> Дата начала
+                                            аудита: </strong> {formatDate(audit.startDate)}</p>
+                                        <p><FaCalendarAlt className="icon"/><strong> Дата конца
+                                            аудита: </strong> {formatDate(audit.endDate)}
+                                        </p>
+                                        <p><FaCalendarAlt className="icon"/><strong> Неофициальная дата начала
+                                            аудита: </strong> {formatDate(audit.informalStartDate)}</p>
+                                        <p><FaCalendarAlt className="icon"/><strong> Неофициальная дата окончания
+                                            аудита: </strong> {formatDate(audit.informalEndDate)}</p>
+                                    </div>
                                 </div>
-                            </ListItem>
-                        ))}
-                    </List>)
-                    : (<p>Нет доступных аудитов.</p>)}
+                            ))}
+                        </List>
+                    </>)
+                    : (<p>Нет доступных аудитов.</p>))}
             </div>
         </div>
     );
