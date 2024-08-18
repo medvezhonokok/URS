@@ -60,6 +60,9 @@ public class CompanyService {
         company.setAuditCriterion(credentials.getAuditCriterion());
         company.setClosingMeetingDate(credentials.getClosingMeetingDate());
         company.setCertificateExpirationDate(credentials.getCertificateExpirationDate());
+        company.setLocation(credentials.getLocation());
+        company.setAgreement(credentials.getAgreement());
+        company.setActivity(credentials.getActivity());
 
         return companyRepository.save(company);
     }

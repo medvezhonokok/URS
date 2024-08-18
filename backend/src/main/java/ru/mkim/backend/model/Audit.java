@@ -18,18 +18,6 @@ public class Audit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NonNull
-    @Size(max = 100)
-    private String location;
-
-    @NonNull
-    @Size(max = 100)
-    private String activity;
-
-    @NonNull
-    @Size(max = 100)
-    private String agreement;
-
     private LocalDate startDate;
 
     private LocalDate endDate;

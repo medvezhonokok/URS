@@ -102,4 +102,13 @@ public class Company {
 
     @Nullable
     private LocalDate certificateExpirationDate;
+
+    @NonNull
+    private String activity;
+
+    @NonNull
+    private String location;
+
+    @NonNull
+    private String agreement;
 }

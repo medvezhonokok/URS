@@ -130,4 +130,19 @@ public class CompanyCredentials {
     @NotNull(message = "Certificate expiration date is required")
     @FutureOrPresent(message = "Certificate expiration date must be in the present or future")
     private LocalDate certificateExpirationDate;
+
+    @NonNull
+    @NotEmpty(message = "Activity is required")
+    @Size(max = 100, message = "Activity must be less than 100 characters")
+    private String activity;
+
+    @NonNull
+    @NotEmpty(message = "Location is required")
+    @Size(max = 100, message = "Location must be less than 100 characters")
+    private String location;
+
+    @NonNull
+    @NotEmpty(message = "Agreement is required")
+    @Size(max = 100, message = "Agreement must be less than 100 characters")
+    private String agreement;
 }

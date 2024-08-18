@@ -10,22 +10,6 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class AuditCredentials {
-
-    @NonNull
-    @NotEmpty(message = "Activity is required")
-    @Size(max = 100, message = "Activity must be less than 100 characters")
-    private String activity;
-
-    @NonNull
-    @NotEmpty(message = "Location is required")
-    @Size(max = 100, message = "Location must be less than 100 characters")
-    private String location;
-
-    @NonNull
-    @NotEmpty(message = "Agreement is required")
-    @Size(max = 100, message = "Agreement must be less than 100 characters")
-    private String agreement;
-
     @NotNull(message = "Company ID is required")
     private Long companyId;
 

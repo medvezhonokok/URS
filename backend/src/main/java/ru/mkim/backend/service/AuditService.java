@@ -34,9 +34,6 @@ public class AuditService {
         company.setUser(user);
         companyService.save(company);
 
-        audit.setActivity(auditCredentials.getActivity());
-        audit.setLocation(auditCredentials.getLocation());
-        audit.setAgreement(auditCredentials.getAgreement());
         audit.setCompany(company);
         audit.setUser(user);
         audit.setStartDate(auditCredentials.getStartDate());
