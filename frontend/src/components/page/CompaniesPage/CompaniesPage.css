@@ -1,3 +1,17 @@
 .headerButtonContainer {
     margin: auto;
 }
+
+.MuiTableCell-root {
+    white-space: nowrap;  /* Prevent text from wrapping */
+    overflow: hidden;     /* Hide any overflowed content */
+    text-overflow: ellipsis; /* Add ellipsis for overflowed text */
+    max-width: 200px;     /* Optional: Set a max-width to control the width */
+}
+
+/* Adjust for the specific table if needed */
+.MuiTableCell-head, .MuiTableCell-body {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -16,6 +16,7 @@ import {
 import * as client from "../../../data/client";
 import AddCompanyForm from '../../form/AddCompanyForm/AddCompanyForm';
 import {Link} from "react-router-dom";
+import {CompanyStatus} from "../../../constants/constants";
 
 const CompaniesPage = ({user, withAudit}) => {
     const [companies, setCompanies] = useState([]);
@@ -100,7 +101,7 @@ const CompaniesPage = ({user, withAudit}) => {
                 margin="normal"
             />
             <TableContainer component={Paper}>
-                <Table sx={{minWidth: 650}} aria-label="companies table">
+                <Table sx={{minWidth: 700}} aria-label="companies table">
                     <TableHead>
                         <TableRow>
                             <TableCell>Название</TableCell>
@@ -108,7 +109,7 @@ const CompaniesPage = ({user, withAudit}) => {
                             <TableCell>ФИО контактного лица</TableCell>
                             <TableCell>ИНН</TableCell>
                             <TableCell>Код по ОКВЭД</TableCell>
-                            <TableCell>Аудит</TableCell>
+                            <TableCell>Статус</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -126,7 +127,7 @@ const CompaniesPage = ({user, withAudit}) => {
                                 <TableCell>{company.russianContactPersonName}</TableCell>
                                 <TableCell>{company.tin}</TableCell>
                                 <TableCell>{company.okved}</TableCell>
-                                <TableCell>{company.audit ? "Есть" : "Отсутствует"}</TableCell>
+                                <TableCell>{CompanyStatus.find(item => item.key === company.status).value}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
