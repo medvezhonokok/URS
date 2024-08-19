@@ -105,6 +105,7 @@ const CompanyPage = ({user}) => {
                             error={!!errors[field.name]}
                             helperText={errors[field.name]}/>
                         : <>
+                            <InputLabel>{field.label}</InputLabel>
                             <Select onChange={isEditing && ((e) => handleFieldChange(field.name, e.target.value))}
                                     disabled={!isEditing}
                                     label={field.label}
