@@ -1,4 +1,4 @@
-package ru.mkim.backend.model;
+package ru.mkim.backend.model.enums;
 
 import lombok.Getter;
 

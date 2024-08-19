@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import ru.mkim.backend.model.enums.AuditCriterion;
+import ru.mkim.backend.model.enums.UserRole;
 import ru.mkim.backend.util.StringUtil;
 
 import javax.validation.constraints.NotEmpty;

@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import ru.mkim.backend.model.enums.AuditCriterion;
+import ru.mkim.backend.model.enums.CompanyStatus;
 
 import javax.annotation.Nullable;
 import java.time.LocalDate;
@@ -93,6 +95,11 @@ public class Company {
     @Enumerated(EnumType.STRING)
     @Column(length = 40)
     private AuditCriterion auditCriterion;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    @Column(length = 40)
+    private CompanyStatus status;
 
     @Nullable
     private String certificateNumber;

@@ -6,7 +6,8 @@ import jakarta.persistence.Enumerated;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
-import ru.mkim.backend.model.AuditCriterion;
+import ru.mkim.backend.model.enums.AuditCriterion;
+import ru.mkim.backend.model.enums.CompanyStatus;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
@@ -119,6 +120,10 @@ public class CompanyCredentials {
     @Enumerated(EnumType.STRING)
     @Column(length = 40)
     private AuditCriterion auditCriterion;
+
+    @NonNull
+    @Enumerated(EnumType.STRING)
+    private CompanyStatus status;
 
     @Size(max = 255, message = "Russian certification scope must be less than 255 characters")
     private String certificateNumber;

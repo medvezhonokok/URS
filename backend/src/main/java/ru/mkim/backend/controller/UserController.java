@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.annotation.RequireJwtParam;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
-import ru.mkim.backend.model.AuditCriterion;
+import ru.mkim.backend.model.enums.AuditCriterion;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;

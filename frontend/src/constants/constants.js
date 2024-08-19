@@ -1,6 +1,12 @@
 export const BACKEND_JAVA_URL = "http://5.101.51.223:8080/api";
 export const SITE_SECRET_KEY = "6LcibiQqAAAAAJuR19fsc1XKU_JBT3_ExHyYaF-J";
 
+export const CompanyStatus = [
+    {key: "ACCEPTED", value: "Одобрена"},
+    {key: "REJECTED", value: "Отклонена"},
+    {key: "IN_PROCESS", value: "В процессе"},
+]
+
 export const AuditCriterion = [
     {
         key: "ISO_9001_2015",
@@ -254,6 +260,11 @@ export const COMPANY_FIELDS = (company) =>
             name: "certificateExpirationDate",
             type: 'date'
         },
+        {
+            label: "Статус заявки",
+            value: company.status,
+            name: "status"
+        }
     ]
 
 export const USER_FIELDS = (user) =>

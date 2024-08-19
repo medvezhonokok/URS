@@ -63,6 +63,7 @@ public class CompanyService {
         company.setLocation(credentials.getLocation());
         company.setAgreement(credentials.getAgreement());
         company.setActivity(credentials.getActivity());
+        company.setStatus(credentials.getStatus());
 
         return companyRepository.save(company);
     }

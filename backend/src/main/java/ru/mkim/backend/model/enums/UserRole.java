@@ -1,4 +1,4 @@
-package ru.mkim.backend.model;
+package ru.mkim.backend.model.enums;
 
 public enum UserRole {
     CEO, WORKER, ADMIN

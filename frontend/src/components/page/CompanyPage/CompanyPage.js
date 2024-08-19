@@ -3,7 +3,7 @@ import {Link, useParams} from "react-router-dom";
 import {Button, CircularProgress, FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import './CompanyPage.css';
 import * as client from "../../../data/client";
-import {AuditCriterion, COMPANY_FIELDS} from "../../../constants/constants";
+import {AuditCriterion, COMPANY_FIELDS, CompanyStatus} from "../../../constants/constants";
 import {FaCalendarAlt} from "react-icons/fa";
 
 const CompanyPage = ({user}) => {
@@ -92,33 +92,35 @@ const CompanyPage = ({user}) => {
         </div>
         <div className="companyInfo">
             {companyFields.map(field => (
-                <FormControl key={field.name} margin="normal" fullWidth variant="standard">
-                    {field.name !== "auditCriterion"
+                <FormControl margin="normal" fullWidth variant="outlined" required>
+                    {field.name !== "auditCriterion" && field.name !== "status"
                         ? <TextField
                             type={field.type ? field.type : 'text'}
                             fullWidth
                             label={field.label}
-                            name={field.label}
                             value={isEditing ? editedFields[field.name] : field.value}
-                            required
+                            required={true}
                             onChange={isEditing && ((e) => handleFieldChange(field.name, e.target.value))}
                             disabled={!isEditing}
                             error={!!errors[field.name]}
-                            helperText={errors[field.name]}
-                        />
-                        :
-                        <>
-                            <InputLabel>{field.label}</InputLabel>
+                            helperText={errors[field.name]}/>
+                        : <>
                             <Select onChange={isEditing && ((e) => handleFieldChange(field.name, e.target.value))}
                                     disabled={!isEditing}
+                                    label={field.label}
                                     value={isEditing ? editedFields[field.name] : field.value}>
-                                {AuditCriterion.map((type) => (
-                                    <MenuItem key={type.key} value={type.key}>
-                                        {type.value}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </>
+                                {field.name === "auditCriterion"
+                                    ? AuditCriterion.map((type) => (
+                                        <MenuItem key={type.key} value={type.key}>
+                                            {type.value}
+                                        </MenuItem>
+                                    ))
+                                    : CompanyStatus.map((type) => (
+                                        <MenuItem key={type.key} value={type.key}>
+                                            {type.value}
+                                        </MenuItem>
+                                    ))}
+                            </Select></>
                     }
                 </FormControl>
             ))}
