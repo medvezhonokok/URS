@@ -53,13 +53,15 @@ const UserPage = ({user}) => {
 
     const handleSaveClick = async () => {
         if (validateFields()) {
-            try {
-                await client.updateUser(userId, JSON.stringify(editedFields));
-                setUserFields(userFields.map(field => ({...field, value: editedFields[field.id]})));
-                setIsEditing(false);
-            } catch (error) {
-                console.error('Failed to update user credentials:', error);
-            }
+            client.updateUser(userId, JSON.stringify(editedFields))
+                .then(user => {
+                    setUserById(user);
+                    setUserFields(userFields.map(field => ({...field, value: editedFields[field.id]})));
+                    setIsEditing(false);
+                })
+                .catch(err => {
+                    console.error('Failed to update user credentials:', err);
+                });
         }
     };
 

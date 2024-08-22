@@ -108,7 +108,8 @@ export const getCompanies = () => {
 
 export const updateCompany = (companyId, company) => {
     return axiosInstance.put(`/company/update/${companyId}`, company)
-        .then(() => {
+        .then((response) => {
+            return response.data;
         })
         .catch(error => {
             console.log("Failed to update company: " + error);

@@ -31,8 +31,8 @@ public class CompanyService {
         companyRepository.save(company);
     }
 
-    public void update(long companyId, CompanyCredentials credentials) {
-        copyCredentialsFieldToCompany(findById(companyId), credentials);
+    public Company update(long companyId, CompanyCredentials credentials) {
+        return copyCredentialsFieldToCompany(findById(companyId), credentials);
     }
 
     private Company copyCredentialsFieldToCompany(Company company, CompanyCredentials credentials) {

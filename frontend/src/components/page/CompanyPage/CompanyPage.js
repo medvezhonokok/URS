@@ -49,15 +49,17 @@ const CompanyPage = ({user}) => {
         setEditedFields(companyFields.reduce((acc, field) => ({...acc, [field.name]: field.value}), {}));
     };
 
-    const handleSaveClick = async () => {
+    const handleSaveClick = () => {
         if (validateFields()) {
-            try {
-                await client.updateCompany(companyId, JSON.stringify(editedFields));
-                setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.name]})));
-                setIsEditing(false);
-            } catch (error) {
-                console.error("Failed to save company:", error);
-            }
+            client.updateCompany(companyId, JSON.stringify(editedFields))
+                .then(company => {
+                    setCompany(company);
+                    setCompanyFields(companyFields.map(field => ({...field, value: editedFields[field.name]})));
+                    setIsEditing(false);
+                })
+                .catch(err => {
+                    console.error("Failed to save company:", err);
+                });
         }
     };
 

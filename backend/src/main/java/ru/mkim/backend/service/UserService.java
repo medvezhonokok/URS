@@ -51,7 +51,7 @@ public class UserService {
         userRepository.updateCertificates(userId, certificates);
     }
 
-    public void update(Long userId, UserCredentials credentials) {
+    public User update(Long userId, UserCredentials credentials) {
         User user = findById(userId);
 
         user.setName(credentials.getName());
@@ -61,6 +61,6 @@ public class UserService {
             userRepository.updatePasswordSha(userId, user.getLogin(), credentials.getPassword());
         }
 
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 }

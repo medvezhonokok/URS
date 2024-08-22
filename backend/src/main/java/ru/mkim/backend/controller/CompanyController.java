@@ -62,12 +62,12 @@ public class CompanyController {
 
     @RequireJwtParam
     @PutMapping("/update/{companyId}")
-    public void updateCompany(@PathVariable Long companyId, @Valid @RequestBody CompanyCredentials credentials,
+    public Company updateCompany(@PathVariable Long companyId, @Valid @RequestBody CompanyCredentials credentials,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
 
-        companyService.update(companyId, credentials);
+        return companyService.update(companyId, credentials);
     }
 }

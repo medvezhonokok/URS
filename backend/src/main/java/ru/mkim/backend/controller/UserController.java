@@ -88,12 +88,12 @@ public class UserController {
 
     @RequireJwtParam
     @PostMapping("/update/{userId}")
-    public void updateUser(@PathVariable Long userId, @Valid @RequestBody UserCredentials credentials,
+    public User updateUser(@PathVariable Long userId, @Valid @RequestBody UserCredentials credentials,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new ValidationException(bindingResult);
         }
 
-        userService.update(userId, credentials);
+        return userService.update(userId, credentials);
     }
 }
