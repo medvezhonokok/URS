@@ -27,6 +27,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
                 for (const user of users) {
                     if (user.id === auditData.userId) {
                         user.audits.push(auditData);
+                        selectedCompany.user = user;
                         break;
                     }
                 }
