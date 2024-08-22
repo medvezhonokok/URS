@@ -108,7 +108,6 @@ const CompaniesPage = ({user, withAudit}) => {
                             <TableCell>Страна или штат</TableCell>
                             <TableCell>ФИО контактного лица</TableCell>
                             <TableCell>ИНН</TableCell>
-                            <TableCell>Код по ОКВЭД</TableCell>
                             <TableCell>Статус</TableCell>
                         </TableRow>
                     </TableHead>
@@ -126,7 +125,6 @@ const CompaniesPage = ({user, withAudit}) => {
                                 <TableCell>{company.countryOrState}</TableCell>
                                 <TableCell>{company.russianContactPersonName}</TableCell>
                                 <TableCell>{company.tin}</TableCell>
-                                <TableCell>{company.okved}</TableCell>
                                 <TableCell>{CompanyStatus.find(item => item.key === company.status).value}</TableCell>
                             </TableRow>
                         ))}

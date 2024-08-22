@@ -80,11 +80,6 @@ const SchedulePage = ({user, informal}) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const updateUsersAndCompanies = (newUsers, newCompanies) => {
-        setUsers(newUsers);
-        setCompanies(newCompanies);
-    };
-
     if (!user) {
         return null;
     }
@@ -103,7 +98,6 @@ const SchedulePage = ({user, informal}) => {
                                   handleClose={() => setIsModalOpen(false)}
                                   companies={companies}
                                   users={users}
-                                  updateUsersAndCompanies={updateUsersAndCompanies}
                     />
                 </div>)}
             </div>

@@ -5,31 +5,42 @@ import './CompanyPage.css';
 import * as client from "../../../data/client";
 import {AuditCriterion, COMPANY_FIELDS, CompanyStatus} from "../../../constants/constants";
 import {FaCalendarAlt} from "react-icons/fa";
+import AddAuditForm from "../../form/AddAuditForm/AddAuditForm";
 
 const CompanyPage = ({user}) => {
     const [company, setCompany] = useState(null);
+    const [users, setUsers] = useState([]);
     const [companyFields, setCompanyFields] = useState([]);
     const [isEditing, setIsEditing] = useState(false);
     const [editedFields, setEditedFields] = useState({});
     const [errors, setErrors] = useState({});
     const {companyId} = useParams();
     const [loading, setLoading] = useState(true);
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        const getCompanyAsync = async () => {
-            try {
-                const companyById = await client.getCompanyById(companyId);
-                setCompany(companyById);
-                setCompanyFields(COMPANY_FIELDS(companyById));
-                setLoading(false);
-            } catch (error) {
-                console.error("Failed to get company:", error);
-                setLoading(false);
-            }
-        };
+        if (users.length === 0) {
+            client.getUsers()
+                .then(usersJson => {
+                    setUsers(usersJson);
+                })
+                .catch(err => {
+                    console.log(err);
+                })
+        }
+    }, []);
 
+    useEffect(() => {
         if (companyId && !company) {
-            getCompanyAsync();
+            client.getCompanyById(companyId)
+                .then((companyById) => {
+                    setCompany(companyById);
+                    setCompanyFields(COMPANY_FIELDS(companyById));
+                    setLoading(false);
+                })
+                .catch(err => {
+                    console.log('Error while getting company', err);
+                });
         }
     }, [company, companyId]);
 
@@ -84,10 +95,18 @@ const CompanyPage = ({user}) => {
         <div className="commonPageHeader">
             <h1 className="commonPageHeader">Компания "{company.englishName}"</h1>
             <div className="headerButtonContainer">
+                {company.status === "ACCEPTED" && !company.audit && (
+                    <Button onClick={() => setIsModalOpen(true)}>Запланировать аудит</Button>
+                )}
                 {isEditing
                     ? <Button onClick={handleSaveClick}>Сохранить</Button>
                     : <Button onClick={handleEditClick}>Редактировать</Button>
                 }
+                <AddAuditForm isOpen={isModalOpen}
+                              handleClose={() => setIsModalOpen(false)}
+                              companies={[company]}
+                              users={users}
+                />
             </div>
         </div>
         <div className="companyInfo">

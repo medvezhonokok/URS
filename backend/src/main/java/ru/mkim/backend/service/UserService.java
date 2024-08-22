@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.model.User;
 import ru.mkim.backend.repository.UserRepository;
+import ru.mkim.backend.util.StringUtil;
 
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class UserService {
         user.setName(credentials.getName());
         user.setPhoneNumber(credentials.getPhoneNumber());
         user.setEmail(credentials.getEmail());
+        if (StringUtil.isNotNullOrEmpty(credentials.getPassword())) {
+            userRepository.updatePasswordSha(userId, user.getLogin(), credentials.getPassword());
+        }
 
         userRepository.save(user);
     }

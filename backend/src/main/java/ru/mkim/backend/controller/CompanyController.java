@@ -7,13 +7,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.annotation.RequireJwtParam;
+import ru.mkim.backend.exception.ValidationException;
 import ru.mkim.backend.form.CompanyCredentials;
 import ru.mkim.backend.form.validator.CompanyCredentialsValidator;
 import ru.mkim.backend.model.Company;
 import ru.mkim.backend.service.CompanyService;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
 
 @RestController
@@ -54,7 +54,7 @@ public class CompanyController {
     public ResponseEntity<Company> addNewCompany(@Valid @RequestBody CompanyCredentials credentials,
                                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors().toString());
+            throw new ValidationException(bindingResult);
         }
 
         return new ResponseEntity<>(companyService.register(credentials), HttpStatus.OK);
@@ -65,7 +65,7 @@ public class CompanyController {
     public void updateCompany(@PathVariable Long companyId, @Valid @RequestBody CompanyCredentials credentials,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors().toString());
+            throw new ValidationException(bindingResult);
         }
 
         companyService.update(companyId, credentials);

@@ -6,15 +6,15 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import ru.mkim.backend.annotation.RequireJwtParam;
+import ru.mkim.backend.exception.ValidationException;
 import ru.mkim.backend.form.UserCredentials;
 import ru.mkim.backend.form.validator.UserCredentialsRegisterValidator;
-import ru.mkim.backend.model.enums.AuditCriterion;
 import ru.mkim.backend.model.User;
+import ru.mkim.backend.model.enums.AuditCriterion;
 import ru.mkim.backend.service.JwtService;
 import ru.mkim.backend.service.UserService;
 
 import javax.validation.Valid;
-import javax.validation.ValidationException;
 import java.util.List;
 import java.util.Map;
 
@@ -54,7 +54,7 @@ public class UserController {
     public UserCredentials register(@RequestBody @Valid UserCredentials credentials,
                                     BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors().toString());
+            throw new ValidationException(bindingResult);
         }
         userService.register(credentials);
         return credentials;
@@ -91,7 +91,7 @@ public class UserController {
     public void updateUser(@PathVariable Long userId, @Valid @RequestBody UserCredentials credentials,
                            BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            throw new ValidationException(bindingResult.getAllErrors().toString());
+            throw new ValidationException(bindingResult);
         }
 
         userService.update(userId, credentials);

@@ -4,8 +4,11 @@ import {Button} from 'react-bootstrap';
 import './AddAuditForm.css';
 import {AuditCriterion} from "../../../constants/constants";
 import * as client from "../../../data/client";
+import {Bounce, toast, ToastContainer} from 'react-toastify';
 
-const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndCompanies}) => {
+import 'react-toastify/dist/ReactToastify.css';
+
+const AddAuditForm = ({isOpen, handleClose, companies, users}) => {
     const [errors, setErrors] = useState('');
     const [selectedCompany, setSelectedCompany] = useState(null);
     const [auditData, setAuditData] = useState({
@@ -19,27 +22,29 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        localStorage.getItem('jwtToken');
         client.addAudit(auditData)
             .then((ignored) => {
-                const updatedUsers = users.map(user => {
+                for (const user of users) {
                     if (user.id === auditData.userId) {
                         user.audits.push(auditData);
+                        break;
                     }
-                    return user;
+                }
+
+                selectedCompany.audit = auditData;
+
+                toast('Аудит был добавлен!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                    transition: Bounce,
                 });
 
-                const updatedCompanies = companies.map(company => {
-                    if (company.id === auditData.companyId) {
-                        company.audit = auditData;
-                    }
-
-                    return company;
-                })
-
-                updateUsersAndCompanies(updatedUsers, updatedCompanies);
-
-                alert("Аудит был добавлен");
                 setAuditData({
                     startDate: null,
                     informalStartDate: null,
@@ -48,6 +53,7 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
                     companyId: "",
                     userId: ""
                 });
+
                 handleClose();
             })
             .catch((err) => {
@@ -93,110 +99,114 @@ const AddAuditForm = ({isOpen, handleClose, companies, users, updateUsersAndComp
     }
 
     return (
-        <Modal open={isOpen}
-               onClose={handleClose}
-               aria-labelledby="modal-modal-title"
-               aria-describedby="modal-modal-description">
-            <Box className="addAuditFormContainer" component="form" onSubmit={handleSubmit}>
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                    Добавление нового аудита
-                </Typography>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel id="company-select-label">Клиент</InputLabel>
-                            <Select required={true}
-                                    labelId="company-select-label"
-                                    id="company-select"
-                                    name="companyId"
-                                    value={auditData.companyId}
-                                    onChange={handleCompanyChange}>
-                                {companies.filter(company => company.audit === null).map(company => (
-                                    <MenuItem key={company.id} value={company.id}>
-                                        {company.englishName + `\t(${company.auditCriterion})`}
-                                    </MenuItem>
-                                ))}
-                            </Select>
-                        </FormControl>
+        <div>
+            <Modal open={isOpen}
+                   onClose={handleClose}
+                   aria-labelledby="modal-modal-title"
+                   aria-describedby="modal-modal-description">
+                <Box className="addAuditFormContainer" component="form" onSubmit={handleSubmit}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Добавление нового аудита
+                    </Typography>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="company-select-label">Клиент</InputLabel>
+                                <Select required={true}
+                                        labelId="company-select-label"
+                                        id="company-select"
+                                        name="companyId"
+                                        value={auditData.companyId}
+                                        onChange={handleCompanyChange}>
+                                    {companies.filter(company => company.audit === null && company.status === 'ACCEPTED')
+                                        .map(company => (
+                                            <MenuItem key={company.id} value={company.id}>
+                                                {company.englishName + `\t(${company.auditCriterion})`}
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullWidth
+                                       required={true}
+                                       type="date"
+                                       label="Начало аудита"
+                                       name="startDate"
+                                       value={auditData.startDate}
+                                       onChange={handleInputChange}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullWidth
+                                       required={true}
+                                       type="date"
+                                       label="Конец аудита"
+                                       name="endDate"
+                                       value={auditData.endDate}
+                                       onChange={handleInputChange}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullWidth
+                                       required={true}
+                                       type="date"
+                                       label="Неофициальное начало аудита"
+                                       name="informalStartDate"
+                                       value={auditData.informalStartDate}
+                                       onChange={handleInputChange}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField fullWidth
+                                       required={true}
+                                       type="date"
+                                       label="Неофициальный конец аудита"
+                                       name="informalEndDate"
+                                       value={auditData.informalEndDate}
+                                       onChange={handleInputChange}
+                                       InputLabelProps={{
+                                           shrink: true,
+                                       }}/>
+                        </Grid>
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel id="user-select-label">Сотрудник</InputLabel>
+                                <Select required={true}
+                                        labelId="user-select-label"
+                                        id="user-select"
+                                        name="userId"
+                                        value={auditData.userId}
+                                        onChange={handleInputChange}>
+                                    {users.filter(user => competentByAuditCriterion(user))
+                                        .map(user => (
+                                            <MenuItem key={user.id} value={user.id}>
+                                                {user.name}
+                                            </MenuItem>
+                                        ))}
+                                </Select>
+                            </FormControl>
+                        </Grid>
                     </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Начало аудита"
-                                   name="startDate"
-                                   value={auditData.startDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Конец аудита"
-                                   name="endDate"
-                                   value={auditData.endDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Неофициальное начало аудита"
-                                   name="informalStartDate"
-                                   value={auditData.informalStartDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField fullWidth
-                                   required={true}
-                                   type="date"
-                                   label="Неофициальный конец аудита"
-                                   name="informalEndDate"
-                                   value={auditData.informalEndDate}
-                                   onChange={handleInputChange}
-                                   InputLabelProps={{
-                                       shrink: true,
-                                   }}/>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <FormControl fullWidth>
-                            <InputLabel id="user-select-label">Сотрудник</InputLabel>
-                            <Select required={true}
-                                    labelId="user-select-label"
-                                    id="user-select"
-                                    name="userId"
-                                    value={auditData.userId}
-                                    onChange={handleInputChange}>
-                                {users.filter(user => competentByAuditCriterion(user))
-                                    .map(user => (
-                                        <MenuItem key={user.id} value={user.id}>
-                                            {user.name}
-                                        </MenuItem>
-                                    ))}
-                            </Select>
-                        </FormControl>
-                    </Grid>
-                </Grid>
-                {errors && <div className="error">{errors}</div>}
-                <div className="modalFooter">
-                    <Button className="modalButton" onClick={handleClose}>
-                        Отмена
-                    </Button>
-                    <Button className="modalButton" type="submit">
-                        Создать аудит
-                    </Button>
-                </div>
-            </Box>
-        </Modal>
+                    {errors && <div className="error">{errors}</div>}
+                    <div className="modalFooter">
+                        <Button className="modalButton" onClick={handleClose}>
+                            Отмена
+                        </Button>
+                        <Button className="modalButton" type="submit">
+                            Создать аудит
+                        </Button>
+                    </div>
+                </Box>
+            </Modal>
+            <ToastContainer/>
+        </div>
     );
 };
 

@@ -27,7 +27,11 @@ const UserPage = ({user}) => {
                         .filter(cert => cert !== null);
 
                     setUserAuditCriterionList(userAvailableAuditCriterion);
-                    setUserFields(USER_FIELDS(userJson));
+                    setUserFields([...USER_FIELDS(userJson), {
+                        label: 'Пароль',
+                        value: null,
+                        id: 'password'
+                    }]);
                     setUserAudits(userJson.audits || []);
                     setLoading(false);
                     setUserById(userJson);
@@ -113,7 +117,7 @@ const UserPage = ({user}) => {
                             label={field.label}
                             name={field.label}
                             value={isEditing ? editedFields[field.id] : field.value}
-                            required
+                            required={field.id !== 'password'}
                             onChange={isEditing && ((e) => handleFieldChange(field.id, e.target.value))}
                             disabled={!isEditing}
                             error={!!errors[field.id]}
