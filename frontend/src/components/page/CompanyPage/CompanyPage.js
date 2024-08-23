@@ -150,11 +150,8 @@ const CompanyPage = ({user}) => {
         {company.audit && (
             <div className="audit-card">
                 <h2 className="commonPageHeader">АУДИТ</h2>
-                <h3 className="company-name">{company.audit.companyName}</h3>
+                <h3 className="company-name">{company.englishName}</h3>
                 <div className="audit-info">
-                    <p>Активность: {company.audit.activity}</p>
-                    <p>Договор: {company.audit.agreement}</p>
-                    <p>Локация: {company.audit.location}</p>
                     <p>Ответственный: <Link to={`/user/${company.user.id}`}> {company.user.name}</Link></p>
                     <p><FaCalendarAlt className="icon"/><strong> Дата начала
                         аудита: </strong> {formatDate(company.audit.startDate)}</p>
