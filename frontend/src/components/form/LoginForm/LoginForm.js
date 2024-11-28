@@ -3,14 +3,11 @@ import {Button} from 'react-bootstrap';
 import './LoginForm.css';
 import * as client from "../../../data/client";
 import Starfield from 'react-starfield';
-import ReCAPTCHA from "react-google-recaptcha";
-import * as constants from "../../../constants/constants";
 
 const LoginForm = () => {
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState('');
-    const [captchaVerified, setCaptchaVerified] = useState(false);
 
     const setLoginOrPasswordValue = (e) => {
         const {name, value} = e.target;
@@ -27,26 +24,12 @@ const LoginForm = () => {
     const submitLoginForm = (e) => {
         e.preventDefault();
 
-        if (!captchaVerified) {
-            setErrors('Please verify the captcha.');
-            return;
-        }
-
         client.getJWTByUserCredentials(login, password).then((jwtToken) => {
             localStorage.setItem('jwtToken', jwtToken);
             window.location.reload();
         }).catch(err => {
             setErrors(err);
         })
-    };
-
-    const onCaptchaChange = (value) => {
-        if (value) {
-            setCaptchaVerified(true);
-            setErrors('');
-        } else {
-            setCaptchaVerified(false);
-        }
     };
 
     return (
@@ -65,18 +48,12 @@ const LoginForm = () => {
                 <label>password</label>
                 <input type="password" name="password" value={password} onChange={setLoginOrPasswordValue}/>
             </div>
-            <div className="captcha-container">
-                <ReCAPTCHA sitekey={constants.SITE_SECRET_KEY}
-                           onChange={onCaptchaChange}/>
-            </div>
 
             {errors && <div className="error">{errors}</div>}
-            {captchaVerified && (
-                <Button style={{fontWeight: "bold"}}
-                        type="submit">
-                    Log in
-                </Button>
-            )}
+            <Button style={{fontWeight: "bold"}}
+                    type="submit">
+                Log in
+            </Button>
         </form>
     );
 };

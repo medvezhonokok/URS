@@ -79,7 +79,3 @@
     color: var(--dark-green);
     cursor: not-allowed;
 }
-
-.captcha-container {
-    margin-left: 1.8rem;
-}
